@@ -39,4 +39,4 @@ out/
 ### yml file ###
 application-dev.yml
 ### Yml ###
-**/src/main/resources/application-dev.yml
+**/src/main/resources/application.yml
