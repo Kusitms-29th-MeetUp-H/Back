@@ -41,7 +41,13 @@ jobs:
 
       - name: Create application-dev.yml
         run: |
-          echo "${{secrets.APPLICATION_DEV}}" > ./Backend/src/main/resources/application-dev.yml
+          cd ./Backend
+          cd ./src/main
+          cd ./resources
+          touch ./application.yml
+          echo "$APPLICATION_DEV" > ./application.yml
+        env:
+          APPLICATION_MAIN: ${{ secrets.APPLICATION_DEV }}
 
       - name: Grant execute permission for gradlew
         run: |
