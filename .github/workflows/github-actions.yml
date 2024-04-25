@@ -107,6 +107,7 @@ jobs:
           script: |
             sudo docker pull ${{secrets.DOCKER_IMAGE}}
             sudo chmod 777 ./scripts/deploy.sh
-            sudo cp ./scripts/deploy.sh ./deploy.sh
+            sudo cp ./scripts/deploy.sh ./Main/deploy.sh
+            sudo cd ./Main
             sudo ./deploy.sh
             sudo docker image prune -f
