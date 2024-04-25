@@ -5,12 +5,11 @@ DEFAULT_CONF=" /etc/nginx/nginx.conf"
 
 # blue가 실행 중이면 green을 up합니다.
 if [ -z $IS_GREEN_EXIST ];then
-  docker-compose down
   echo "### BLUE => GREEN ####"
   echo ">>> green image를 pull합니다."
   docker-compose pull green
   echo ">>> green container를 up합니다."
-  docker-compose up -d green
+  docker-compose up -d --remove-orphans green
   while [ 1 = 1 ]; do
     echo ">>> green health check 중..."
     sleep 3
@@ -29,12 +28,11 @@ if [ -z $IS_GREEN_EXIST ];then
 
 # green이 실행 중이면 blue를 up합니다.
 else
-  docker-compose down
   echo "### GREEN => BLUE ###"
   echo ">>> blue image를 pull합니다."
   docker-compose pull blue
   echo ">>> blue container up합니다."
-  docker-compose up -d blue
+  docker-compose up -d --remove-orphans blue
   while [ 1 = 1 ]; do
     echo ">>> blue health check 중..."
     sleep 3
