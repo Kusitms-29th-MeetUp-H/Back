@@ -44,8 +44,8 @@ jobs:
           cd ./Main
           cd ./src/main
           cd ./resources
-          touch ./application.yml
-          echo "$APPLICATION_DEV" > ./application.yml
+          touch ./application-dev.yml
+          echo "$APPLICATION_DEV" > ./application-dev.yml
         env:
           APPLICATION_MAIN: ${{ secrets.APPLICATION_DEV }}
 
