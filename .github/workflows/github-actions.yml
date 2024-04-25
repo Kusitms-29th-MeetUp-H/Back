@@ -1,4 +1,4 @@
-name: CI CD
+name: Main CI CD
 
 on:
   push:
@@ -41,7 +41,7 @@ jobs:
 
       - name: Create application-dev.yml
         run: |
-          cd ./Backend
+          cd ./Main
           cd ./src/main
           cd ./resources
           touch ./application.yml
@@ -51,12 +51,12 @@ jobs:
 
       - name: Grant execute permission for gradlew
         run: |
-          cd ./Backend
+          cd ./Main
           chmod u+x gradlew
 
       - name: Build with Gradle
         run: |
-          cd ./Backend
+          cd ./Main
           ./gradlew build -x test
 
       - name: Build and push Docker image
@@ -65,7 +65,7 @@ jobs:
           DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
           DOCKER_IMAGE: ${{secrets.DOCKER_IMAGE}}
         run: |
-          cd ./Backend
+          cd ./Main
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
           docker build -t $DOCKER_IMAGE .
           docker push $DOCKER_IMAGE
@@ -93,7 +93,7 @@ jobs:
           host: ${{secrets.EC2_HOST}}
           username: ubuntu
           key: ${{secrets.EC2_PRIVATE_KEY}}
-          source: "./Backend/docker-compose.yml"
+          source: "./Main/docker-compose.yml"
           target: "/home/ubuntu"
           port: 22
 
