@@ -1,8 +1,8 @@
 version: '3'
 services:
   blue:
-    image: kusitms29h/kusitms29h:latest
     container_name: blue
+    image: kusitms29h/kusitms29h
     expose:
       - 8080
     ports:
@@ -10,13 +10,11 @@ services:
     environment:
       - TZ=Asia/Seoul
   green:
-    image: kusitms29h/kusitms29h:latest
     container_name: green
+    image: kusitms29h/kusitms29h
     expose:
       - 8080
     ports:
       - 8082:8080
     environment:
       - TZ=Asia/Seoul
-
-
