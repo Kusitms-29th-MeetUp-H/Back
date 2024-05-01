@@ -23,6 +23,7 @@ public class Formatter {
                 }
             }
         }
-        return null;
+
+        return ChatUser.builder().build();
     }
 }
