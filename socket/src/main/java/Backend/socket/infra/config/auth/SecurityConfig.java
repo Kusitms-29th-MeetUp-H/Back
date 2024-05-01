@@ -21,7 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtProvider jwtProvider;
-    private static final String[] whiteList = {"/ws"};
+    private static final String[] whiteList = {"/**"};
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {

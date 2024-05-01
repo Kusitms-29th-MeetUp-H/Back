@@ -33,14 +33,14 @@ public class AuthenticationInterceptor implements ChannelInterceptor {
 
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
-        StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-        StompCommand command = accessor.getCommand();
-        if (!command.equals(StompCommand.CONNECT))
-            return message;
-        String accessToken = getAccessTokenFromHeader(accessor);
-        validateJwtAccessToken(accessToken);
-        Long userId = getUserIdFromAccessToken(accessToken);
-        setAuthentication(accessor, userId);
+//        StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
+//        StompCommand command = accessor.getCommand();
+//        if (!command.equals(StompCommand.CONNECT))
+//            return message;
+//        String accessToken = getAccessTokenFromHeader(accessor);
+//        validateJwtAccessToken(accessToken);
+//        Long userId = getUserIdFromAccessToken(accessToken);
+//        setAuthentication(accessor, userId);
         return message;
     }
 
