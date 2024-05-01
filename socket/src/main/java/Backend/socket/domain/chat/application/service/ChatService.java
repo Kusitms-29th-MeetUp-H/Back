@@ -51,7 +51,7 @@ public class ChatService {
         ChatMessageElementResponseDto chatMessage = ChatMessageElementResponseDto.of(chatContent);
         List<String> sessionIdList = getSessionIdListInRoom(roomName, chatMessageRoomRequestDto.getChatSession());
         saveChatRoom(room);
-        return ChatMessageRoomResponseDto.of(chatMessageRoomRequestDto.getFromUserName(), sessionIdList, chatMessage);
+        return ChatMessageRoomResponseDto.of(chatMessageRoomRequestDto.getToRoomName(), sessionIdList, chatMessage);
     }
 
     public ChatMessageListResponseDto sendChatDetailMessage(String sessionId, ChatMessageListRequestDto chatMessageListRequestDto) {
