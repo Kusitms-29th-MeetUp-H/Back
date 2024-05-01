@@ -11,26 +11,25 @@ import java.util.stream.Collectors;
 
 @Builder
 @Getter
-public class ChatMessageElementResponseDto {
-    private String userName;
+public class RoomMessageElementResponseDto {
+    private ChatUserResponseDto user;
     private String content;
     private String time;
 
-
-    public static List<ChatMessageElementResponseDto> listOf(List<ChatContent> chatContentList) {
+    public static List<RoomMessageElementResponseDto> listOf(List<ChatContent> chatContentList,String roomName,TriFunction<String, String, ChatUser> formatter) {
         return chatContentList.stream()
-                .map(chatContent -> ChatMessageElementResponseDto.of(chatContent))
+                .map(chatContent -> RoomMessageElementResponseDto.of(chatContent,roomName,formatter))
                 .collect(Collectors.toList());
     }
 
 
-    public static ChatMessageElementResponseDto of(ChatContent chatContent) {
-        return ChatMessageElementResponseDto.builder()
-                .userName(chatContent.getUserName())
+
+    public static RoomMessageElementResponseDto of(ChatContent chatContent, String roomName, TriFunction<String, String, ChatUser> formatter) {
+        return RoomMessageElementResponseDto.builder()
+                .user(ChatUserResponseDto.of(formatter.apply(chatContent.getUserName(), roomName)))
                 .content(chatContent.getContent())
                 .time(chatContent.getTime().toString())
                 .build();
     }
 
 }
-

@@ -8,9 +8,9 @@ import java.util.List;
 @Getter
 public class RoomMessageListResponseDto {
     private List<ChatUserResponseDto> users;
-    private List<ChatMessageElementResponseDto> chatMessageList;
+    private List<RoomMessageElementResponseDto> chatMessageList;
 
-    public static RoomMessageListResponseDto of(List<ChatUserResponseDto> chatUserResponseDto, List<ChatMessageElementResponseDto> chatMessageList) {
+    public static RoomMessageListResponseDto of(List<ChatUserResponseDto> chatUserResponseDto, List<RoomMessageElementResponseDto> chatMessageList) {
         return RoomMessageListResponseDto.builder()
                 .users(chatUserResponseDto)
                 .chatMessageList(chatMessageList)

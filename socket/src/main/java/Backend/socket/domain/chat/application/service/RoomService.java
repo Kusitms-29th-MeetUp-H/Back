@@ -1,10 +1,7 @@
 package Backend.socket.domain.chat.application.service;
 
 import Backend.socket.domain.chat.application.controller.dto.request.ChatMessageListRequestDto;
-import Backend.socket.domain.chat.application.controller.dto.response.ChatMessageElementResponseDto;
-import Backend.socket.domain.chat.application.controller.dto.response.ChatMessageListResponseDto;
-import Backend.socket.domain.chat.application.controller.dto.response.ChatUserResponseDto;
-import Backend.socket.domain.chat.application.controller.dto.response.RoomMessageListResponseDto;
+import Backend.socket.domain.chat.application.controller.dto.response.*;
 import Backend.socket.domain.chat.domain.Chat;
 import Backend.socket.domain.chat.domain.ChatUser;
 import Backend.socket.domain.chat.domain.Room;
@@ -29,10 +26,11 @@ public class RoomService {
     private final ChatRepository chatRepository;
     private final UserRepository userRepository;
     private final RoomRepository roomRepository;
+    private final Formatter formatter;
     public RoomMessageListResponseDto sendRoomDetailMessage(String roomName) {
         Room room = getChatByRoomName(roomName);
         List<ChatUserResponseDto> chatUserResponseDto = getChatUserResponseDto(room);
-        List<ChatMessageElementResponseDto> chatMessageList = ChatMessageElementResponseDto.listOf(room.getChatContentList());
+        List<RoomMessageElementResponseDto> chatMessageList = RoomMessageElementResponseDto.listOf(room.getChatContentList(),roomName, formatter::findChatUserByRoomNameAndUserName);
         saveChatRoom(room);
         return RoomMessageListResponseDto.of(chatUserResponseDto, chatMessageList);
     }
@@ -60,6 +58,7 @@ public class RoomService {
         query.addCriteria(Criteria.where("roomName").is(roomName));
         return mongoTemplate.findOne(query, Room.class);
     }
+
     public void saveChatRoom(Room room) {
         roomRepository.save(room);
     }
