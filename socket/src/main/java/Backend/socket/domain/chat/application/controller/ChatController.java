@@ -13,6 +13,7 @@ import Backend.socket.global.common.MessageSuccessResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -29,8 +30,8 @@ public class ChatController {
         this.template = template;
         this.redisTemplate = redisTemplate;
     }
-    @MessageMapping("/chat")
-    public void sendChatMessage(@Header("sessionId") final String sessionId,
+    @MessageMapping("/chat/{sessionId}")
+    public void sendChatMessage(@DestinationVariable("sessionId") final String sessionId,
                                 @RequestBody final ChatMessageRequestDto chatMessageRequestDto) {
         final ChatMessageResponseDto responseDto = chatService.createSendMessageContent(sessionId, chatMessageRequestDto);
         redisTemplate.convertAndSend("meetingRoom", responseDto);
