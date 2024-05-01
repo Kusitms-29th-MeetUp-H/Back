@@ -33,8 +33,10 @@ public class SocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws").setAllowedOrigins("*");
-        registry.addEndpoint("/ws").setAllowedOrigins("*").withSockJS();
+//        registry.addEndpoint("/ws").setAllowedOrigins("*");
+        registry.addEndpoint("/ws")
+                .setAllowedOrigins("http://localhost:3000") // 프론트엔드의 도메인을 허용
+                .withSockJS();
         registry.setErrorHandler(messageErrorHandler);
     }
 

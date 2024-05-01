@@ -15,6 +15,8 @@ public class User {
     @Column(name = "user_id")
     private Long id;
     private String platformId;
+    @Enumerated(EnumType.STRING)
+    private Platform platform;
     private String email;
     private String name;
     private String profile;

@@ -3,9 +3,8 @@ package Backend.socket.domain.chat.application.service;
 import Backend.socket.domain.chat.application.controller.dto.request.ChatListRequestDto;
 import Backend.socket.domain.chat.application.controller.dto.request.ChatMessageListRequestDto;
 import Backend.socket.domain.chat.application.controller.dto.request.ChatMessageRequestDto;
-import Backend.socket.application.chat.controller.dto.response.*;
+
 import Backend.socket.domain.chat.application.controller.dto.response.*;
-import Backend.socket.domain.chat.chat.controller.dto.response.*;
 import Backend.socket.domain.chat.domain.ChatUser;
 import Backend.socket.domain.chat.domain.User;
 import Backend.socket.domain.chat.repository.ChatRepository;

@@ -19,10 +19,14 @@ public class SocketSecurityConfig extends AbstractSecurityWebSocketMessageBroker
     protected void configureInbound(MessageSecurityMetadataSourceRegistry message) {
         message
                 .nullDestMatcher().permitAll()
-                .simpDestMatchers("/pub/**").authenticated()
-                .simpSubscribeDestMatchers("/sub/**").authenticated()
-                .simpTypeMatchers(MESSAGE, SUBSCRIBE).denyAll()
-                .anyMessage().denyAll();
+                .simpDestMatchers("/pub/**").permitAll()
+                .simpSubscribeDestMatchers("/sub/**").permitAll()
+                .anyMessage().permitAll();
+//        .nullDestMatcher().permitAll()
+//                .simpDestMatchers("/pub/**").authenticated()
+//                .simpSubscribeDestMatchers("/sub/**").authenticated()
+//                .simpTypeMatchers(MESSAGE, SUBSCRIBE).denyAll()
+//                .anyMessage().denyAll();
     }
 }
 
