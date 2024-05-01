@@ -34,9 +34,9 @@ public class SocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
 //        registry.addEndpoint("/ws").setAllowedOrigins("*");
-        registry.addEndpoint("/ws")
+        registry.addEndpoint("/ws");
 //                .setAllowedOrigins("*") // 프론트엔드의 도메인을 허용
-                .withSockJS();
+//                .withSockJS();
         registry.setErrorHandler(messageErrorHandler);
     }
 
