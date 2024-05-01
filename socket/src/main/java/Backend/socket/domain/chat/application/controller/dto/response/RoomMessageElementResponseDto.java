@@ -25,11 +25,20 @@ public class RoomMessageElementResponseDto {
 
 
     public static RoomMessageElementResponseDto of(ChatContent chatContent, String roomName, TriFunction<String, String, ChatUser> formatter) {
-        return RoomMessageElementResponseDto.builder()
-                .user(ChatUserResponseDto.of(formatter.apply(roomName,chatContent.getUserName())))
-                .content(chatContent.getContent())
-                .time(chatContent.getTime().toString())
-                .build();
+        ChatUser chatUser = formatter.apply(roomName, chatContent.getUserName());
+        if (chatUser != null) {
+            return RoomMessageElementResponseDto.builder()
+                    .user(ChatUserResponseDto.of(chatUser))
+                    .content(chatContent.getContent())
+                    .time(chatContent.getTime().toString())
+                    .build();
+        } else {
+            return RoomMessageElementResponseDto.builder()
+                    .user(ChatUserResponseDto.builder().build())
+                    .content(chatContent.getContent())
+                    .time(chatContent.getTime().toString())
+                    .build();
+        }
     }
 
 }

@@ -13,10 +13,13 @@ public class ChatUserResponseDto {
     private String profile;
 
     public static ChatUserResponseDto of(ChatUser chatUser) {
-        return ChatUserResponseDto.builder()
-                .sessionId(chatUser.getSessionId())
-                .name(chatUser.getName())
-                .profile(chatUser.getProfile())
-                .build();
+        if (chatUser != null) {
+            return ChatUserResponseDto.builder()
+                    .sessionId(chatUser.getSessionId())
+                    .name(chatUser.getName())
+                    .build();
+        } else {
+            return ChatUserResponseDto.builder().build();
+        }
     }
 }
