@@ -4,9 +4,11 @@ package Backend.socket.domain.chat.application.controller;
 import Backend.socket.domain.chat.application.controller.dto.request.ChatListRequestDto;
 import Backend.socket.domain.chat.application.controller.dto.request.ChatMessageListRequestDto;
 import Backend.socket.domain.chat.application.controller.dto.request.ChatMessageRequestDto;
+import Backend.socket.domain.chat.application.controller.dto.request.ChatMessageRoomRequestDto;
 import Backend.socket.domain.chat.application.controller.dto.response.ChatListResponseDto;
 import Backend.socket.domain.chat.application.controller.dto.response.ChatMessageListResponseDto;
 import Backend.socket.domain.chat.application.controller.dto.response.ChatMessageResponseDto;
+import Backend.socket.domain.chat.application.controller.dto.response.ChatMessageRoomResponseDto;
 import Backend.socket.domain.chat.application.service.ChatService;
 import Backend.socket.global.common.MessageSuccessCode;
 import Backend.socket.global.common.MessageSuccessResponse;
@@ -34,6 +36,12 @@ public class ChatController {
     public void sendChatMessage(@DestinationVariable("sessionId") final String sessionId,
                                 @RequestBody final ChatMessageRequestDto chatMessageRequestDto) {
         final ChatMessageResponseDto responseDto = chatService.createSendMessageContent(sessionId, chatMessageRequestDto);
+        redisTemplate.convertAndSend("meetingRoom", responseDto);
+    }
+    @MessageMapping("/chat/{roomId}")
+    public void sendChatMessageInRoom(@DestinationVariable("roomId") final String roomId,
+                                @RequestBody final ChatMessageRoomRequestDto chatMessageRoomRequestDto) {
+        final ChatMessageRoomResponseDto responseDto = chatService.createSendMessageContentInRoom(roomId, chatMessageRoomRequestDto);
         redisTemplate.convertAndSend("meetingRoom", responseDto);
     }
 

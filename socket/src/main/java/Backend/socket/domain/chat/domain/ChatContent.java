@@ -21,4 +21,13 @@ public class ChatContent {
         chat.addChatContent(chatContent);
         return chatContent;
     }
+    public static ChatContent createChatContent(String userName, String content, Room room) {
+        ChatContent chatContent = ChatContent.builder()
+                .userName(userName)
+                .content(content)
+                .time(LocalDateTime.now())
+                .build();
+        room.addChatContent(chatContent);
+        return chatContent;
+    }
 }

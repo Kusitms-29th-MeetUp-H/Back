@@ -4,10 +4,11 @@ import Backend.socket.domain.chat.application.controller.dto.request.ChatListReq
 import Backend.socket.domain.chat.application.controller.dto.request.ChatMessageListRequestDto;
 import Backend.socket.domain.chat.application.controller.dto.request.ChatMessageRequestDto;
 
+import Backend.socket.domain.chat.application.controller.dto.request.ChatMessageRoomRequestDto;
 import Backend.socket.domain.chat.application.controller.dto.response.*;
-import Backend.socket.domain.chat.domain.ChatUser;
-import Backend.socket.domain.chat.domain.User;
+import Backend.socket.domain.chat.domain.*;
 import Backend.socket.domain.chat.repository.ChatRepository;
+import Backend.socket.domain.chat.repository.RoomRepository;
 import Backend.socket.domain.chat.repository.UserRepository;
 import Backend.socket.global.error.socketException.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -16,8 +17,6 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
-import Backend.socket.domain.chat.domain.Chat;
-import Backend.socket.domain.chat.domain.ChatContent;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -36,6 +35,7 @@ public class ChatService {
     private final MongoTemplate mongoTemplate;
     private final ChatRepository chatRepository;
     private final UserRepository userRepository;
+    private final RoomRepository roomRepository;
 
     public ChatMessageResponseDto createSendMessageContent(String sessionId, ChatMessageRequestDto chatMessageRequestDto) {
         Chat chat = getChatBySessions(sessionId, chatMessageRequestDto.getChatSession());
@@ -44,6 +44,14 @@ public class ChatService {
         List<String> sessionIdList = getSessionIdList(sessionId, chatMessageRequestDto.getChatSession());
         saveChat(chat);
         return ChatMessageResponseDto.of(chatMessageRequestDto.getToUserName(), sessionIdList, chatMessage);
+    }
+    public ChatMessageRoomResponseDto createSendMessageContentInRoom(String roomName, ChatMessageRoomRequestDto chatMessageRoomRequestDto) {
+        Room room = getChatBySessionsInRoom(roomName, chatMessageRoomRequestDto.getChatSession());
+        ChatContent chatContent = createChatContent(chatMessageRoomRequestDto.getFromUserName(), chatMessageRoomRequestDto.getContent(), room);
+        ChatMessageElementResponseDto chatMessage = ChatMessageElementResponseDto.of(chatContent);
+        List<String> sessionIdList = getSessionIdListInRoom(roomName, chatMessageRoomRequestDto.getChatSession());
+        saveChatRoom(room);
+        return ChatMessageRoomResponseDto.of(chatMessageRoomRequestDto.getFromUserName(), sessionIdList, chatMessage);
     }
 
     public ChatMessageListResponseDto sendChatDetailMessage(String sessionId, ChatMessageListRequestDto chatMessageListRequestDto) {
@@ -65,6 +73,21 @@ public class ChatService {
         List<String> sessionList = new ArrayList<>();
         sessionList.add(firstSessionId);
         sessionList.add(secondSessionId);
+        return sessionList;
+    }
+    private List<String> getSessionIdListInRoom(String roomName, String sessionId) {
+        List<String> sessionList = new ArrayList<>();
+
+        // roomId를 기반으로 Room 문서 찾기
+        Room room = findRoomChatByRoomName(roomName, sessionId);
+
+        if (room != null) {
+            // Room에 속한 모든 ChatUser의 sessionId를 리스트에 추가
+            for (ChatUser chatUser : room.getChatUserList()) {
+                sessionList.add(chatUser.getSessionId());
+            }
+        }
+
         return sessionList;
     }
 
@@ -111,7 +134,37 @@ public class ChatService {
         } else
             return chat;
     }
+    private Room getChatBySessionsInRoom(String roomName, String sessionId) {
+        Room room = findRoomChatByRoomName(roomName);
+        if (Objects.isNull(room)) {
+            // 채팅방이 없는 경우 새로운 채팅방 생성
+            room = createNewRoom(roomName);
+        }
 
+        // 채팅방에 sessionId를 가진 유저가 있는지 확인
+        if (!isUserExistsInRoom(room, sessionId)) {
+            // 유저가 없다면 새로운 유저 생성하여 채팅방에 추가
+            ChatUser chatUser = createChatUser(sessionId);
+            room.addChatRoom(chatUser);
+        }
+
+        return room;
+    }
+
+    private Room createNewRoom(String roomName) {
+        Room room = Room.builder()
+                .roomName(roomName)
+                .build();
+        return room;
+    }
+    private boolean isUserExistsInRoom(Room room, String sessionId) {
+        for (ChatUser chatUser : room.getChatUserList()) {
+            if (chatUser.getSessionId().equals(sessionId)) {
+                return true;
+            }
+        }
+        return false;
+    }
     private ChatUser createChatUser(String sessionId) {
         User user = getUserFromSessionId(sessionId);
         return ChatUser.createChatUser(user);
@@ -129,6 +182,11 @@ public class ChatService {
         query.addCriteria(Criteria.where("chatUserList.sessionId").all(firstSessionId, secondSessionId));
         return mongoTemplate.findOne(query, Chat.class);
     }
+    private Room findRoomChatByRoomName(String roomName) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("roomName").is(roomName));
+        return mongoTemplate.findOne(query, Room.class);
+    }
 
     private List<Chat> findChatListBySession(String sessionId) {
         Query query = new Query();
@@ -143,5 +201,8 @@ public class ChatService {
 
     public void saveChat(Chat chat) {
         chatRepository.save(chat);
+    }
+    public void saveChatRoom(Room room) {
+        roomRepository.save(room);
     }
 }
