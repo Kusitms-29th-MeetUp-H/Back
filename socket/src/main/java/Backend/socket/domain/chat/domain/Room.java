@@ -30,6 +30,12 @@ public class Room {
         }
         return room;
     }
+    public static Room createNewRoom(String roomName) {
+        Room room = Room.builder()
+                .roomName(roomName)
+                .build();
+        return room;
+    }
     public void addChatContent(ChatContent content) {
         this.chatContentList.add(content);
     }
