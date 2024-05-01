@@ -46,7 +46,7 @@ public class ChatController {
     }
 
     @MessageMapping("/chat/detail")
-    public void sendChatDetailMessage(@Header("sessionId") final String sessionId,
+    public void sendChatDetailMessage(@DestinationVariable("sessionId") final String sessionId,
                                       @RequestBody final ChatMessageListRequestDto chatMessageListRequestDto) {
         final ChatMessageListResponseDto responseDto = chatService.sendChatDetailMessage(sessionId, chatMessageListRequestDto);
         template.convertAndSend("/sub/chat/" + sessionId, MessageSuccessResponse.of(MessageSuccessCode.MESSAGE, responseDto));
