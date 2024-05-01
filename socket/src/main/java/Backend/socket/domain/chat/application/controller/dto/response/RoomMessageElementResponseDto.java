@@ -26,7 +26,7 @@ public class RoomMessageElementResponseDto {
 
     public static RoomMessageElementResponseDto of(ChatContent chatContent, String roomName, TriFunction<String, String, ChatUser> formatter) {
         return RoomMessageElementResponseDto.builder()
-                .user(ChatUserResponseDto.of(formatter.apply(chatContent.getUserName(), roomName)))
+                .user(ChatUserResponseDto.of(formatter.apply(roomName,chatContent.getUserName())))
                 .content(chatContent.getContent())
                 .time(chatContent.getTime().toString())
                 .build();
