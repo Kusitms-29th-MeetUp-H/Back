@@ -79,7 +79,7 @@ public class ChatService {
         List<String> sessionList = new ArrayList<>();
 
         // roomId를 기반으로 Room 문서 찾기
-        Room room = findRoomChatByRoomName(roomName, sessionId);
+        Room room = findRoomChatByRoomName(roomName);
 
         if (room != null) {
             // Room에 속한 모든 ChatUser의 sessionId를 리스트에 추가
