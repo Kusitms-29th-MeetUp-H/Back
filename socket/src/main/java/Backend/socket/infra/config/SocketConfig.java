@@ -35,7 +35,7 @@ public class SocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
 //        registry.addEndpoint("/ws").setAllowedOrigins("*");
         registry.addEndpoint("/ws")
-                .setAllowedOrigins("*") // 프론트엔드의 도메인을 허용
+//                .setAllowedOrigins("*") // 프론트엔드의 도메인을 허용
                 .withSockJS();
         registry.setErrorHandler(messageErrorHandler);
     }
