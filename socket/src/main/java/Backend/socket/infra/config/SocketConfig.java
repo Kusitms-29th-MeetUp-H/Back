@@ -42,7 +42,7 @@ public class SocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
-        registration.interceptors(authenticationInterceptor);
+//        registration.interceptors(authenticationInterceptor);
     }
 
     @Override
