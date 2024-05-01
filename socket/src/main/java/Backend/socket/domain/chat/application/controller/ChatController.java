@@ -45,7 +45,7 @@ public class ChatController {
         redisTemplate.convertAndSend("meetingRoom", responseDto);
     }
 
-    @MessageMapping("/chat/detail")
+    @MessageMapping("/chat/detail/{sessionId}")
     public void sendChatDetailMessage(@DestinationVariable("sessionId") final String sessionId,
                                       @RequestBody final ChatMessageListRequestDto chatMessageListRequestDto) {
         final ChatMessageListResponseDto responseDto = chatService.sendChatDetailMessage(sessionId, chatMessageListRequestDto);
