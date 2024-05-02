@@ -19,10 +19,10 @@ public class Participation extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sync")
+    @JoinColumn(name = "sync_id")
     private Sync sync;
 }

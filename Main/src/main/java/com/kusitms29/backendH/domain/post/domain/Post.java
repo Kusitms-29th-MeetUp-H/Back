@@ -19,8 +19,8 @@ public class Post extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "writer")
-    private User writer;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     private String content;
     @ColumnDefault("0")

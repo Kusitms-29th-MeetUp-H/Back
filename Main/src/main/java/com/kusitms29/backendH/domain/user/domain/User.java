@@ -1,13 +1,16 @@
 package com.kusitms29.backendH.domain.user.domain;
 
 import com.kusitms29.backendH.domain.BaseEntity;
+import com.kusitms29.backendH.domain.category.domain.Category;
 import com.kusitms29.backendH.domain.sync.domain.Gender;
 import com.kusitms29.backendH.domain.sync.domain.Language;
-import com.kusitms29.backendH.domain.sync.domain.Category;
+import com.kusitms29.backendH.domain.sync.domain.SyncType;
 import com.kusitms29.backendH.domain.user.auth.PlatformUserInfo;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+
+import java.util.Set;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -36,9 +39,20 @@ public class User extends BaseEntity {
     private String nationality;
     @Enumerated(EnumType.STRING)
     private Gender gender;
+
+    //일회성, 지속성, 내친소
     @Enumerated(EnumType.STRING)
-    private Category category;
-    private String interest; //이 부분 수정 필요
+    private SyncType syncType;
+
+    //관심사 전체
+    //--UserCategory 연관개체--
+    @ManyToMany
+    @JoinTable(name = "UserCategory",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private Set<Category> categories;
+    //--
+
     private String languageLevel;
     @ColumnDefault("0")
     private int sync_cnt;

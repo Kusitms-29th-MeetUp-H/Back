@@ -5,12 +5,12 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public enum Category {
+public enum SyncType {
 
     //일회성, 지속성, 내친소
     ONETIME("oneTime"),
     LONGTIME("longTime"),
     FROM_FRIEND("fromFriend");
 
-    private final String category;
+    private final String syncType;
 }

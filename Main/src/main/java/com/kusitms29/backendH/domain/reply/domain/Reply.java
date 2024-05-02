@@ -19,10 +19,10 @@ public class Reply extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "writer")
-    private User writer;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "comment")
+    @JoinColumn(name = "comment_id")
     private Comment comment;
 }
