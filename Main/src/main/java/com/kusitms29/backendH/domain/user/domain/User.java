@@ -54,8 +54,8 @@ public class User extends BaseEntity {
     //--
 
     private String languageLevel;
-    @ColumnDefault("0")
-    private int sync_cnt;
+    //@ColumnDefault("0")
+    //private int sync_cnt;
 
     public static User createUser(PlatformUserInfo platformUserInfo, Platform platform, String sessionId) {
         return User.builder()

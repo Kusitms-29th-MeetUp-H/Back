@@ -29,10 +29,8 @@ public class SecurityConfig {
     private static final String[] whiteList = {"/**"};
 
 
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring().requestMatchers(whiteList);
-    }
+    //@Bean
+    //public WebSecurityCustomizer webSecurityCustomizer() {  return web -> web.ignoring().requestMatchers(whiteList);}
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
