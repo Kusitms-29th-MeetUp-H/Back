@@ -1,4 +1,4 @@
-package com.kusitms29.backendH.domain;
+package com.kusitms29.backendH.global.common;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

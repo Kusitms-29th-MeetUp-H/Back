@@ -1,6 +1,6 @@
 package com.kusitms29.backendH.domain.user.domain;
 
-import com.kusitms29.backendH.domain.BaseEntity;
+import com.kusitms29.backendH.global.common.BaseEntity;
 import com.kusitms29.backendH.domain.category.domain.Category;
 import com.kusitms29.backendH.domain.sync.domain.Gender;
 import com.kusitms29.backendH.domain.sync.domain.Language;
@@ -8,7 +8,6 @@ import com.kusitms29.backendH.domain.sync.domain.SyncType;
 import com.kusitms29.backendH.domain.user.auth.PlatformUserInfo;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.util.Set;
 
