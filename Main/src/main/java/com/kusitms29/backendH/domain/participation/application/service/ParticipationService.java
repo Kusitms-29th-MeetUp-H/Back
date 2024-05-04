@@ -1,6 +1,6 @@
-package com.kusitms29.backendH.application.participation.service;
+package com.kusitms29.backendH.domain.participation.application.service;
 
-import com.kusitms29.backendH.application.participation.controller.response.EnterSyncResponseDto;
+import com.kusitms29.backendH.domain.participation.application.controller.response.EnterSyncResponseDto;
 import com.kusitms29.backendH.domain.participation.domain.Participation;
 import com.kusitms29.backendH.domain.participation.repository.ParticipationRepository;
 import com.kusitms29.backendH.domain.sync.domain.Sync;

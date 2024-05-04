@@ -1,4 +1,4 @@
-package com.kusitms29.backendH.application.participation.controller.response;
+package com.kusitms29.backendH.domain.participation.application.controller.response;
 
 import lombok.Builder;
 import lombok.Getter;

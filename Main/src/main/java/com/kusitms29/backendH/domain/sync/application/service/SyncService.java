@@ -1,18 +1,18 @@
-package com.kusitms29.backendH.application.sync.service;
+package com.kusitms29.backendH.domain.sync.application.service;
 
-import com.kusitms29.backendH.application.awss3.service.AwsS3Service;
-import com.kusitms29.backendH.application.sync.controller.dto.request.SyncCreateRequestDto;
-import com.kusitms29.backendH.application.sync.controller.dto.response.SyncCreateResponseDto;
 import com.kusitms29.backendH.domain.category.domain.Category;
 import com.kusitms29.backendH.domain.category.repository.CategoryRepository;
 import com.kusitms29.backendH.domain.participation.domain.Participation;
 import com.kusitms29.backendH.domain.participation.repository.ParticipationRepository;
+import com.kusitms29.backendH.domain.sync.application.controller.dto.request.SyncCreateRequestDto;
+import com.kusitms29.backendH.domain.sync.application.controller.dto.response.SyncCreateResponseDto;
 import com.kusitms29.backendH.domain.sync.domain.Sync;
 import com.kusitms29.backendH.domain.sync.domain.SyncType;
 import com.kusitms29.backendH.domain.sync.repository.SyncRepository;
 import com.kusitms29.backendH.domain.user.domain.User;
 import com.kusitms29.backendH.domain.user.repository.UserRepository;
 import com.kusitms29.backendH.global.error.exception.EntityNotFoundException;
+import com.kusitms29.backendH.infra.config.AwsS3Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

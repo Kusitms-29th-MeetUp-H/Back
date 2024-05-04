@@ -1,9 +1,9 @@
-package com.kusitms29.backendH.application.user.controller;
+package com.kusitms29.backendH.domain.user.application.controller;
 
 
-import com.kusitms29.backendH.application.user.controller.dto.request.UserSignInRequestDto;
-import com.kusitms29.backendH.application.user.controller.dto.response.UserAuthResponseDto;
-import com.kusitms29.backendH.application.user.service.AuthService;
+import com.kusitms29.backendH.domain.user.application.controller.dto.request.UserSignInRequestDto;
+import com.kusitms29.backendH.domain.user.application.controller.dto.response.UserAuthResponseDto;
+import com.kusitms29.backendH.domain.user.application.service.AuthService;
 import com.kusitms29.backendH.global.common.SuccessResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

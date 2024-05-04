@@ -1,7 +1,7 @@
-package com.kusitms29.backendH.application.user.service;
+package com.kusitms29.backendH.domain.user.application.service;
 
-import com.kusitms29.backendH.application.user.controller.dto.request.UserSignInRequestDto;
-import com.kusitms29.backendH.application.user.controller.dto.response.UserAuthResponseDto;
+import com.kusitms29.backendH.domain.user.application.controller.dto.request.UserSignInRequestDto;
+import com.kusitms29.backendH.domain.user.application.controller.dto.response.UserAuthResponseDto;
 import com.kusitms29.backendH.domain.user.auth.PlatformUserInfo;
 import com.kusitms29.backendH.domain.user.auth.RestTemplateProvider;
 import com.kusitms29.backendH.domain.user.domain.Platform;
@@ -16,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
 import java.util.UUID;
 
 import static com.kusitms29.backendH.domain.user.domain.Platform.getEnumPlatformFromStringPlatform;

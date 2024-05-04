@@ -1,4 +1,4 @@
-package com.kusitms29.backendH.application.user.controller.dto.response;
+package com.kusitms29.backendH.domain.user.application.controller.dto.response;
 
 import com.kusitms29.backendH.domain.user.domain.User;
 import com.kusitms29.backendH.infra.config.auth.TokenInfo;
