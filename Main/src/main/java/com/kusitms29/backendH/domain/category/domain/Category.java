@@ -14,7 +14,7 @@ import java.util.Set;
 @Getter
 @Table(name = "category")
 @Entity
-public class Category extends BaseEntity {
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")
@@ -34,13 +34,5 @@ public class Category extends BaseEntity {
     //--UserCategory 연관개체--
     @ManyToMany(mappedBy = "categories")
     private Set<User> users;
-    //--
-
-    //--Sync 상위/하위 카테고리--
-    @OneToOne(mappedBy = "parentCategory")
-    private Sync parentSync;
-
-    @OneToOne(mappedBy = "childCategory")
-    private Sync childSync;
     //--
 }

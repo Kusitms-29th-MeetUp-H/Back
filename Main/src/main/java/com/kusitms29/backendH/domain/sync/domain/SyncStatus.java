@@ -7,9 +7,9 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public enum SyncStatus {
 
-    RECRUITING("recruiting"),
-    COMPLETED("recruitment_completed"),
-    DELETED("meeting_deleted");
+    RECRUITING("모집중"),
+    COMPLETED("모집완료"),
+    DELETED("삭제된모임");
 
     private final String syncStatus;
 }

@@ -25,4 +25,11 @@ public class Participation extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sync_id")
     private Sync sync;
+
+    public static Participation createParticipation(User user, Sync sync) {
+        return Participation.builder()
+                .user(user)
+                .sync(sync)
+                .build();
+    }
 }
