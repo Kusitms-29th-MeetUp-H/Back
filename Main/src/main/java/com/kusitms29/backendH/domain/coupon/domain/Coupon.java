@@ -1,6 +1,6 @@
 package com.kusitms29.backendH.domain.coupon.domain;
 
-import com.kusitms29.backendH.domain.BaseEntity;
+import com.kusitms29.backendH.global.common.BaseEntity;
 import com.kusitms29.backendH.domain.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
