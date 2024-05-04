@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HealthCheck {
-    @RequestMapping("/{test}")
-    public String MeetUpServer(@PathVariable(name = "test") String test) {
-        return test;
+    @RequestMapping("/")
+    public String MeetUpServer() {
+        return "test";
     }
 }
