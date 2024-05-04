@@ -7,6 +7,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.time.LocalDateTime;
+
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
@@ -48,7 +50,7 @@ public class Sync extends BaseEntity {
     private String image;
     private String comment;
     private String location;
-    private String date;
+    private LocalDateTime date;
 
     //지속성 모임 : 모임 횟수
     @ColumnDefault("1")
