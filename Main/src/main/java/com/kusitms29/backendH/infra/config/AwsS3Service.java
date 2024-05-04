@@ -1,4 +1,4 @@
-package com.kusitms29.backendH.application.awss3.service;
+package com.kusitms29.backendH.infra.config;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.UUID;
 
 import static com.kusitms29.backendH.global.error.ErrorCode.INVALID_IMAGE_TYPE;

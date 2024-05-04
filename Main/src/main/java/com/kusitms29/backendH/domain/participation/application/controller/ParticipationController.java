@@ -1,7 +1,7 @@
-package com.kusitms29.backendH.application.participation.controller;
+package com.kusitms29.backendH.domain.participation.application.controller;
 
-import com.kusitms29.backendH.application.participation.controller.response.EnterSyncResponseDto;
-import com.kusitms29.backendH.application.participation.service.ParticipationService;
+import com.kusitms29.backendH.domain.participation.application.controller.response.EnterSyncResponseDto;
+import com.kusitms29.backendH.domain.participation.application.service.ParticipationService;
 import com.kusitms29.backendH.global.common.SuccessResponse;
 import com.kusitms29.backendH.infra.config.auth.UserId;
 import lombok.RequiredArgsConstructor;

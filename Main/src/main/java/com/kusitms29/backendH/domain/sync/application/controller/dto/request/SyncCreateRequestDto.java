@@ -1,4 +1,4 @@
-package com.kusitms29.backendH.application.sync.controller.dto.request;
+package com.kusitms29.backendH.domain.sync.application.controller.dto.request;
 
 import lombok.AccessLevel;
 import lombok.Getter;
