@@ -1,5 +1,6 @@
 package com.kusitms29.backendH.global.common;
 
+import com.kusitms29.backendH.infra.config.auth.UserId;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -133,7 +134,7 @@ public class HealthCheckApiController {
     }
 
     @RequestMapping("/")
-    public String MeetUpServer() {
-        return "MeetUpServer!";
+    public Long MeetUpServer(@UserId Long userId) {
+        return userId;
     }
 }
