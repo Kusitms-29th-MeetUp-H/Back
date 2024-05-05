@@ -21,18 +21,13 @@ public class Category {
     private Long id;
 
     private String name;
+    @Enumerated(EnumType.STRING)
+    private Type type;
 
-    //--자기 자신 참조--
-    @ManyToOne
-    @JoinColumn(name = "parent_id")
-    private Category parent;
-
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Category> children;
-    //--
 
     //--UserCategory 연관개체--
-    @ManyToMany(mappedBy = "categories")
-    private Set<User> users;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
     //--
 }
