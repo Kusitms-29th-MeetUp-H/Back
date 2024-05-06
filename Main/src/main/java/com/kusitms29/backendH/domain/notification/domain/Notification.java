@@ -22,5 +22,21 @@ public class Notification extends BaseEntity {
     private User user;
 
     @Enumerated(EnumType.STRING)
-    private NotificationType notificationType;
+    private Notification.NotificationType notificationType;
+
+    public enum NotificationType {
+        COMMENT, CHAT,
+        CHAT_ROOM_NOTICE, SYNC_REMINDER, REVIEW
+    }
+
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.ACTIVE;
+
+    public enum Status {
+        ACTIVE, INACTIVE;
+    }
+
+    public void setStatus(Status status) {
+        this.status = Status.ACTIVE;
+    }
 }

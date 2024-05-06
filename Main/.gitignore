@@ -40,3 +40,5 @@ out/
 application-dev.yml
 ### Yml ###
 **/src/main/resources/application.yml
+### firebase ###
+/src/main/resources/firebase/
