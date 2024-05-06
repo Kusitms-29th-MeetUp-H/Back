@@ -50,6 +50,17 @@ jobs:
         env:
           APPLICATION_MAIN: ${{ secrets.APPLICATION_DEV }}
 
+      - name: Create AccountKey.json
+        run: |
+          cd ./Main/src/main/resources
+          mkdir firebase
+          cd ./firebase
+          touch ./AccountKey.json
+          echo "$FIREBASE_KEY" > ./AccountKey.json
+        env:
+          FIREBASE_KEY: ${{ secrets.FIREBASE_ACCOUNTKEY }}
+          
+
       - name: Grant execute permission for gradlew
         run: |
           cd ./Main
