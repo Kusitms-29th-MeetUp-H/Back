@@ -27,7 +27,7 @@ public class User extends BaseEntity {
     @Column(unique = true)
     private String platformId;
     private String email;
-    private String name;
+    private String userName;
     private String profile;
     private String refreshToken;
     private String sessionId;
@@ -61,7 +61,7 @@ public class User extends BaseEntity {
                 .platformId(platformUserInfo.getId())
                 .platform(platform)
                 .email(platformUserInfo.getEmail())
-                .name(platformUserInfo.getName())
+                .userName(platformUserInfo.getName())
                 .profile(platformUserInfo.getPicture())
                 .sessionId(sessionId)
                 .build();

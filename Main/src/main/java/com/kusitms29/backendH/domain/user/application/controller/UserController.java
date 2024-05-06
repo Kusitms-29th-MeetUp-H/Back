@@ -17,8 +17,9 @@ public class UserController {
 
     @PostMapping("/signin")
     public ResponseEntity<SuccessResponse<?>> signIn(@RequestHeader("Authorization") final String authToken,
+                                                     @RequestHeader String fcmToken,
                                                      @RequestBody final UserSignInRequestDto requestDto) {
-        final UserAuthResponseDto responseDto = authService.signIn(requestDto, authToken);
+        final UserAuthResponseDto responseDto = authService.signIn(requestDto, authToken, fcmToken);
         return SuccessResponse.ok(responseDto);
     }
 

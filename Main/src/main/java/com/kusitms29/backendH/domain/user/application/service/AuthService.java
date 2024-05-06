@@ -1,5 +1,6 @@
 package com.kusitms29.backendH.domain.user.application.service;
 
+import com.kusitms29.backendH.domain.fcm.application.service.SyncReminderService;
 import com.kusitms29.backendH.domain.user.application.controller.dto.request.UserSignInRequestDto;
 import com.kusitms29.backendH.domain.user.application.controller.dto.response.UserAuthResponseDto;
 import com.kusitms29.backendH.domain.user.auth.PlatformUserInfo;
@@ -16,10 +17,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static com.kusitms29.backendH.domain.user.domain.Platform.getEnumPlatformFromStringPlatform;
 import static com.kusitms29.backendH.domain.user.domain.RefreshToken.createRefreshToken;
+import static com.kusitms29.backendH.global.error.ErrorCode.FCMTOKEN_NOT_FOUND;
 import static com.kusitms29.backendH.global.error.ErrorCode.USER_NOT_FOUND;
 
 
@@ -32,11 +35,15 @@ public class AuthService {
     private final JwtProvider jwtProvider;
     private final RestTemplateProvider restTemplateProvider;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final SyncReminderService syncReminderService;
 
-    public UserAuthResponseDto signIn(UserSignInRequestDto userSignInRequestDto, String authToken) {
+    public UserAuthResponseDto signIn(UserSignInRequestDto userSignInRequestDto, String authToken, String fcmToken) {
+        if (fcmToken == null || fcmToken.isEmpty()) {
+            throw new EntityNotFoundException(FCMTOKEN_NOT_FOUND);
+        }
         Platform platform = getEnumPlatformFromStringPlatform(userSignInRequestDto.getPlatform());
         PlatformUserInfo platformUser = getPlatformUserInfoFromRestTemplate(platform, authToken);
-        User getUser = saveUser(platformUser, platform);
+        User getUser = saveUser(platformUser, platform, fcmToken);
 //        Boolean isFirstLogin = Objects.isNull(getUser.getUserType()) ? Boolean.TRUE : Boolean.FALSE;
         TokenInfo tokenInfo = issueAccessTokenAndRefreshToken(getUser);
         updateRefreshToken(tokenInfo.getRefreshToken(), getUser);
@@ -53,8 +60,8 @@ public class AuthService {
         refreshTokenRepository.deleteById(user.getId());
     }
 
-    private User saveUser(PlatformUserInfo platformUserInfo, Platform platform) {
-        User createdUser = getUserByPlatformUserInfo(platformUserInfo, platform);
+    private User saveUser(PlatformUserInfo platformUserInfo, Platform platform, String fcmToken) {
+        User createdUser = getUserByPlatformUserInfo(platformUserInfo, platform, fcmToken);
         return userRepository.save(createdUser);
     }
 
@@ -72,9 +79,15 @@ public class AuthService {
                 .orElseThrow(() -> new EntityNotFoundException(USER_NOT_FOUND));
     }
 
-    private User getUserByPlatformUserInfo(PlatformUserInfo platformUserInfo, Platform platform) {
-        return userRepository.findByPlatformId(platformUserInfo.getId())
-                .orElse(User.createUser(platformUserInfo, platform, generateRandomUuid(platformUserInfo)));
+    private User getUserByPlatformUserInfo(PlatformUserInfo platformUserInfo, Platform platform, String fcmToken) {
+        Optional<User> optionalUser = userRepository.findByPlatformId(platformUserInfo.getId());
+        if(optionalUser.isPresent()) {
+            return optionalUser.get();
+        } else {
+            User getUser = User.createUser(platformUserInfo, platform, generateRandomUuid(platformUserInfo));
+            syncReminderService.saveToken(String.valueOf(getUser.getId()), fcmToken);
+            return getUser;
+        }
     }
 
     private PlatformUserInfo getPlatformUserInfoFromRestTemplate(Platform platform, String authToken) {

@@ -21,7 +21,7 @@ public class UserAuthResponseDto {
         return UserAuthResponseDto.builder()
                 .userId(user.getId())
                 .email(user.getEmail())
-                .name(user.getName())
+                .name(user.getUserName())
                 .picture(user.getProfile())
 //                .isFirst(isFirst)
                 .accessToken(token.getAccessToken())
