@@ -1,5 +1,6 @@
 package com.kusitms29.backendH.domain.sync.domain;
 
+import com.kusitms29.backendH.domain.category.domain.Type;
 import com.kusitms29.backendH.global.common.BaseEntity;
 import com.kusitms29.backendH.domain.user.domain.User;
 import jakarta.persistence.*;
@@ -50,6 +51,9 @@ public class Sync extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     protected Sync.Status status;
+    @Enumerated(EnumType.STRING)
+    private Type type;
+    private String detailType;
 
     public enum Status {
         RECRUITING, COMPLETED, DELETED;
