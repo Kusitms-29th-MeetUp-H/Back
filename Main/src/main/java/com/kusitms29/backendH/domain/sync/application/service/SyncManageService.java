@@ -1,5 +1,6 @@
 package com.kusitms29.backendH.domain.sync.application.service;
 
+import com.kusitms29.backendH.domain.category.domain.Type;
 import com.kusitms29.backendH.domain.participation.domain.service.ParticipationManager;
 import com.kusitms29.backendH.domain.sync.application.controller.dto.response.SyncInfoResponseDto;
 import com.kusitms29.backendH.domain.sync.domain.Sync;
@@ -24,8 +25,8 @@ public class SyncManageService {
     public List<SyncInfoResponseDto> recommendSync(Long userId){
         User user = userReader.findByUserId(userId);
         List<UserCategory> userCategories = userCategoryReader.findAllByUserId(userId);
-        List<String> categories = userCategoryManager.getTypeByUserCategories(userCategories);
-        List<Sync> syncList = syncReader.findBySyncTypeWithInterestWithLocation(user.getSyncType(), categories, user.getLocation);
+        List<Type> types = userCategoryManager.getTypeByUserCategories(userCategories);
+        List<Sync> syncList = syncReader.findBySyncTypeWithTypesWithLocation(user.getSyncType(), types, user.getLocation());
         return syncList.stream().map( sync -> SyncInfoResponseDto.of(
                 sync.getId(),
                 sync.getSyncType(),

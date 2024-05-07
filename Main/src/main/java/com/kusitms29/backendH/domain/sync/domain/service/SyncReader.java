@@ -15,25 +15,35 @@ import java.util.List;
 public class SyncReader {
     private final SyncRepository syncRepository;
 
-    public List<Sync> findBySyncTypeWithInterestWithLocation(SyncType syncType, Type type, String location) {
+    public List<Sync> findBySyncTypeWithTypesWithLocation(SyncType syncType, List<Type> types, String location) {
         List<Sync> syncList = new ArrayList<>();
-        List<Sync> sync3 = syncRepository.findAllBySyncTypeWithTypeWithLocation(syncType, type, location);
 
-        syncList.addAll(sync3);
-        if (syncList.size() >= 7) {
-            return syncList.subList(0, 7);
-        }
+        for (Type type : types) {
+            List<Sync> sync3 = syncRepository.findAllBySyncTypeWithTypeWithLocation(syncType, type, location);
+            if (!sync3.isEmpty()) {
+                syncList.addAll(sync3);
+                if (syncList.size() >= 7) {
+                    return syncList.subList(0, 7);
+                }
+            }
 
-        List<Sync> sync2 = findAllByTwoCondition(syncType, type, location);
-        syncList.addAll(sync2);
-        if (syncList.size() >= 7) {
-            return syncList.subList(0, 7);
-        }
+            List<Sync> sync2 = findAllByTwoCondition(syncType, type, location);
+            if (!sync2.isEmpty()) {
+                syncList.addAll(sync2);
+                if (syncList.size() >= 7) {
+                    return syncList.subList(0, 7);
+                }
+            }
 
-        List<Sync> sync1 = findAllByOneCondition(syncType, type, location);
-        syncList.addAll(sync1);
-        if (syncList.size() >= 7) {
-            return syncList.subList(0, 7);
+            List<Sync> sync1 = findAllByOneCondition(syncType, type, location);
+            if (!sync1.isEmpty()) {
+                syncList.addAll(sync1);
+                if (syncList.size() >= 7) {
+                    return syncList.subList(0, 7);
+                }
+            }
+            if(!syncList.isEmpty())
+                break;
         }
 
         return syncList;
