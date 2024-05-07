@@ -43,14 +43,6 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private SyncType syncType;
 
-    //관심사 전체
-    //--UserCategory 연관개체--
-    @ManyToMany
-    @JoinTable(name = "UserCategory",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private Set<Category> categories;
-    //--
 
     private String languageLevel;
     //@ColumnDefault("0")
