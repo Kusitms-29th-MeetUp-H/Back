@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 public class SyncManageController {
     private final SyncManageService syncManageService;
-    @GetMapping
+    @GetMapping("/recommend")
     public ResponseEntity<SuccessResponse<?>> recommendSync(@RequestParam(name = "userId") Long userId) {
         List<SyncInfoResponseDto> syncInfoResponseDtos = syncManageService.recommendSync(userId);
         return SuccessResponse.ok(syncInfoResponseDtos);
