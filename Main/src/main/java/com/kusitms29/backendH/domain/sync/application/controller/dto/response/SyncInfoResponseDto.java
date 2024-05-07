@@ -8,8 +8,8 @@ import java.time.format.DateTimeFormatter;
 
 public record SyncInfoResponseDto(
         Long syncId,
+        String syncType,
         String type,
-        String interest,
         String image,
         int userCnt,
         int totalCnt,
