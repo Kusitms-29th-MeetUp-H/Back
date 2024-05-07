@@ -24,5 +24,24 @@ public interface SyncRepository extends JpaRepository<Sync, Long> {
             "AND s.date >= :currentDate ",
             nativeQuery = true)
     List<Map<String, Object>> findHurrySyncInfo(LocalDateTime currentDate);
+    @Query("SELECT s FROM Sync s WHERE s.syncType = :syncType AND s.type = :type AND s.location = :location")
     List<Sync> findAllBySyncTypeWithTypeWithLocation(SyncType syncType, Type type, String location);
+
+    @Query("SELECT s FROM Sync s WHERE s.location = :location AND s.syncType = :syncType")
+    List<Sync> findAllByLocationAndSyncType(String location, SyncType syncType);
+
+    @Query("SELECT s FROM Sync s WHERE s.location = :location AND s.type = :type")
+    List<Sync> findAllByLocationAndType(String location, Type type);
+
+    @Query("SELECT s FROM Sync s WHERE s.syncType = :syncType AND s.type = :type")
+    List<Sync> findAllBySyncTypeAndType(SyncType syncType, Type type);
+
+    @Query("SELECT s FROM Sync s WHERE s.location = :location")
+    List<Sync> findAllByLocation(String location);
+
+    @Query("SELECT s FROM Sync s WHERE s.syncType = :syncType")
+    List<Sync> findAllBySyncType(SyncType syncType);
+
+    @Query("SELECT s FROM Sync s WHERE s.type = :type")
+    List<Sync> findAllByType(Type type);
 }
