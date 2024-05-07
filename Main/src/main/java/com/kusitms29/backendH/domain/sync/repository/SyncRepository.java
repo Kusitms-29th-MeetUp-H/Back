@@ -1,6 +1,8 @@
 package com.kusitms29.backendH.domain.sync.repository;
 
+import com.kusitms29.backendH.domain.category.domain.Type;
 import com.kusitms29.backendH.domain.sync.domain.Sync;
+import com.kusitms29.backendH.domain.sync.domain.SyncType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -22,4 +24,5 @@ public interface SyncRepository extends JpaRepository<Sync, Long> {
             "AND s.date >= :currentDate ",
             nativeQuery = true)
     List<Map<String, Object>> findHurrySyncInfo(LocalDateTime currentDate);
+    List<Sync> findAllBySyncTypeWithTypeWithLocation(SyncType syncType, Type type, String location);
 }
