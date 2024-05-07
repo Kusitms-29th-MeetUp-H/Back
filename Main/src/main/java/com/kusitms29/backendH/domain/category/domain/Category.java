@@ -1,10 +1,7 @@
 package com.kusitms29.backendH.domain.category.domain;
 
-import com.kusitms29.backendH.domain.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.Set;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -19,18 +16,7 @@ public class Category {
     private Long id;
 
     private String name;
+    @Enumerated(EnumType.STRING)
+    private Type type;
 
-    //--자기 자신 참조--
-    @ManyToOne
-    @JoinColumn(name = "parent_id")
-    private Category parent;
-
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Category> children;
-    //--
-
-    //--UserCategory 연관개체--
-    @ManyToMany(mappedBy = "categories")
-    private Set<User> users;
-    //--
 }

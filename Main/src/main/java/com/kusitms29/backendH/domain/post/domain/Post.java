@@ -21,12 +21,9 @@ public class Post extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+    private String title;
 
     private String content;
-    @ColumnDefault("0")
-    private int like_cnt;
-    @ColumnDefault("0")
-    private int comment_cnt;
-    @ColumnDefault("0")
-    private int view_cnt;
+    @Enumerated(EnumType.STRING)
+    private PostType postType;
 }
