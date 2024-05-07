@@ -5,6 +5,7 @@ import com.kusitms29.backendH.domain.sync.domain.Sync;
 import com.kusitms29.backendH.domain.sync.domain.SyncType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,23 +26,23 @@ public interface SyncRepository extends JpaRepository<Sync, Long> {
             nativeQuery = true)
     List<Map<String, Object>> findHurrySyncInfo(LocalDateTime currentDate);
     @Query("SELECT s FROM Sync s WHERE s.syncType = :syncType AND s.type = :type AND s.location = :location")
-    List<Sync> findAllBySyncTypeWithTypeWithLocation(SyncType syncType, Type type, String location);
+    List<Sync> findAllBySyncTypeWithTypeWithLocation(@Param("syncType") SyncType syncType, @Param("type") Type type, @Param("location") String location);
 
     @Query("SELECT s FROM Sync s WHERE s.location = :location AND s.syncType = :syncType")
-    List<Sync> findAllByLocationAndSyncType(String location, SyncType syncType);
+    List<Sync> findAllByLocationAndSyncType(@Param("location") String location, @Param("syncType") SyncType syncType);
 
     @Query("SELECT s FROM Sync s WHERE s.location = :location AND s.type = :type")
-    List<Sync> findAllByLocationAndType(String location, Type type);
+    List<Sync> findAllByLocationAndType(@Param("location") String location, @Param("type") Type type);
 
     @Query("SELECT s FROM Sync s WHERE s.syncType = :syncType AND s.type = :type")
-    List<Sync> findAllBySyncTypeAndType(SyncType syncType, Type type);
+    List<Sync> findAllBySyncTypeAndType(@Param("syncType") SyncType syncType, @Param("type") Type type);
 
     @Query("SELECT s FROM Sync s WHERE s.location = :location")
-    List<Sync> findAllByLocation(String location);
+    List<Sync> findAllByLocation(@Param("location") String location);
 
     @Query("SELECT s FROM Sync s WHERE s.syncType = :syncType")
-    List<Sync> findAllBySyncType(SyncType syncType);
+    List<Sync> findAllBySyncType(@Param("syncType") SyncType syncType);
 
     @Query("SELECT s FROM Sync s WHERE s.type = :type")
-    List<Sync> findAllByType(Type type);
+    List<Sync> findAllByType(@Param("type") Type type);
 }

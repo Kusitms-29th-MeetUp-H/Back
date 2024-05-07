@@ -20,30 +20,47 @@ public class SyncReader {
 
         for (Type type : types) {
             List<Sync> sync3 = syncRepository.findAllBySyncTypeWithTypeWithLocation(syncType, type, location);
+            for (Sync sync : sync3) {
+                if (!syncList.contains(sync)) {
+                    syncList.add(sync);
+                    if (syncList.size() >= 7) {
+                        return syncList.subList(0, 7);
+                    }
+                }
+            }
             if (!sync3.isEmpty()) {
-                syncList.addAll(sync3);
-                if (syncList.size() >= 7) {
-                    return syncList.subList(0, 7);
-                }
-            }
-
-            List<Sync> sync2 = findAllByTwoCondition(syncType, type, location);
-            if (!sync2.isEmpty()) {
-                syncList.addAll(sync2);
-                if (syncList.size() >= 7) {
-                    return syncList.subList(0, 7);
-                }
-            }
-
-            List<Sync> sync1 = findAllByOneCondition(syncType, type, location);
-            if (!sync1.isEmpty()) {
-                syncList.addAll(sync1);
-                if (syncList.size() >= 7) {
-                    return syncList.subList(0, 7);
-                }
-            }
-            if(!syncList.isEmpty())
                 break;
+            }
+        }
+
+        for (Type type : types) {
+            List<Sync> sync2 = findAllByTwoCondition(syncType, type, location);
+            for (Sync sync : sync2) {
+                if (!syncList.contains(sync)) {
+                    syncList.add(sync);
+                    if (syncList.size() >= 7) {
+                        return syncList.subList(0, 7);
+                    }
+                }
+            }
+            if (!sync2.isEmpty()) {
+                break;
+            }
+        }
+
+        for (Type type : types) {
+            List<Sync> sync1 = findAllByOneCondition(syncType, type, location);
+            for (Sync sync : sync1) {
+                if (!syncList.contains(sync)) {
+                    syncList.add(sync);
+                    if (syncList.size() >= 7) {
+                        return syncList.subList(0, 7);
+                    }
+                }
+            }
+            if (!sync1.isEmpty()) {
+                break;
+            }
         }
 
         return syncList;
