@@ -43,6 +43,7 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private SyncType syncType;
 
+    private String location;
 
     private String languageLevel;
     //@ColumnDefault("0")
