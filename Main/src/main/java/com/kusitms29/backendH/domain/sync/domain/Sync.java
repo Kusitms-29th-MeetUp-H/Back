@@ -1,6 +1,6 @@
 package com.kusitms29.backendH.domain.sync.domain;
 
-import com.kusitms29.backendH.domain.BaseEntity;
+import com.kusitms29.backendH.global.common.BaseEntity;
 import com.kusitms29.backendH.domain.category.domain.Category;
 import com.kusitms29.backendH.domain.user.domain.User;
 import jakarta.persistence.*;
@@ -46,7 +46,7 @@ public class Sync extends BaseEntity {
     private Category childCategory;
     //--
 
-    private String name;
+    private String syncName;
     private String image;
     private String content;
     private String location;
@@ -73,8 +73,11 @@ public class Sync extends BaseEntity {
     private int reported_cnt = 0;
 
     @Enumerated(EnumType.STRING)
-    @Builder.Default()
-    private SyncStatus syncStatus = SyncStatus.RECRUITING;
+    protected Sync.Status status;
+
+    public enum Status {
+        RECRUITING, COMPLETED, DELETED;
+    }
 
     public static Sync createSync(User user, String link, SyncType syncType,
                                    Category parentCategory, Category childCategory,
@@ -87,7 +90,7 @@ public class Sync extends BaseEntity {
                 .syncType(syncType)
                 .parentCategory(parentCategory)
                 .childCategory(childCategory)
-                .name(name)
+                .syncName(name)
                 .image(image)
                 .content(content)
                 .location(location)
