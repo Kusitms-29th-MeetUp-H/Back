@@ -1,5 +1,6 @@
 package com.kusitms29.backendH.domain.sync.application.service;
 
+import com.kusitms29.backendH.domain.participation.domain.service.ParticipationManager;
 import com.kusitms29.backendH.domain.sync.application.controller.dto.response.SyncInfoResponseDto;
 import com.kusitms29.backendH.domain.sync.domain.Sync;
 import com.kusitms29.backendH.domain.sync.domain.service.SyncReader;
@@ -19,7 +20,7 @@ public class SyncManageService {
     private final UserReader userReader;
     private final UserCategoryReader userCategoryReader;
     private final UserCategoryManager userCategoryManager;
-    private final ParticiationManager particiationManager;
+    private final ParticipationManager participationManager;
     public List<SyncInfoResponseDto> recommendSync(Long userId){
         User user = userReader.findByUserId(userId);
         List<UserCategory> userCategories = userCategoryReader.findAllByUserId(userId);
@@ -30,7 +31,7 @@ public class SyncManageService {
                 sync.getSyncType(),
                 sync.getType(),
                 sync.getImage(),
-                particiationManager.countParticipationBySyncId(sync.getId()),
+                participationManager.countParticipationBySyncId(sync.getId()),
                 sync.getMember_max(),
                 sync.getSyncName(),
                 sync.getLocation(),
