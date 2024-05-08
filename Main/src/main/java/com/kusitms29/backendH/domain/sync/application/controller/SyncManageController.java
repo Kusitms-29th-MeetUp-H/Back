@@ -22,4 +22,10 @@ public class SyncManageController {
         List<SyncInfoResponseDto> syncInfoResponseDtos = syncManageService.recommendSync(userId);
         return SuccessResponse.ok(syncInfoResponseDtos);
     }
+    @GetMapping("/friend")
+    public ResponseEntity<SuccessResponse<?>> friendSync(@RequestParam(name = "userId") Long userId, @RequestParam(name = "take") int take) {
+        List<SyncInfoResponseDto> syncInfoResponseDtos = syncManageService.friendSync(userId);
+        List<SyncInfoResponseDto> dtos = syncManageService.getSyncInfoByTake(syncInfoResponseDtos, take);
+        return SuccessResponse.ok(dtos);
+    }
 }
