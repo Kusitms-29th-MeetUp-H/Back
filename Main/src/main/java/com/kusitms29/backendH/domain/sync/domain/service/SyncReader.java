@@ -16,7 +16,7 @@ public class SyncReader {
     private final SyncRepository syncRepository;
 
     public List<Sync> findAllByAssociateIsExist(){
-        return syncRepository.findAllByAssociateIsExistOrderByCreatedAtDesc();
+        return syncRepository.findAllByAssociateIsExistOrderByDateDesc();
     }
     public List<Sync> findBySyncTypeWithTypesWithLocation(SyncType syncType, List<Type> types, String location) {
         List<Sync> syncList = new ArrayList<>();
