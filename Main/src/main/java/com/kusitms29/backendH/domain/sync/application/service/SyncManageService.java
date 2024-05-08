@@ -14,6 +14,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static com.kusitms29.backendH.domain.sync.domain.SyncType.FROM_FRIEND;
+
 @Service
 @RequiredArgsConstructor
 public class SyncManageService {
@@ -38,5 +41,25 @@ public class SyncManageService {
                 sync.getLocation(),
                 sync.getDate()
         )).toList();
+    }
+    public List<SyncInfoResponseDto> friendSync(){
+        List<Sync> syncList = syncReader.findAllBySyncType(FROM_FRIEND);
+        return syncList.stream().map( sync -> SyncInfoResponseDto.of(
+                sync.getId(),
+                sync.getSyncType(),
+                sync.getType(),
+                sync.getImage(),
+                participationManager.countParticipationBySyncId(sync.getId()),
+                sync.getMember_max(),
+                sync.getSyncName(),
+                sync.getLocation(),
+                sync.getDate()
+        )).toList();
+    }
+    public List<SyncInfoResponseDto> getSyncInfoByTake(List<SyncInfoResponseDto> dtos, int take){
+        if(take == 0)
+            return dtos;
+        else
+            return dtos.subList(0,take);
     }
 }
