@@ -28,4 +28,10 @@ public class SyncManageController {
         List<SyncInfoResponseDto> dtos = syncManageService.getSyncInfoByTake(syncInfoResponseDtos, take);
         return SuccessResponse.ok(dtos);
     }
+    @GetMapping("/associate")
+    public ResponseEntity<SuccessResponse<?>> associateSync(@RequestParam(name = "take",defaultValue = "0") int take) {
+        List<SyncInfoResponseDto> syncInfoResponseDtos = syncManageService.associateSync();
+        List<SyncInfoResponseDto> dtos = syncManageService.getSyncInfoByTake(syncInfoResponseDtos, take);
+        return SuccessResponse.ok(dtos);
+    }
 }
