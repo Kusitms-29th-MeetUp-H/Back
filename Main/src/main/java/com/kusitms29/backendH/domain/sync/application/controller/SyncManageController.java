@@ -1,5 +1,6 @@
 package com.kusitms29.backendH.domain.sync.application.controller;
 
+import com.kusitms29.backendH.domain.sync.application.controller.dto.response.SyncAssociateInfoResponseDto;
 import com.kusitms29.backendH.domain.sync.application.controller.dto.response.SyncInfoResponseDto;
 import com.kusitms29.backendH.domain.sync.application.service.SyncManageService;
 import com.kusitms29.backendH.global.common.SuccessResponse;
@@ -30,8 +31,8 @@ public class SyncManageController {
     }
     @GetMapping("/associate")
     public ResponseEntity<SuccessResponse<?>> associateSync(@RequestParam(name = "take",defaultValue = "0") int take) {
-        List<SyncInfoResponseDto> syncInfoResponseDtos = syncManageService.associateSync();
-        List<SyncInfoResponseDto> dtos = syncManageService.getSyncInfoByTake(syncInfoResponseDtos, take);
+        List<SyncAssociateInfoResponseDto> syncInfoResponseDtos = syncManageService.associateSync();
+        List<SyncAssociateInfoResponseDto> dtos = syncManageService.getSyncInfoByTake(syncInfoResponseDtos, take);
         return SuccessResponse.ok(dtos);
     }
 }
