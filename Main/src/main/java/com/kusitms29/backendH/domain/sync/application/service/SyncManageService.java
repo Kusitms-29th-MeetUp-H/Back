@@ -14,6 +14,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static com.kusitms29.backendH.domain.sync.domain.SyncType.FROM_FRIEND;
+
 @Service
 @RequiredArgsConstructor
 public class SyncManageService {
@@ -40,7 +43,7 @@ public class SyncManageService {
         )).toList();
     }
     public List<SyncInfoResponseDto> friendSync(Long userId){
-        List<Sync> syncList = syncReader.findByUserIdWithSyncType(userId, "FROM_FRIEND");
+        List<Sync> syncList = syncReader.findAllByUserIdWithSyncType(userId, FROM_FRIEND);
         return syncList.stream().map( sync -> SyncInfoResponseDto.of(
                 sync.getId(),
                 sync.getSyncType(),
