@@ -2,6 +2,7 @@ package com.kusitms29.backendH.domain.sync.application.service;
 
 import com.kusitms29.backendH.domain.category.domain.Type;
 import com.kusitms29.backendH.domain.participation.domain.service.ParticipationManager;
+import com.kusitms29.backendH.domain.sync.application.controller.dto.response.SyncAssociateInfoResponseDto;
 import com.kusitms29.backendH.domain.sync.application.controller.dto.response.SyncInfoResponseDto;
 import com.kusitms29.backendH.domain.sync.domain.Sync;
 import com.kusitms29.backendH.domain.sync.domain.service.SyncReader;
@@ -57,7 +58,19 @@ public class SyncManageService {
         )).toList();
     }
     public List<SyncAssociateInfoResponseDto> associateSync(){
-
+        List<Sync> syncList = syncReader.findAllByAssociate();
+        return syncList.stream().map( sync -> SyncAssociateInfoResponseDto.of(
+                sync.getId(),
+                sync.getSyncType(),
+                sync.getType(),
+                sync.getImage(),
+                participationManager.countParticipationBySyncId(sync.getId()),
+                sync.getMember_max(),
+                sync.getSyncName(),
+                sync.getLocation(),
+                sync.getDate(),
+                sync.getAssociate()
+        )).toList();
     }
     public List<SyncInfoResponseDto> getSyncInfoByTake(List<SyncInfoResponseDto> dtos, int take){
         if(take == 0)
