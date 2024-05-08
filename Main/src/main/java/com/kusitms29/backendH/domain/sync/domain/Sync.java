@@ -54,6 +54,8 @@ public class Sync extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Type type;
     private String detailType;
+    //일단 제휴가 뭐 없어서 일단 이렇게 함
+    private String associate;
 
     public enum Status {
         RECRUITING, COMPLETED, DELETED;
