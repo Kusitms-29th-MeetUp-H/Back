@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public interface SyncRepository extends JpaRepository<Sync, Long> {
     //모임이 하루 안으로 임박한 Sync의 정보 가져오기
@@ -45,4 +46,6 @@ public interface SyncRepository extends JpaRepository<Sync, Long> {
 
     @Query("SELECT s FROM Sync s WHERE s.type = :type")
     List<Sync> findAllByType(@Param("type") Type type);
+    @Query("SELECT s FROM Sync s WHERE s.associate IS NOT NULL AND s.associate <> '' ORDER BY s.date DESC")
+    Optional<List<Sync>> findAllByAssociateIsExistOrderByDateDesc();
 }

@@ -4,6 +4,8 @@ import com.kusitms29.backendH.domain.category.domain.Type;
 import com.kusitms29.backendH.domain.sync.domain.Sync;
 import com.kusitms29.backendH.domain.sync.domain.SyncType;
 import com.kusitms29.backendH.domain.sync.repository.SyncRepository;
+import com.kusitms29.backendH.global.error.ErrorCode;
+import com.kusitms29.backendH.global.error.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,9 @@ import java.util.List;
 public class SyncReader {
     private final SyncRepository syncRepository;
 
+    public List<Sync> findAllByAssociateIsExist(){
+        return syncRepository.findAllByAssociateIsExistOrderByDateDesc().orElseThrow(()->new EntityNotFoundException(ErrorCode.SYNC_NOT_FOUND));
+    }
     public List<Sync> findBySyncTypeWithTypesWithLocation(SyncType syncType, List<Type> types, String location) {
         List<Sync> syncList = new ArrayList<>();
 

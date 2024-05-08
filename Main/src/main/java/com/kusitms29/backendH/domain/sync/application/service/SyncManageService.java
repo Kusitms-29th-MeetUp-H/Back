@@ -2,6 +2,7 @@ package com.kusitms29.backendH.domain.sync.application.service;
 
 import com.kusitms29.backendH.domain.category.domain.Type;
 import com.kusitms29.backendH.domain.participation.domain.service.ParticipationManager;
+import com.kusitms29.backendH.domain.sync.application.controller.dto.response.SyncAssociateInfoResponseDto;
 import com.kusitms29.backendH.domain.sync.application.controller.dto.response.SyncInfoResponseDto;
 import com.kusitms29.backendH.domain.sync.domain.Sync;
 import com.kusitms29.backendH.domain.sync.domain.service.SyncReader;
@@ -56,10 +57,26 @@ public class SyncManageService {
                 sync.getDate()
         )).toList();
     }
-    public List<SyncInfoResponseDto> getSyncInfoByTake(List<SyncInfoResponseDto> dtos, int take){
-        if(take == 0)
+    public List<SyncAssociateInfoResponseDto> associateSync(){
+        List<Sync> syncList = syncReader.findAllByAssociateIsExist();
+        return syncList.stream().map( sync -> SyncAssociateInfoResponseDto.of(
+                sync.getId(),
+                sync.getSyncType(),
+                sync.getType(),
+                sync.getImage(),
+                participationManager.countParticipationBySyncId(sync.getId()),
+                sync.getMember_max(),
+                sync.getSyncName(),
+                sync.getLocation(),
+                sync.getDate(),
+                sync.getAssociate()
+        )).toList();
+    }
+    public <T> List<T> getSyncInfoByTake(List<T> dtos, int take) {
+        if (take == 0 || take >= dtos.size()) {
             return dtos;
-        else
-            return dtos.subList(0,take);
+        } else {
+            return dtos.subList(0, take);
+        }
     }
 }
