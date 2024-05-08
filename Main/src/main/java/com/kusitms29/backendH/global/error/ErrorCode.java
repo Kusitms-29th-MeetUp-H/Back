@@ -16,6 +16,7 @@ public enum ErrorCode {
     INVALID_PLATFORM_TYPE(HttpStatus.BAD_REQUEST, "유효하지 않은 플랫폼입니다"),
     INVALID_IMAGE_TYPE(HttpStatus.BAD_REQUEST, "잘못된 형식의 파일입니다."),
     INVALID_SYNC_TYPE(HttpStatus.BAD_REQUEST, "유효하지 않은 싱크타입입니다."),
+    INVALID_LANGUAGE_TYPE(HttpStatus.BAD_REQUEST, "유효하지 않은 언어타입입니다."),
 
     /**
      * 401 Unauthorized
