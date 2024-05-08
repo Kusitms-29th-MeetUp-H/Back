@@ -39,4 +39,18 @@ public class SyncManageService {
                 sync.getDate()
         )).toList();
     }
+    public List<SyncInfoResponseDto> friendSync(Long userId){
+        List<Sync> syncList = syncReader.findByUserIdWithSyncType(userId, "FROM_FRIEND");
+        return syncList.stream().map( sync -> SyncInfoResponseDto.of(
+                sync.getId(),
+                sync.getSyncType(),
+                sync.getType(),
+                sync.getImage(),
+                participationManager.countParticipationBySyncId(sync.getId()),
+                sync.getMember_max(),
+                sync.getSyncName(),
+                sync.getLocation(),
+                sync.getDate()
+        )).toList();
+    }
 }
