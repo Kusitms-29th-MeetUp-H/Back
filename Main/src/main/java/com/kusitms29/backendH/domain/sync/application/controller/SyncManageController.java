@@ -23,8 +23,8 @@ public class SyncManageController {
         return SuccessResponse.ok(syncInfoResponseDtos);
     }
     @GetMapping("/friend")
-    public ResponseEntity<SuccessResponse<?>> friendSync(@RequestParam(name = "userId") Long userId, @RequestParam(name = "take") int take) {
-        List<SyncInfoResponseDto> syncInfoResponseDtos = syncManageService.friendSync(userId);
+    public ResponseEntity<SuccessResponse<?>> friendSync(@RequestParam(name = "take",defaultValue = "0") int take) {
+        List<SyncInfoResponseDto> syncInfoResponseDtos = syncManageService.friendSync();
         List<SyncInfoResponseDto> dtos = syncManageService.getSyncInfoByTake(syncInfoResponseDtos, take);
         return SuccessResponse.ok(dtos);
     }

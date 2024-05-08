@@ -65,8 +65,8 @@ public class SyncReader {
 
         return syncList;
     }
-    public List<Sync> findAllByUserIdWithSyncType(Long userId, SyncType syncType){
-        return syncRepository.findAllByUserIdAndSyncType(userId, syncType);
+    public List<Sync> findAllBySyncType(SyncType syncType){
+        return syncRepository.findAllBySyncType(syncType);
     }
 
     private List<Sync> findAllByTwoCondition(SyncType syncType, Type type, String location) {
