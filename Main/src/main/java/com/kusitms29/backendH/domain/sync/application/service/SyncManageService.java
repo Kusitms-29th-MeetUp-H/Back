@@ -58,7 +58,7 @@ public class SyncManageService {
         )).toList();
     }
     public List<SyncAssociateInfoResponseDto> associateSync(){
-        List<Sync> syncList = syncReader.findAllByAssociate();
+        List<Sync> syncList = syncReader.findAllByAssociateIsExist();
         return syncList.stream().map( sync -> SyncAssociateInfoResponseDto.of(
                 sync.getId(),
                 sync.getSyncType(),
