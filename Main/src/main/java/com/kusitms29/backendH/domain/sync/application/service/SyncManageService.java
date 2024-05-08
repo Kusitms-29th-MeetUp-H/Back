@@ -56,4 +56,10 @@ public class SyncManageService {
                 sync.getDate()
         )).toList();
     }
+    public List<SyncInfoResponseDto> getSyncInfoByTake(List<SyncInfoResponseDto> dtos, int take){
+        if(take == 0)
+            return dtos;
+        else
+            return dtos.subList(0,take);
+    }
 }
