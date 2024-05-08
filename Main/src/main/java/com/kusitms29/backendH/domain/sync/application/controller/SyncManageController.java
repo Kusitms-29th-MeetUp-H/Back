@@ -3,7 +3,9 @@ package com.kusitms29.backendH.domain.sync.application.controller;
 import com.kusitms29.backendH.domain.sync.application.controller.dto.response.SyncAssociateInfoResponseDto;
 import com.kusitms29.backendH.domain.sync.application.controller.dto.response.SyncInfoResponseDto;
 import com.kusitms29.backendH.domain.sync.application.service.SyncManageService;
+import com.kusitms29.backendH.domain.user.ip.IpService;
 import com.kusitms29.backendH.global.common.SuccessResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,9 +20,11 @@ import java.util.List;
 @RestController
 public class SyncManageController {
     private final SyncManageService syncManageService;
+    private final IpService ipService;
     @GetMapping("/recommend")
-    public ResponseEntity<SuccessResponse<?>> recommendSync(@RequestParam(name = "userId") Long userId) {
-        List<SyncInfoResponseDto> syncInfoResponseDtos = syncManageService.recommendSync(userId);
+    public ResponseEntity<SuccessResponse<?>> recommendSync(@RequestParam(name = "userId") Long userId, HttpServletRequest request) {
+        String clientIp = ipService.getClientIpAddress(request);
+        List<SyncInfoResponseDto> syncInfoResponseDtos = syncManageService.recommendSync(userId, clientIp);
         return SuccessResponse.ok(syncInfoResponseDtos);
     }
     @GetMapping("/friend")
