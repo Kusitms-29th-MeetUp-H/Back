@@ -45,4 +45,6 @@ public interface SyncRepository extends JpaRepository<Sync, Long> {
 
     @Query("SELECT s FROM Sync s WHERE s.type = :type")
     List<Sync> findAllByType(@Param("type") Type type);
+    @Query("SELECT s FROM Sync s WHERE s.syncType = :syncType AND s.user_id = :userId")
+    List<Sync> findAllByUserIdAndSyncType(@Param("userId") Long userId, @Param("syncType") SyncType syncType);
 }
