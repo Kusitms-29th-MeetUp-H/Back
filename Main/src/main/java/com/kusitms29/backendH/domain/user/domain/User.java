@@ -1,7 +1,7 @@
 package com.kusitms29.backendH.domain.user.domain;
 
+import com.kusitms29.backendH.domain.user.application.controller.dto.request.OnBoardingRequestDto;
 import com.kusitms29.backendH.global.common.BaseEntity;
-import com.kusitms29.backendH.domain.category.domain.Category;
 import com.kusitms29.backendH.domain.sync.domain.Gender;
 import com.kusitms29.backendH.domain.sync.domain.Language;
 import com.kusitms29.backendH.domain.sync.domain.SyncType;
@@ -15,6 +15,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @Getter
+@Setter
 @Table(name = "user")
 @Entity
 public class User extends BaseEntity {
@@ -46,8 +47,6 @@ public class User extends BaseEntity {
     private String location;
 
     private String languageLevel;
-    //@ColumnDefault("0")
-    //private int sync_cnt;
 
     public static User createUser(PlatformUserInfo platformUserInfo, Platform platform, String sessionId) {
         return User.builder()
@@ -60,6 +59,15 @@ public class User extends BaseEntity {
                 .build();
     }
 
+    public void updateOnBoardingWithoutCategory(String language, String userName, String countryName,
+                                                String gender, String email, String sycnType) {
+        this.setLanguage(Language.valueOf(language));
+        this.setUserName(userName);
+        this.setNationality(countryName);
+        this.setGender(Gender.valueOf(gender));
+        this.setEmail(email);
+        this.setSyncType(SyncType.valueOf(sycnType));
+    }
 
     public void updatePlatform(Platform platform) {
         this.platform = platform;
