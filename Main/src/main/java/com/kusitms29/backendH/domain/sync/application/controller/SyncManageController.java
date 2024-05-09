@@ -33,7 +33,7 @@ public class SyncManageController {
         String clientIp = ipService.getClientIpAddress(request);
         GeoLocation geoLocation = geoLocationService.getGeoLocation(clientIp);
         List<SyncInfoResponseDto> syncInfoResponseDtos = syncManageService.recommendSync(userId, clientIp);
-        return SuccessResponse.ok(geoLocation);
+        return SuccessResponse.ok(syncInfoResponseDtos);
     }
     @GetMapping("/friend")
     public ResponseEntity<SuccessResponse<?>> friendSync(@RequestParam(name = "take",defaultValue = "0") int take) {
