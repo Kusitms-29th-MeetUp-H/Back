@@ -28,25 +28,25 @@ public interface SyncRepository extends JpaRepository<Sync, Long> {
             "AND s.date >= :currentDate ",
             nativeQuery = true)
     List<Map<String, Object>> findHurrySyncInfo(LocalDateTime currentDate);
-    @Query("SELECT s FROM Sync s WHERE s.syncType = :syncType AND s.type = :type AND s.location = :location")
+    @Query("SELECT s FROM Sync s WHERE s.syncType = :syncType AND s.type = :type AND s.location = :location ORDER BY s.date DESC")
     List<Sync> findAllBySyncTypeWithTypeWithLocation(@Param("syncType") SyncType syncType, @Param("type") Type type, @Param("location") String location);
 
-    @Query("SELECT s FROM Sync s WHERE s.location = :location AND s.syncType = :syncType")
+    @Query("SELECT s FROM Sync s WHERE s.location = :location AND s.syncType = :syncType ORDER BY s.date DESC")
     List<Sync> findAllByLocationAndSyncType(@Param("location") String location, @Param("syncType") SyncType syncType);
 
-    @Query("SELECT s FROM Sync s WHERE s.location = :location AND s.type = :type")
+    @Query("SELECT s FROM Sync s WHERE s.location = :location AND s.type = :type ORDER BY s.date DESC")
     List<Sync> findAllByLocationAndType(@Param("location") String location, @Param("type") Type type);
 
-    @Query("SELECT s FROM Sync s WHERE s.syncType = :syncType AND s.type = :type")
+    @Query("SELECT s FROM Sync s WHERE s.syncType = :syncType AND s.type = :type ORDER BY s.date DESC")
     List<Sync> findAllBySyncTypeAndType(@Param("syncType") SyncType syncType, @Param("type") Type type);
 
-    @Query("SELECT s FROM Sync s WHERE s.location = :location")
+    @Query("SELECT s FROM Sync s WHERE s.location = :location ORDER BY s.date DESC")
     List<Sync> findAllByLocation(@Param("location") String location);
 
-    @Query("SELECT s FROM Sync s WHERE s.syncType = :syncType")
+    @Query("SELECT s FROM Sync s WHERE s.syncType = :syncType ORDER BY s.date DESC")
     List<Sync> findAllBySyncType(@Param("syncType") SyncType syncType);
 
-    @Query("SELECT s FROM Sync s WHERE s.type = :type")
+    @Query("SELECT s FROM Sync s WHERE s.type = :type ORDER BY s.date DESC")
     List<Sync> findAllByType(@Param("type") Type type);
     @Query("SELECT s FROM Sync s WHERE s.associate IS NOT NULL AND s.associate <> '' ORDER BY s.date DESC")
     List<Sync> findAllByAssociateIsExistOrderByDateDesc(SyncType syncType, Type type);
