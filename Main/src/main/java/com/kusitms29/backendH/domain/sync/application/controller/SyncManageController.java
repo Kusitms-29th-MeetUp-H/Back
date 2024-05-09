@@ -2,6 +2,7 @@ package com.kusitms29.backendH.domain.sync.application.controller;
 
 import com.kusitms29.backendH.domain.clova.map.GeoLocation;
 import com.kusitms29.backendH.domain.clova.map.GeoLocationService;
+import com.kusitms29.backendH.domain.sync.application.controller.dto.request.SyncInfoRequest2Dto;
 import com.kusitms29.backendH.domain.sync.application.controller.dto.request.SyncInfoRequestDto;
 import com.kusitms29.backendH.domain.sync.application.controller.dto.response.SyncAssociateInfoResponseDto;
 import com.kusitms29.backendH.domain.sync.application.controller.dto.response.SyncInfoResponseDto;
@@ -37,6 +38,12 @@ public class SyncManageController {
     public ResponseEntity<SuccessResponse<?>> friendSync(@RequestBody SyncInfoRequestDto syncInfoRequestDto) {
         List<SyncInfoResponseDto> syncInfoResponseDtos = syncManageService.friendSync(syncInfoRequestDto.filter());
         List<SyncInfoResponseDto> dtos = syncManageService.getSyncInfoByTake(syncInfoResponseDtos, syncInfoRequestDto.take());
+        return SuccessResponse.ok(dtos);
+    }
+    @PostMapping("/{sync}")
+    public ResponseEntity<SuccessResponse<?>> searchSync(@PathVariable(name = "sync") String sync, @RequestBody SyncInfoRequest2Dto syncInfoRequest2Dto) {
+        List<SyncInfoResponseDto> syncInfoResponseDtos = syncManageService.searchSync(sync, syncInfoRequest2Dto.syncTypeFilter(),syncInfoRequest2Dto.typeFilter());
+        List<SyncInfoResponseDto> dtos = syncManageService.getSyncInfoByTake(syncInfoResponseDtos, syncInfoRequest2Dto.take());
         return SuccessResponse.ok(dtos);
     }
     @GetMapping("/associate")
