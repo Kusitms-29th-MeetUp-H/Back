@@ -7,6 +7,7 @@ import com.kusitms29.backendH.domain.sync.application.controller.dto.response.Gr
 import com.kusitms29.backendH.domain.sync.application.controller.dto.response.SyncDetailResponseDto;
 import com.kusitms29.backendH.domain.sync.application.controller.dto.response.SyncGraphResponseDto;
 import com.kusitms29.backendH.domain.sync.domain.Sync;
+import com.kusitms29.backendH.domain.sync.domain.service.SyncManager;
 import com.kusitms29.backendH.domain.sync.domain.service.SyncReader;
 import com.kusitms29.backendH.domain.user.domain.User;
 import com.kusitms29.backendH.domain.user.domain.service.UserReader;
@@ -43,10 +44,9 @@ public class SyncDetailService {
         );
     }
     public SyncGraphResponseDto getSyncDetailGraph(Long syncId, String graph){
-        Sync sync = syncReader.findById(syncId);
         List<Participation> participations = participationReader.findAllBySyncId(syncId);
-        List<GraphElement> graphElements = syncManager.createGraphElementList(participations, graph);
-        String status = syncManager.createStatus(graphElements,graph);
-        return SyncGraphResponseDto.of(graphElements,status);
+        SyncGraphResponseDto graphElements = syncManager.createGraphElementList(participations, graph);
+        return graphElements;
     }
+
 }
