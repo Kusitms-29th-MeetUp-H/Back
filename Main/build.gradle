@@ -47,13 +47,11 @@ dependencies {
 
 	//fcm
 	implementation 'com.google.firebase:firebase-admin:8.1.0'
-<<<<<<< HEAD
 	implementation 'org.json:json:20210307'
-=======
 
 	// Mail
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
->>>>>>> fe095dec69c9dea3d1cd283534be93765adf0a72
+
 }
 
 tasks.named('test') {
