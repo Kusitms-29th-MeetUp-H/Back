@@ -16,7 +16,10 @@ public enum ErrorCode {
     INVALID_PLATFORM_TYPE(HttpStatus.BAD_REQUEST, "유효하지 않은 플랫폼입니다"),
     INVALID_IMAGE_TYPE(HttpStatus.BAD_REQUEST, "잘못된 형식의 파일입니다."),
     INVALID_SYNC_TYPE(HttpStatus.BAD_REQUEST, "유효하지 않은 싱크타입입니다."),
+
     INVALID_TYPE(HttpStatus.BAD_REQUEST, "유효하지 않은 관심사입니다."),
+    INVALID_LANGUAGE_TYPE(HttpStatus.BAD_REQUEST, "유효하지 않은 언어타입입니다."),
+    INVALID_AUTH_CODE(HttpStatus.BAD_REQUEST, "인증을 실패했습니다."),
 
     /**
      * 401 Unauthorized
@@ -66,7 +69,8 @@ public enum ErrorCode {
      */
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류입니다."),
     JSON_PARSING_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Json 으로 변환할 수 없는 String 입니다."),
-    S3_UPLOAD_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 업로드에 실패했습니다.");
+    S3_UPLOAD_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 업로드에 실패했습니다."),
+    MAIL_FAIL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "메일 전송에 실패했습니다.");
 
     private final HttpStatus httpStatus;
     private final String message;
