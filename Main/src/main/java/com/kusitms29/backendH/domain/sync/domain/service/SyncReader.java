@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.kusitms29.backendH.domain.category.domain.Type.getEnumTyoeFromStringType;
+
 @Service
 @RequiredArgsConstructor
 public class SyncReader {
@@ -121,6 +123,8 @@ public class SyncReader {
         return syncRepository.findAllByType(type);
     }
     public List<Sync> findAllBySyncTypeAndTypeIn(SyncType syncType, List<String> types){
-        return syncRepository.findAllBySyncTypeAndTypeIn(syncType, types);
+        if(types.isEmpty())
+            return findAllBySyncType(syncType);
+        return syncRepository.findAllBySyncTypeAndTypeIn(syncType, types.stream().map(type -> getEnumTyoeFromStringType(type)).toList()).orElseThrow( () -> new EntityNotFoundException(ErrorCode.SYNC_NOT_FOUND));
     }
 }
