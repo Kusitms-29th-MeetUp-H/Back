@@ -43,8 +43,8 @@ public class SyncManageService {
                 sync.getDate()
         )).toList();
     }
-    public List<SyncInfoResponseDto> friendSync(List<String> types){
-        List<Sync> syncList = syncReader.findAllBySyncTypeAndTypeIn(FROM_FRIEND, types);
+    public List<SyncInfoResponseDto> friendSync(String type){
+        List<Sync> syncList = syncReader.findAllBySyncTypeAndType(FROM_FRIEND, type);
         return syncList.stream()
                 //음 이거보다 위에서 if문써서 하는게 더 가독성 있는듯
 //                .filter(sync -> type == null || sync.getType().name().equals(type))
@@ -73,6 +73,20 @@ public class SyncManageService {
                 sync.getLocation(),
                 sync.getDate(),
                 sync.getAssociate()
+        )).toList();
+    }
+    public List<SyncInfoResponseDto> searchSync(String syncTypeOrType, String syncType, String type){
+        List<Sync> syncList = syncReader.findAllBySyncAndSyncTypeInAndTypeIn(syncTypeOrType, syncType, type);
+        return syncList.stream().map( sync -> SyncInfoResponseDto.of(
+                sync.getId(),
+                sync.getSyncType(),
+                sync.getType(),
+                sync.getImage(),
+                participationManager.countParticipationBySyncId(sync.getId()),
+                sync.getMember_max(),
+                sync.getSyncName(),
+                sync.getLocation(),
+                sync.getDate()
         )).toList();
     }
     public <T> List<T> getSyncInfoByTake(List<T> dtos, int take) {

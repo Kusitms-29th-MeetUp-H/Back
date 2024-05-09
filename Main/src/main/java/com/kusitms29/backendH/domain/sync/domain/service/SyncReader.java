@@ -26,54 +26,69 @@ public class SyncReader {
         List<Sync> syncList = new ArrayList<>();
 
         for (Type type : types) {
-            List<Sync> sync3 = findAllBySyncTypeWithTypeWithLocation(syncType, type, location);
-            for (Sync sync : sync3) {
-                if (!syncList.contains(sync)) {
-                    syncList.add(sync);
-                    if (syncList.size() >= 7) {
-                        return syncList.subList(0, 7);
+            try {
+                List<Sync> sync3 = findAllBySyncTypeWithTypeWithLocation(syncType, type, location);
+                for (Sync sync : sync3) {
+                    if (!syncList.contains(sync)) {
+                        syncList.add(sync);
+                        if (syncList.size() >= 7) {
+                            return syncList.subList(0, 7);
+                        }
                     }
                 }
-            }
-            if (!sync3.isEmpty()) {
-                break;
+                if (!sync3.isEmpty()) {
+                    break;
+                }
+            } catch (RuntimeException e) {
+                // 예외 처리 로직 추가 (예: 로깅)
+                // 예외를 무시하고 계속 진행
             }
         }
 
         for (Type type : types) {
-            List<Sync> sync2 = findAllByTwoCondition(syncType, type, location);
-            for (Sync sync : sync2) {
-                if (!syncList.contains(sync)) {
-                    syncList.add(sync);
-                    if (syncList.size() >= 7) {
-                        return syncList.subList(0, 7);
+            try {
+                List<Sync> sync2 = findAllByTwoCondition(syncType, type, location);
+                for (Sync sync : sync2) {
+                    if (!syncList.contains(sync)) {
+                        syncList.add(sync);
+                        if (syncList.size() >= 7) {
+                            return syncList.subList(0, 7);
+                        }
                     }
                 }
-            }
-            if (!sync2.isEmpty()) {
-                break;
+                if (!sync2.isEmpty()) {
+                    break;
+                }
+            } catch (RuntimeException e) {
+                // 예외 처리 로직 추가 (예: 로깅)
+                // 예외를 무시하고 계속 진행
             }
         }
 
         for (Type type : types) {
-            List<Sync> sync1 = findAllByOneCondition(syncType, type, location);
-            for (Sync sync : sync1) {
-                if (!syncList.contains(sync)) {
-                    syncList.add(sync);
-                    if (syncList.size() >= 7) {
-                        return syncList.subList(0, 7);
+            try {
+                List<Sync> sync1 = findAllByOneCondition(syncType, type, location);
+                for (Sync sync : sync1) {
+                    if (!syncList.contains(sync)) {
+                        syncList.add(sync);
+                        if (syncList.size() >= 7) {
+                            return syncList.subList(0, 7);
+                        }
                     }
                 }
-            }
-            if (!sync1.isEmpty()) {
-                break;
+                if (!sync1.isEmpty()) {
+                    break;
+                }
+            } catch (RuntimeException e) {
+                // 예외 처리 로직 추가 (예: 로깅)
+                // 예외를 무시하고 계속 진행
             }
         }
 
         return syncList;
     }
     public List<Sync> findAllBySyncTypeWithTypeWithLocation(SyncType syncType, Type type, String location){
-        return syncRepository.findAllBySyncTypeWithTypeWithLocation(syncType, type, location);
+        return syncRepository.findAllBySyncTypeWithTypeWithLocation(syncType, type, location).orElseThrow( () -> new EntityNotFoundException(ErrorCode.SYNC_NOT_FOUND));
     }
     private List<Sync> findAllByTwoCondition(SyncType syncType, Type type, String location) {
         List<Sync> syncList = new ArrayList<>();
@@ -90,13 +105,13 @@ public class SyncReader {
         return syncList;
     }
     public List<Sync> findAllByLocationAndSyncType(String location, SyncType syncType){
-        return syncRepository.findAllByLocationAndSyncType(location,syncType);
+        return syncRepository.findAllByLocationAndSyncType(location,syncType).orElseThrow( () -> new EntityNotFoundException(ErrorCode.SYNC_NOT_FOUND));
     }
     public List<Sync> findAllByLocationAndType(String location, Type type){
-        return syncRepository.findAllByLocationAndType(location,type);
+        return syncRepository.findAllByLocationAndType(location,type).orElseThrow( () -> new EntityNotFoundException(ErrorCode.SYNC_NOT_FOUND));
     }
     public List<Sync> findAllBySyncTypeAndType(SyncType syncType, Type type){
-        return syncRepository.findAllBySyncTypeAndType(syncType,type);
+        return syncRepository.findAllBySyncTypeAndType(syncType,type).orElseThrow( () -> new EntityNotFoundException(ErrorCode.SYNC_NOT_FOUND));
     }
 
     private List<Sync> findAllByOneCondition(SyncType syncType, Type type, String location) {
@@ -114,17 +129,17 @@ public class SyncReader {
         return syncList;
     }
     public List<Sync> findAllByLocation(String location){
-        return syncRepository.findAllByLocation(location);
+        return syncRepository.findAllByLocation(location).orElseThrow( () -> new EntityNotFoundException(ErrorCode.SYNC_NOT_FOUND));
     }
     public List<Sync> findAllBySyncType(SyncType syncType){
-        return syncRepository.findAllBySyncType(syncType);
+        return syncRepository.findAllBySyncType(syncType).orElseThrow( () -> new EntityNotFoundException(ErrorCode.SYNC_NOT_FOUND));
     }
     public List<Sync> findAllByType(Type type){
-        return syncRepository.findAllByType(type);
+        return syncRepository.findAllByType(type).orElseThrow( () -> new EntityNotFoundException(ErrorCode.SYNC_NOT_FOUND));
     }
-    public List<Sync> findAllBySyncTypeAndTypeIn(SyncType syncType, List<String> types){
-        if(types.isEmpty())
+    public List<Sync> findAllBySyncTypeAndType(SyncType syncType, String type){
+        if(type.isEmpty())
             return findAllBySyncType(syncType);
-        return syncRepository.findAllBySyncTypeAndTypeIn(syncType, types.stream().map(type -> getEnumTyoeFromStringType(type)).toList()).orElseThrow( () -> new EntityNotFoundException(ErrorCode.SYNC_NOT_FOUND));
+        return syncRepository.findAllBySyncTypeAndType(syncType, getEnumTyoeFromStringType(type)).orElseThrow( () -> new EntityNotFoundException(ErrorCode.SYNC_NOT_FOUND));
     }
 }

@@ -4,7 +4,8 @@ import java.util.List;
 
 public record SyncInfoRequestDto(
         int take,
-        List<String> filter
+        String syncType,
+        String type
 ) {
     public SyncInfoRequestDto {
         if (take < 0) {
