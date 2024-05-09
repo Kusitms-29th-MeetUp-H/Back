@@ -1,6 +1,7 @@
 package com.kusitms29.backendH.domain.sync.application.controller;
 
 import com.kusitms29.backendH.domain.sync.application.controller.dto.response.SyncDetailResponseDto;
+import com.kusitms29.backendH.domain.sync.application.controller.dto.response.SyncGraphResponseDto;
 import com.kusitms29.backendH.domain.sync.application.service.SyncDetailService;
 import com.kusitms29.backendH.global.common.SuccessResponse;
 import lombok.RequiredArgsConstructor;
