@@ -19,7 +19,8 @@ public enum ErrorCode {
 
     INVALID_TYPE(HttpStatus.BAD_REQUEST, "유효하지 않은 관심사입니다."),
     INVALID_LANGUAGE_TYPE(HttpStatus.BAD_REQUEST, "유효하지 않은 언어타입입니다."),
-    INVALID_AUTH_CODE(HttpStatus.BAD_REQUEST, "인증을 실패했습니다."),
+    INVALID_PARENT_TYPE(HttpStatus.BAD_REQUEST, "유효하지 않은 카테고리부모타입입니다."),
+    INVALID_GENDER_TYPE(HttpStatus.BAD_REQUEST, "유효하지 않은 성별타입입니다."),
 
     /**
      * 401 Unauthorized
@@ -32,6 +33,7 @@ public enum ErrorCode {
     INVALID_REFRESH_TOKEN_VALUE(HttpStatus.UNAUTHORIZED, "리프레시 토큰의 값이 올바르지 않습니다."),
     EXPIRED_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "리프레시 토큰이 만료되었습니다. 다시 로그인해 주세요."),
     NOT_MATCH_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "일치하지 않는 리프레시 토큰입니다."),
+    INVALID_AUTH_CODE(HttpStatus.UNAUTHORIZED, "인증을 실패했습니다."),
 
 
     /**
