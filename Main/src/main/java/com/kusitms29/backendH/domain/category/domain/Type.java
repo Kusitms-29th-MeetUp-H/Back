@@ -1,7 +1,12 @@
 package com.kusitms29.backendH.domain.category.domain;
 
+import com.kusitms29.backendH.global.error.exception.InvalidValueException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Arrays;
+
+import static com.kusitms29.backendH.global.error.ErrorCode.INVALID_TYPE;
 
 @RequiredArgsConstructor
 @Getter
@@ -17,5 +22,14 @@ public enum Type {
     ACTIVITY("액티비티"),
     FOOD("푸드드링크");
 
-    private final String type;
+    private final String stringType;
+    public static Type getEnumTypeFromStringType(String stringType) {
+        if (stringType == null) {
+            return null;
+        }
+        return Arrays.stream(values())
+                .filter(type -> type.stringType.equals(stringType))
+                .findFirst()
+                .orElseThrow(() -> new InvalidValueException(INVALID_TYPE));
+    }
 }

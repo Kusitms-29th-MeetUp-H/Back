@@ -21,6 +21,9 @@ public enum SyncType {
     private final String stringSyncType;
 
     public static SyncType getEnumFROMStringSyncType(String stringSyncType) {
+        if (stringSyncType == null) {
+            return null;
+        }
         return Arrays.stream(values())
                 .filter(syncType -> syncType.stringSyncType.equals(stringSyncType))
                 .findFirst()
