@@ -23,9 +23,12 @@ public enum Type {
     FOOD("푸드드링크");
 
     private final String stringType;
-    public static Type getEnumTyoeFromStringType(String stringType) {
+    public static Type getEnumTypeFromStringType(String stringType) {
+        if (stringType == null) {
+            return null;
+        }
         return Arrays.stream(values())
-                .filter(platform -> platform.stringType.equals(stringType))
+                .filter(type -> type.stringType.equals(stringType))
                 .findFirst()
                 .orElseThrow(() -> new InvalidValueException(INVALID_TYPE));
     }

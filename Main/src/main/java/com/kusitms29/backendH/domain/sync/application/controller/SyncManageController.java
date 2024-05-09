@@ -2,7 +2,6 @@ package com.kusitms29.backendH.domain.sync.application.controller;
 
 import com.kusitms29.backendH.domain.clova.map.GeoLocation;
 import com.kusitms29.backendH.domain.clova.map.GeoLocationService;
-import com.kusitms29.backendH.domain.sync.application.controller.dto.request.SyncInfoRequest2Dto;
 import com.kusitms29.backendH.domain.sync.application.controller.dto.request.SyncInfoRequestDto;
 import com.kusitms29.backendH.domain.sync.application.controller.dto.response.SyncAssociateInfoResponseDto;
 import com.kusitms29.backendH.domain.sync.application.controller.dto.response.SyncInfoResponseDto;
@@ -40,16 +39,16 @@ public class SyncManageController {
         List<SyncInfoResponseDto> dtos = syncManageService.getSyncInfoByTake(syncInfoResponseDtos, syncInfoRequestDto.take());
         return SuccessResponse.ok(dtos);
     }
-    @PostMapping("/{sync}")
-    public ResponseEntity<SuccessResponse<?>> searchSync(@PathVariable(name = "sync") String sync, @RequestBody SyncInfoRequestDto syncInfoRequestDto) {
-        List<SyncInfoResponseDto> syncInfoResponseDtos = syncManageService.searchSync(sync, syncInfoRequestDto.syncType(),syncInfoRequestDto.type());
+    @PostMapping("/search")
+    public ResponseEntity<SuccessResponse<?>> searchSync(@RequestBody SyncInfoRequestDto syncInfoRequestDto) {
+        List<SyncInfoResponseDto> syncInfoResponseDtos = syncManageService.searchSync(syncInfoRequestDto.syncType(),syncInfoRequestDto.type());
         List<SyncInfoResponseDto> dtos = syncManageService.getSyncInfoByTake(syncInfoResponseDtos, syncInfoRequestDto.take());
         return SuccessResponse.ok(dtos);
     }
-    @GetMapping("/associate")
-    public ResponseEntity<SuccessResponse<?>> associateSync(@RequestParam(name = "take",defaultValue = "0") int take) {
-        List<SyncAssociateInfoResponseDto> syncInfoResponseDtos = syncManageService.associateSync();
-        List<SyncAssociateInfoResponseDto> dtos = syncManageService.getSyncInfoByTake(syncInfoResponseDtos, take);
+    @PostMapping("/associate")
+    public ResponseEntity<SuccessResponse<?>> associateSync(@RequestBody SyncInfoRequestDto syncInfoRequestDto) {
+        List<SyncAssociateInfoResponseDto> syncInfoResponseDtos = syncManageService.associateSync(syncInfoRequestDto.syncType(),syncInfoRequestDto.type());
+        List<SyncAssociateInfoResponseDto> dtos = syncManageService.getSyncInfoByTake(syncInfoResponseDtos, syncInfoRequestDto.take());
         return SuccessResponse.ok(dtos);
     }
 }
