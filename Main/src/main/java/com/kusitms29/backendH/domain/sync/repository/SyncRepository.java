@@ -48,4 +48,5 @@ public interface SyncRepository extends JpaRepository<Sync, Long> {
     List<Sync> findAllByType(@Param("type") Type type);
     @Query("SELECT s FROM Sync s WHERE s.associate IS NOT NULL AND s.associate <> '' ORDER BY s.date DESC")
     Optional<List<Sync>> findAllByAssociateIsExistOrderByDateDesc();
+    Optional<List<Sync>> findAllBySyncTypeAndTypeIn(SyncType syncType, List<Type> types);
 }
