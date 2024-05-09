@@ -43,9 +43,12 @@ public class SyncManageService {
                 sync.getDate()
         )).toList();
     }
-    public List<SyncInfoResponseDto> friendSync(){
-        List<Sync> syncList = syncReader.findAllBySyncType(FROM_FRIEND);
-        return syncList.stream().map( sync -> SyncInfoResponseDto.of(
+    public List<SyncInfoResponseDto> friendSync(List<String> types){
+        List<Sync> syncList = syncReader.findAllBySyncTypeAndTypeIn(FROM_FRIEND, types);
+        return syncList.stream()
+                //음 이거보다 위에서 if문써서 하는게 더 가독성 있는듯
+//                .filter(sync -> type == null || sync.getType().name().equals(type))
+                .map( sync -> SyncInfoResponseDto.of(
                 sync.getId(),
                 sync.getSyncType(),
                 sync.getType(),
