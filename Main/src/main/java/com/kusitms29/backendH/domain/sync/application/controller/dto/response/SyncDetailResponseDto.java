@@ -1,5 +1,11 @@
 package com.kusitms29.backendH.domain.sync.application.controller.dto.response;
 
+import com.kusitms29.backendH.domain.category.domain.Type;
+import com.kusitms29.backendH.domain.sync.domain.SyncType;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public record SyncDetailResponseDto(
         String syncName,
         String syncImage,
@@ -15,12 +21,13 @@ public record SyncDetailResponseDto(
         String university,
         String userIntro
 ) {
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("M월 d일 (E) a h:mm");
     public static SyncDetailResponseDto of(String syncName,
                                            String syncImage,
-                                           String syncType,
-                                           String type,
+                                           SyncType syncType,
+                                           Type type,
                                            String syncIntro,
-                                           String date,
+                                           LocalDateTime date,
                                            String location,
                                            String userCnt,
                                            String totalCnt,
@@ -28,6 +35,7 @@ public record SyncDetailResponseDto(
                                            String userName,
                                            String university,
                                            String userIntro){
-        return new SyncDetailResponseDto(syncName, syncImage, syncType, type, syncIntro, date, location, userCnt, totalCnt, userImage, userName, university, userIntro);
+        String formattedDate = date.format(DATE_TIME_FORMATTER);
+        return new SyncDetailResponseDto(syncName, syncImage, String.valueOf(syncType), String.valueOf(type), syncIntro, formattedDate, location, userCnt, totalCnt, userImage, userName, university, userIntro);
     }
 }
