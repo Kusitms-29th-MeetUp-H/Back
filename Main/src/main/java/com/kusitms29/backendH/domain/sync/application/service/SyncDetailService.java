@@ -1,7 +1,10 @@
 package com.kusitms29.backendH.domain.sync.application.service;
 
+import com.kusitms29.backendH.domain.participation.domain.Participation;
 import com.kusitms29.backendH.domain.participation.domain.service.ParticipationManager;
+import com.kusitms29.backendH.domain.sync.application.controller.dto.response.GraphElement;
 import com.kusitms29.backendH.domain.sync.application.controller.dto.response.SyncDetailResponseDto;
+import com.kusitms29.backendH.domain.sync.application.controller.dto.response.SyncGraphResponseDto;
 import com.kusitms29.backendH.domain.sync.domain.Sync;
 import com.kusitms29.backendH.domain.sync.domain.service.SyncReader;
 import com.kusitms29.backendH.domain.user.domain.User;
@@ -9,12 +12,15 @@ import com.kusitms29.backendH.domain.user.domain.service.UserReader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class SyncDetailService {
     private final SyncReader syncReader;
     private final UserReader userReader;
     private final ParticipationManager participationManager;
+    private final SyncManager syncManager;
     public SyncDetailResponseDto getSyncDetail(Long syncId){
         Sync sync = syncReader.findById(syncId);
         User user = userReader.findByUserId(sync.getUser().getId());
@@ -33,5 +39,12 @@ public class SyncDetailService {
                 user.getUniversity(),
                 sync.getUserIntro()
         );
+    }
+    public SyncGraphResponseDto getSyncDetailGraph(Long syncId, String graph){
+        Sync sync = syncReader.findById(syncId);
+        List<Participation> participations = participationReader.findAllBySyncId(syncId);
+        List<GraphElement> graphElements = syncManager.createGraphElementList(participations, graph);
+        String status = syncManager.createStatus(graphElements,graph);
+        return SyncGraphResponseDto.of(graphElements,status);
     }
 }
