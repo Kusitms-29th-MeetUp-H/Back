@@ -2,6 +2,7 @@ package com.kusitms29.backendH.domain.sync.application.service;
 
 import com.kusitms29.backendH.domain.participation.domain.Participation;
 import com.kusitms29.backendH.domain.participation.domain.service.ParticipationManager;
+import com.kusitms29.backendH.domain.participation.domain.service.ParticipationReader;
 import com.kusitms29.backendH.domain.sync.application.controller.dto.response.GraphElement;
 import com.kusitms29.backendH.domain.sync.application.controller.dto.response.SyncDetailResponseDto;
 import com.kusitms29.backendH.domain.sync.application.controller.dto.response.SyncGraphResponseDto;
@@ -21,6 +22,7 @@ public class SyncDetailService {
     private final UserReader userReader;
     private final ParticipationManager participationManager;
     private final SyncManager syncManager;
+    private final ParticipationReader participationReader;
     public SyncDetailResponseDto getSyncDetail(Long syncId){
         Sync sync = syncReader.findById(syncId);
         User user = userReader.findByUserId(sync.getUser().getId());
