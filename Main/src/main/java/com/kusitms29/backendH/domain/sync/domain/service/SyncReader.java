@@ -120,4 +120,7 @@ public class SyncReader {
     public List<Sync> findAllByType(Type type){
         return syncRepository.findAllByType(type);
     }
+    public List<Sync> findAllBySyncTypeAndTypeIn(SyncType syncType, List<String> types){
+        return syncRepository.findAllBySyncTypeAndTypeIn(syncType, types);
+    }
 }
