@@ -47,6 +47,7 @@ dependencies {
 
 	//fcm
 	implementation 'com.google.firebase:firebase-admin:8.1.0'
+	implementation 'org.json:json:20210307'
 }
 
 tasks.named('test') {

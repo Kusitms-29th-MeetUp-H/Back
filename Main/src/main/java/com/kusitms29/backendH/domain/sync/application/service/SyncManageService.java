@@ -26,7 +26,7 @@ public class SyncManageService {
     private final UserCategoryReader userCategoryReader;
     private final UserCategoryManager userCategoryManager;
     private final ParticipationManager participationManager;
-    public List<SyncInfoResponseDto> recommendSync(Long userId){
+    public List<SyncInfoResponseDto> recommendSync(Long userId, String clientIp){
         User user = userReader.findByUserId(userId);
         List<UserCategory> userCategories = userCategoryReader.findAllByUserId(userId);
         List<Type> types = userCategoryManager.getTypeByUserCategories(userCategories);
