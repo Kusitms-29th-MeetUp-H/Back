@@ -23,4 +23,5 @@ public class SyncDetailController {
         SyncGraphResponseDto syncGraphResponseDto = syncDetailService.getSyncDetailGraph(syncId, graph);
         return SuccessResponse.ok(syncGraphResponseDto);
     }
+
 }
