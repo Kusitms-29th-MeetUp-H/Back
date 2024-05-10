@@ -25,6 +25,7 @@ public class UserController {
     private final CountryDataService countryDataService;
     private final EmailVerificationService emailVerificationService;
     private final SchoolEmailService schoolEmailService;
+    private final UniversitySerivce universitySerivce;
 
     @PostMapping("/signin")
     public ResponseEntity<SuccessResponse<?>> signIn(@RequestHeader("Authorization") final String authToken,
@@ -34,10 +35,16 @@ public class UserController {
         return SuccessResponse.ok(responseDto);
     }
     @PostMapping("/onboarding")
-    public ResponseEntity<SuccessResponse<?>> onboarding(@UserId Long userId,
+    public ResponseEntity<SuccessResponse<?>> onboarding(/*@UserId Long userId,*/
                                                          @RequestBody OnBoardingRequestDto requestDto) {
-         OnBoardingResponseDto responseDto = userService.onBoardingUser(userId, requestDto);
+         OnBoardingResponseDto responseDto = userService.onBoardingUser(Long.parseLong("2"), requestDto);
          return SuccessResponse.ok(responseDto);
+    }
+
+    @PostMapping("/valid-university")
+    public ResponseEntity<SuccessResponse<?>> isItValidUniversity(@RequestBody UniversityRequestDto requestDto) {
+        universitySerivce.isValidUniversity(requestDto.getUnivName());
+        return SuccessResponse.ok(true);
     }
 
     @GetMapping("/countries")
