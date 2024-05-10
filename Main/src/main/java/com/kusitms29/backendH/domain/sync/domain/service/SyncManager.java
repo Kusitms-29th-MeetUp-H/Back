@@ -1,6 +1,7 @@
 package com.kusitms29.backendH.domain.sync.domain.service;
 
 import com.kusitms29.backendH.domain.participation.domain.Participation;
+import com.kusitms29.backendH.domain.participation.domain.service.ParticipationReader;
 import com.kusitms29.backendH.domain.sync.application.controller.dto.response.GraphElement;
 import com.kusitms29.backendH.domain.sync.application.controller.dto.response.SyncGraphResponseDto;
 import com.kusitms29.backendH.domain.sync.domain.Gender;
@@ -15,6 +16,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class SyncManager {
     private final UserReader userReader;
+    private final ParticipationReader participationReader;
     public SyncGraphResponseDto createGraphElementList(List<Participation> participationList, String graph){
         List<User> users = participationList.stream().map( participation -> userReader.findByUserId(participation.getUser().getId())).toList();
         if(graph.equals("participate"))
@@ -26,8 +28,51 @@ public class SyncManager {
         else
             return nationalGraph(users);
     }
-    private SyncGraphResponseDto participateGraph(List<User> users){
+    private SyncGraphResponseDto participateGraph(List<User> users) {
+        Map<Long, Integer> participationCountMap = new HashMap<>();
 
+        for (User user : users) {
+            long userId = user.getId();
+            List<Participation> participationList = participationReader.findAllByUserId(userId);
+            participationCountMap.put(userId, participationList.size());
+        }
+
+        List<GraphElement> graphElements = new ArrayList<>();
+        int beginnerCount = 0;
+        int intermediateCount = 0;
+        int advancedCount = 0;
+
+        for (int count : participationCountMap.values()) {
+            if (count == 1) {
+                beginnerCount++;
+            } else if (count >= 2 && count <= 3) {
+                intermediateCount++;
+            } else if (count >= 4) {
+                advancedCount++;
+            }
+        }
+
+        int totalUsers = users.size();
+        double beginnerPercent = (double) beginnerCount / totalUsers * 100;
+        double intermediatePercent = (double) intermediateCount / totalUsers * 100;
+        double advancedPercent = (double) advancedCount / totalUsers * 100;
+
+        graphElements.add(GraphElement.of("처음이에요", (int) Math.round(beginnerPercent)));
+        graphElements.add(GraphElement.of("사용해봤어요", (int) Math.round(intermediatePercent)));
+        graphElements.add(GraphElement.of("고인물이에요", (int) Math.round(advancedPercent)));
+
+        String status;
+        if (beginnerPercent > intermediatePercent && beginnerPercent > advancedPercent) {
+            status = "싱크에 처음 참여해보는 멤버들이 가장 많은 편이에요";
+        } else if (intermediatePercent > beginnerPercent && intermediatePercent > advancedPercent) {
+            status = "싱크를 경험 해 본 멤버들이 가장 많은 편이에요";
+        } else if (advancedPercent > beginnerPercent && advancedPercent > intermediatePercent) {
+            status = "싱크를 여러 번 경험해 본 멤버들이 가장 많은 편이에요";
+        } else {
+            status = "다양한 경험을 가진 멤버들이 고르게 분포되어 있어요";
+        }
+
+        return SyncGraphResponseDto.of(graphElements, status);
     }
     private SyncGraphResponseDto nationalGraph(List<User> users) {
         int totalUsers = users.size();
