@@ -15,5 +15,6 @@ public interface ParticipationRepository extends JpaRepository<Participation, Lo
     List<Participation> findBySync(Sync sync);
     @Query("SELECT COUNT(p) FROM Participation p WHERE p.sync.id = :syncId")
     int countBySyncId(@Param("syncId") Long syncId);
-    List<Participation> findBySyncId(Long syncId);
+    List<Participation> findAllBySyncId(Long syncId);
+    List<Participation> findAllByUserId(Long userId);
 }
