@@ -33,6 +33,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
     private final UserCategoryRepository userCategoryRepository;
+    private final UniversitySerivce universitySerivce;
 
     public OnBoardingResponseDto onBoardingUser(Long userId, OnBoardingRequestDto requestDto) {
         User user = userRepository.findById(userId)
@@ -41,9 +42,10 @@ public class UserService {
         Language lan = Language.getEnumLanguageFromStringLanguage(requestDto.getLanguage());
         Gender gen = Gender.getEnumFROMStringGender(requestDto.getGender());
         SyncType syncType = SyncType.getEnumFROMStringSyncType(requestDto.getSyncType());
+        universitySerivce.isValidUniversity(requestDto.getUniversity());
 
         user.updateOnBoardingWithoutCategory(lan.name(), requestDto.getUserName(),
-                requestDto.getCountryName(), gen.name(), requestDto.getEmail(), syncType.name());
+                requestDto.getCountryName(), gen.name(), requestDto.getUniversity(), requestDto.getEmail(), syncType.name());
 
         List<String> categoryNames = new ArrayList<>();
 
@@ -55,7 +57,7 @@ public class UserService {
         categoryNames.addAll(createUserCategory(user, requestDto.getCategoryTypes().getEtc()));
 
         return OnBoardingResponseDto.of(user.getLanguage().getStringLanguage(), user.getUserName(), user.getNationality(),
-                user.getGender().getStringGender(), user.getEmail(), user.getSyncType().getStringSyncType(), categoryNames);
+                user.getGender().getStringGender(), user.getUniversity(), user.getEmail(), user.getSyncType().getStringSyncType(), categoryNames);
     }
 
     private List<String> createUserCategory(User user, Map<String, Boolean> categoryMap) {

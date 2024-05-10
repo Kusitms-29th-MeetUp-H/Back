@@ -11,6 +11,7 @@ public class OnBoardingRequestDto {
     private String userName;
     private String countryName;
     private String gender;
+    private String university;
     private String email;
     private String syncType;
     private CategoryRequestDto categoryTypes;

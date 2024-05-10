@@ -12,17 +12,19 @@ public class OnBoardingResponseDto {
     private String userName;
     private String countryName;
     private String gender;
+    private String university;
     private String email;
     private String syncType;
     private List<String> categoryNames;
 
-    public static OnBoardingResponseDto of(String language, String userName, String countryName,
-                                          String gender, String email, String syncType, List<String> categoryNames) {
+    public static OnBoardingResponseDto of(String language, String userName, String countryName, String gender,
+                                           String university, String email, String syncType, List<String> categoryNames) {
         return OnBoardingResponseDto.builder()
                 .language(language)
                 .userName(userName)
                 .countryName(countryName)
                 .gender(gender)
+                .university(university)
                 .email(email)
                 .syncType(syncType)
                 .categoryNames(categoryNames)

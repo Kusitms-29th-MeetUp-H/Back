@@ -59,12 +59,13 @@ public class User extends BaseEntity {
                 .build();
     }
 
-    public void updateOnBoardingWithoutCategory(String language, String userName, String countryName,
-                                                String gender, String email, String sycnType) {
+    public void updateOnBoardingWithoutCategory(String language, String userName, String countryName, String gender,
+                                                String university, String email, String sycnType) {
         this.setLanguage(Language.valueOf(language));
         this.setUserName(userName);
         this.setNationality(countryName);
         this.setGender(Gender.valueOf(gender));
+        this.setUniversity(university);
         this.setEmail(email);
         this.setSyncType(SyncType.valueOf(sycnType));
     }
