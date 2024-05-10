@@ -176,4 +176,7 @@ public class SyncReader {
         List<Sync> syncList = syncRepository.findAllBySyncTypeAndType(syncType, type);
         return ListUtils.throwIfEmpty(syncList, () -> new EntityNotFoundException(ErrorCode.SYNC_NOT_FOUND));
     }
+    public Sync findById(Long syncId){
+        return syncRepository.findById(syncId).orElseThrow(() -> new EntityNotFoundException(ErrorCode.SYNC_NOT_FOUND));
+    }
 }
