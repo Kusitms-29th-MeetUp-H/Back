@@ -2,13 +2,12 @@ package com.kusitms29.backendH.domain.user.application.controller;
 
 
 import com.kusitms29.backendH.domain.user.application.controller.dto.request.*;
-import com.kusitms29.backendH.domain.user.application.controller.dto.response.EmailVerificationResponseDto;
-import com.kusitms29.backendH.domain.user.application.controller.dto.response.OnBoardingResponseDto;
-import com.kusitms29.backendH.domain.user.application.controller.dto.response.UserAuthResponseDto;
-import com.kusitms29.backendH.domain.user.application.service.AuthService;
-import com.kusitms29.backendH.domain.user.application.service.CountryDataService;
-import com.kusitms29.backendH.domain.user.application.service.EmailVerificationService;
-import com.kusitms29.backendH.domain.user.application.service.UserService;
+import com.kusitms29.backendH.domain.user.application.controller.dto.request.schoolEmail.SchoolEmailRequestDto;
+import com.kusitms29.backendH.domain.user.application.controller.dto.request.schoolEmail.SchoolEmailVerificationRequestDto;
+import com.kusitms29.backendH.domain.user.application.controller.dto.response.*;
+import com.kusitms29.backendH.domain.user.application.controller.dto.response.schoolEmail.CalloutErrorResponse;
+import com.kusitms29.backendH.domain.user.application.controller.dto.response.schoolEmail.CalloutSchoolEmailVerificationResponseDto;
+import com.kusitms29.backendH.domain.user.application.service.*;
 import com.kusitms29.backendH.global.common.SuccessResponse;
 import com.kusitms29.backendH.infra.config.auth.UserId;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +24,8 @@ public class UserController {
     private final AuthService authService;
     private final CountryDataService countryDataService;
     private final EmailVerificationService emailVerificationService;
+    private final SchoolEmailService schoolEmailService;
+    private final UniversitySerivce universitySerivce;
 
     @PostMapping("/signin")
     public ResponseEntity<SuccessResponse<?>> signIn(@RequestHeader("Authorization") final String authToken,
@@ -34,10 +35,16 @@ public class UserController {
         return SuccessResponse.ok(responseDto);
     }
     @PostMapping("/onboarding")
-    public ResponseEntity<SuccessResponse<?>> onboarding(@UserId Long userId,
+    public ResponseEntity<SuccessResponse<?>> onboarding(/*@UserId Long userId,*/
                                                          @RequestBody OnBoardingRequestDto requestDto) {
-         OnBoardingResponseDto responseDto = userService.onBoardingUser(userId, requestDto);
+         OnBoardingResponseDto responseDto = userService.onBoardingUser(Long.parseLong("2"), requestDto);
          return SuccessResponse.ok(responseDto);
+    }
+
+    @PostMapping("/valid-university")
+    public ResponseEntity<SuccessResponse<?>> isItValidUniversity(@RequestBody UniversityRequestDto requestDto) {
+        universitySerivce.isValidUniversity(requestDto.getUnivName());
+        return SuccessResponse.ok(true);
     }
 
     @GetMapping("/countries")
@@ -55,5 +62,25 @@ public class UserController {
         EmailVerificationResponseDto response = emailVerificationService.verifiedCode(requestDto.getEmail(), requestDto.getCode());
         return SuccessResponse.ok(response);
     }
+
+    @PostMapping("/school-emails/verification-requests")
+    public ResponseEntity<SuccessResponse<?>> sendMessageToSchool(@RequestBody SchoolEmailRequestDto requestDto) {
+        CalloutErrorResponse responseDto = schoolEmailService.callOutSendSchoolEmail(requestDto);
+        return SuccessResponse.ok(responseDto.isSuccess());
+    }
+
+    @PostMapping("/school-emails/verifications")
+    public ResponseEntity<SuccessResponse<?>> verificationSchoolEmail(@RequestBody SchoolEmailVerificationRequestDto requestDto) {
+        CalloutSchoolEmailVerificationResponseDto responseDto = schoolEmailService.callOutAuthSchoolEmail(requestDto);
+        return SuccessResponse.ok(responseDto);
+    }
+
+    @PostMapping("/school-emails/reset")
+    public ResponseEntity<SuccessResponse<?>> resetForTryEmailTest() {
+        CalloutErrorResponse responseDto = schoolEmailService.clearAuthCode();
+        return SuccessResponse.ok(responseDto.isSuccess());
+    }
+
+
 
 }
