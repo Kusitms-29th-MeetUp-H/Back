@@ -19,6 +19,7 @@ configurations {
 
 repositories {
 	mavenCentral()
+	maven{url 'https://jitpack.io'}
 }
 
 dependencies {
@@ -51,6 +52,9 @@ dependencies {
 
 	// Mail
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+	//school email - univcert.com
+	implementation 'com.github.in-seo:univcert:master-SNAPSHOT'
 
 }
 
