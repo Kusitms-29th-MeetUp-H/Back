@@ -19,7 +19,7 @@ public class PostController {
     private final PostService postService;
     @GetMapping
     public ResponseEntity<SuccessResponse<?>> getPagingPostByPostType(@UserId Long userId, @RequestParam String postType, Pageable pageable) {
-        List<LifePostResponseDto> responseDto = postService.getAllLifePosts(userId, postType, pageable);
+        List<LifePostResponseDto> responseDto = postService.getPagingPostByPostType(userId, postType, pageable);
         return SuccessResponse.ok(responseDto);
     }
 

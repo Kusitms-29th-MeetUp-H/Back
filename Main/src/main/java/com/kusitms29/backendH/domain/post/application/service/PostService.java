@@ -25,7 +25,7 @@ public class PostService {
     private final PostLikeRepository postLikeRepository;
     private final CommentRepository commentRepository;
 
-    public List<LifePostResponseDto> getAllLifePosts(Long userId, String postType, Pageable pageable) {
+    public List<LifePostResponseDto> getPagingPostByPostType(Long userId, String postType, Pageable pageable) {
         PostType enumPostType = PostType.getEnumPostTypeFromStringPostType(postType);
         Page<Post> lifePosts = postRepository.findByPostType(enumPostType, pageable);
         return lifePosts.stream()
