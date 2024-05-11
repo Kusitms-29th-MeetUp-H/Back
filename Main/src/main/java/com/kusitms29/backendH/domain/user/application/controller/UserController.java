@@ -46,7 +46,7 @@ public class UserController {
     @PostMapping("/valid-university")
     public ResponseEntity<SuccessResponse<?>> isItValidUniversity(@RequestBody UniversityRequestDto requestDto) {
         universitySerivce.isValidUniversity(requestDto.getUnivName());
-        return SuccessResponse.ok(true);
+        return SuccessResponse.ok(true); //주석
     }
 
     @PostMapping("/countries")
