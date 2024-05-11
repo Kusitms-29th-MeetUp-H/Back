@@ -49,7 +49,7 @@ public class UserController {
         return SuccessResponse.ok(true);
     }
 
-    @GetMapping("/countries")
+    @PostMapping("/countries")
     public ResponseEntity<SuccessResponse<?>> getCountries(@RequestBody CountryCalloutRequestDto requestDto) {
         List<String> countryNames = countryDataService.listOfCountries(requestDto.getPage(), requestDto.getPerPage(), requestDto.getLanguage());
         return SuccessResponse.ok(countryNames);
