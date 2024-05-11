@@ -9,6 +9,7 @@ import java.util.List;
 @Getter
 public class OnBoardingResponseDto {
     private String language;
+    private String profileImage;
     private String userName;
     private String countryName;
     private String gender;
@@ -17,10 +18,11 @@ public class OnBoardingResponseDto {
     private String syncType;
     private List<String> categoryNames;
 
-    public static OnBoardingResponseDto of(String language, String userName, String countryName, String gender,
+    public static OnBoardingResponseDto of(String language,  String profileImage, String userName, String countryName, String gender,
                                            String university, String email, String syncType, List<String> categoryNames) {
         return OnBoardingResponseDto.builder()
                 .language(language)
+                .profileImage(profileImage)
                 .userName(userName)
                 .countryName(countryName)
                 .gender(gender)

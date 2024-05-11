@@ -11,12 +11,14 @@ import com.kusitms29.backendH.domain.user.domain.User;
 import com.kusitms29.backendH.domain.user.domain.UserCategory;
 import com.kusitms29.backendH.domain.user.repository.UserCategoryRepository;
 import com.kusitms29.backendH.domain.user.repository.UserRepository;
+import com.kusitms29.backendH.infra.config.AwsS3Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kusitms29.backendH.global.error.exception.EntityNotFoundException;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,17 +36,20 @@ public class UserService {
     private final CategoryRepository categoryRepository;
     private final UserCategoryRepository userCategoryRepository;
     private final UniversitySerivce universitySerivce;
+    private final AwsS3Service awsS3Service;
 
-    public OnBoardingResponseDto onBoardingUser(Long userId, OnBoardingRequestDto requestDto) {
+    @Transactional
+    public OnBoardingResponseDto onBoardingUser(Long userId, MultipartFile profileImage, OnBoardingRequestDto requestDto) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException(USER_NOT_FOUND));
 
         Language lan = Language.getEnumLanguageFromStringLanguage(requestDto.getLanguage());
+        String imageUrl = awsS3Service.uploadImage(profileImage);
         Gender gen = Gender.getEnumFROMStringGender(requestDto.getGender());
         SyncType syncType = SyncType.getEnumFROMStringSyncType(requestDto.getSyncType());
         universitySerivce.isValidUniversity(requestDto.getUniversity());
 
-        user.updateOnBoardingWithoutCategory(lan.name(), requestDto.getUserName(),
+        user.updateOnBoardingWithoutCategory(lan.name(), imageUrl, requestDto.getUserName(),
                 requestDto.getCountryName(), gen.name(), requestDto.getUniversity(), requestDto.getEmail(), syncType.name());
 
         List<String> categoryNames = new ArrayList<>();
@@ -56,7 +61,7 @@ public class UserService {
         categoryNames.addAll(createUserCategory(user, requestDto.getCategoryTypes().getFoodAndDrink()));
         categoryNames.addAll(createUserCategory(user, requestDto.getCategoryTypes().getEtc()));
 
-        return OnBoardingResponseDto.of(user.getLanguage().getStringLanguage(), user.getUserName(), user.getNationality(),
+        return OnBoardingResponseDto.of(user.getLanguage().getStringLanguage(), imageUrl, user.getUserName(), user.getNationality(),
                 user.getGender().getStringGender(), user.getUniversity(), user.getEmail(), user.getSyncType().getStringSyncType(), categoryNames);
     }
 
