@@ -11,6 +11,7 @@ import lombok.*;
 @Builder
 @Getter
 @Table(name = "postLike")
+@Entity
 public class PostLike extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
