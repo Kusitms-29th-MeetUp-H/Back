@@ -35,9 +35,9 @@ public class UserController {
         return SuccessResponse.ok(responseDto);
     }
     @PostMapping("/onboarding")
-    public ResponseEntity<SuccessResponse<?>> onboarding(/*@UserId Long userId,*/
+    public ResponseEntity<SuccessResponse<?>> onboarding(@UserId Long userId,
                                                          @RequestBody OnBoardingRequestDto requestDto) {
-         OnBoardingResponseDto responseDto = userService.onBoardingUser(Long.parseLong("2"), requestDto);
+         OnBoardingResponseDto responseDto = userService.onBoardingUser(userId, requestDto);
          return SuccessResponse.ok(responseDto);
     }
 
