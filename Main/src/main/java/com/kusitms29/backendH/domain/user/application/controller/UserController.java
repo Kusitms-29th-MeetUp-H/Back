@@ -13,6 +13,7 @@ import com.kusitms29.backendH.infra.config.auth.UserId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -36,8 +37,9 @@ public class UserController {
     }
     @PostMapping("/onboarding")
     public ResponseEntity<SuccessResponse<?>> onboarding(@UserId Long userId,
-                                                         @RequestBody OnBoardingRequestDto requestDto) {
-         OnBoardingResponseDto responseDto = userService.onBoardingUser(userId, requestDto);
+                                                         @RequestPart("profileImage") MultipartFile profileImage,
+                                                         @RequestPart("onBoardingRequest") OnBoardingRequestDto requestDto) {
+         OnBoardingResponseDto responseDto = userService.onBoardingUser(userId, profileImage, requestDto);
          return SuccessResponse.ok(responseDto);
     }
 
