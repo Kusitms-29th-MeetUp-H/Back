@@ -37,6 +37,7 @@ public class PostService {
         int likeCount = postLikeRepository.countByPostId(post.getId());
         boolean isLikedByUser = postLikeRepository.existsByPostIdAndUserId(post.getId(), userId);
         int commentCount = commentRepository.countByPostId(post.getId());
+        boolean isPostedByUser = post.getUser().getId() == userId;
 
         return LifePostResponseDto.of(
                 post.getId(),
@@ -47,7 +48,8 @@ public class PostService {
                 post.getContent(),
                 likeCount,
                 isLikedByUser,
-                commentCount
+                commentCount,
+                isPostedByUser
         );
     }
 }

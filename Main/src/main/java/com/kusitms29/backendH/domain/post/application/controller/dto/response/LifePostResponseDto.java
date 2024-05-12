@@ -18,10 +18,11 @@ public class LifePostResponseDto {
     private int likeCnt;
     private boolean isLikedByUser;
     private int commentCnt;
+    private boolean isPostedByUser;
 
     public static LifePostResponseDto of(Long postId, PostType postType, String writer,
                                          LocalDateTime createdDate, String title, String content,
-                                         int likeCnt, boolean isLikedByUser, int commentCnt) {
+                                         int likeCnt, boolean isLikedByUser, int commentCnt, boolean isPostedByUser) {
         return LifePostResponseDto.builder()
                 .postId(postId)
                 .postType(postType)
@@ -32,6 +33,7 @@ public class LifePostResponseDto {
                 .likeCnt(likeCnt)
                 .isLikedByUser(isLikedByUser)
                 .commentCnt(commentCnt)
+                .isPostedByUser(isPostedByUser)
                 .build();
     }
 }
