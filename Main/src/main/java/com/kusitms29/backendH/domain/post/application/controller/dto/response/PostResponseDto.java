@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Builder
 @Getter
-public class LifePostResponseDto {
+public class PostResponseDto {
     private long postId;
     private PostType postType;
     private String writer;
@@ -20,10 +20,10 @@ public class LifePostResponseDto {
     private int commentCnt;
     private boolean isPostedByUser;
 
-    public static LifePostResponseDto of(Long postId, PostType postType, String writer,
-                                         LocalDateTime createdDate, String title, String content,
-                                         int likeCnt, boolean isLikedByUser, int commentCnt, boolean isPostedByUser) {
-        return LifePostResponseDto.builder()
+    public static PostResponseDto of(Long postId, PostType postType, String writer,
+                                     LocalDateTime createdDate, String title, String content,
+                                     int likeCnt, boolean isLikedByUser, int commentCnt, boolean isPostedByUser) {
+        return PostResponseDto.builder()
                 .postId(postId)
                 .postType(postType)
                 .writer(writer)

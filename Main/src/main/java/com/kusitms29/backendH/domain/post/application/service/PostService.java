@@ -1,7 +1,7 @@
 package com.kusitms29.backendH.domain.post.application.service;
 
 import com.kusitms29.backendH.domain.comment.repository.CommentRepository;
-import com.kusitms29.backendH.domain.post.application.controller.dto.response.LifePostResponseDto;
+import com.kusitms29.backendH.domain.post.application.controller.dto.response.PostResponseDto;
 import com.kusitms29.backendH.domain.post.domain.Post;
 import com.kusitms29.backendH.domain.post.domain.PostType;
 import com.kusitms29.backendH.domain.post.repository.PostRepository;
@@ -25,21 +25,21 @@ public class PostService {
     private final PostLikeRepository postLikeRepository;
     private final CommentRepository commentRepository;
 
-    public List<LifePostResponseDto> getPagingPostByPostType(Long userId, String postType, Pageable pageable) {
+    public List<PostResponseDto> getPagingPostByPostType(Long userId, String postType, Pageable pageable) {
         PostType enumPostType = PostType.getEnumPostTypeFromStringPostType(postType);
         Page<Post> lifePosts = postRepository.findByPostType(enumPostType, pageable);
         return lifePosts.stream()
-                .map(post -> mapToLifePostResponseDto(post, userId))
+                .map(post -> mapToPostResponseDto(post, userId))
                 .collect(Collectors.toList());
     }
 
-    private LifePostResponseDto mapToLifePostResponseDto(Post post, Long userId) {
+    private PostResponseDto mapToPostResponseDto(Post post, Long userId) {
         int likeCount = postLikeRepository.countByPostId(post.getId());
         boolean isLikedByUser = postLikeRepository.existsByPostIdAndUserId(post.getId(), userId);
         int commentCount = commentRepository.countByPostId(post.getId());
         boolean isPostedByUser = post.getUser().getId() == userId;
 
-        return LifePostResponseDto.of(
+        return PostResponseDto.of(
                 post.getId(),
                 post.getPostType(),
                 post.getUser().getUserName(),
