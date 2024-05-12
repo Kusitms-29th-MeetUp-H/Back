@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 public class PostResponseDto {
     private long postId;
-    private PostType postType;
+    private String postType;
     private String writer;
     private LocalDateTime createdDate;
     private String title;
@@ -20,7 +20,7 @@ public class PostResponseDto {
     private int commentCnt;
     private boolean isPostedByUser;
 
-    public static PostResponseDto of(Long postId, PostType postType, String writer,
+    public static PostResponseDto of(Long postId, String postType, String writer,
                                      LocalDateTime createdDate, String title, String content,
                                      int likeCnt, boolean isLikedByUser, int commentCnt, boolean isPostedByUser) {
         return PostResponseDto.builder()
