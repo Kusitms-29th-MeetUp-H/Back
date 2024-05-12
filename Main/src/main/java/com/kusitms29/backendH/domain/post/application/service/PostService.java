@@ -4,7 +4,7 @@ import com.kusitms29.backendH.domain.comment.repository.CommentRepository;
 import com.kusitms29.backendH.domain.post.application.controller.dto.response.PostResponseDto;
 import com.kusitms29.backendH.domain.post.domain.Post;
 import com.kusitms29.backendH.domain.post.domain.PostType;
-import com.kusitms29.backendH.domain.post.repository.PostRepository;
+import com.kusitms29.backendH.domain.post.repository.PostPagingRepository;
 import com.kusitms29.backendH.domain.postLike.repository.PostLikeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,13 +21,13 @@ import java.util.stream.Collectors;
 @Transactional
 @Service
 public class PostService {
-    private final PostRepository postRepository;
+    private final PostPagingRepository postPagingRepository;
     private final PostLikeRepository postLikeRepository;
     private final CommentRepository commentRepository;
 
     public List<PostResponseDto> getPagingPostByPostType(Long userId, String postType, Pageable pageable) {
         PostType enumPostType = PostType.getEnumPostTypeFromStringPostType(postType);
-        Page<Post> lifePosts = postRepository.findByPostType(enumPostType, pageable);
+        Page<Post> lifePosts = postPagingRepository.findByPostType(enumPostType, pageable);
         return lifePosts.stream()
                 .map(post -> mapToPostResponseDto(post, userId))
                 .collect(Collectors.toList());
