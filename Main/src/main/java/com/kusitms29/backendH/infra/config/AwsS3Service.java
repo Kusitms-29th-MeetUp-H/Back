@@ -10,15 +10,19 @@ import com.kusitms29.backendH.global.error.exception.InvalidValueException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
-import static com.kusitms29.backendH.global.error.ErrorCode.INVALID_IMAGE_TYPE;
-import static com.kusitms29.backendH.global.error.ErrorCode.S3_UPLOAD_ERROR;
+import static com.kusitms29.backendH.global.error.ErrorCode.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -43,6 +47,32 @@ public class AwsS3Service {
             throw new InternalServerException(S3_UPLOAD_ERROR);
         }
         return fileUrl;
+    }
+
+    public List<String> uploadImages(List<MultipartFile> images) {
+        List<String> fileNameList = new ArrayList<>();
+        List<String> fileUrlList = new ArrayList<>();
+
+        images.forEach(file -> {
+            String fileName = createFileName(file.getOriginalFilename());
+            String fileUrl = amazonS3.getUrl(bucket, fileName).toString();
+
+            ObjectMetadata objectMetadata = new ObjectMetadata();
+            objectMetadata.setContentType(String.valueOf(file.getSize()));
+            objectMetadata.setContentType(file.getContentType());
+
+            try(InputStream inputStream = file.getInputStream()) {
+                amazonS3.putObject(new PutObjectRequest(bucket, fileName, inputStream, objectMetadata)
+                        .withCannedAcl(CannedAccessControlList.PublicRead));
+            } catch(IOException e) {
+                log.error(e.getMessage());
+                throw new InternalServerException(S3_UPLOAD_ERROR);
+            }
+            fileNameList.add(fileName);
+            fileUrlList.add(fileUrl);
+        });
+
+        return fileUrlList;
     }
     public void deleteImage(String fileName) {
         amazonS3.deleteObject(new DeleteObjectRequest(bucket, fileName));
