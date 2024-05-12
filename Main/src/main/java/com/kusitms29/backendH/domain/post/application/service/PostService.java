@@ -1,8 +1,10 @@
 package com.kusitms29.backendH.domain.post.application.service;
 
 import com.kusitms29.backendH.domain.comment.repository.CommentRepository;
+import com.kusitms29.backendH.domain.post.application.controller.dto.request.PostCalculateDto;
 import com.kusitms29.backendH.domain.post.application.controller.dto.request.PostCreateRequestDto;
 import com.kusitms29.backendH.domain.post.application.controller.dto.response.PostCreateResponseDto;
+import com.kusitms29.backendH.domain.post.application.controller.dto.response.PostDetailResponseDto;
 import com.kusitms29.backendH.domain.post.application.controller.dto.response.PostResponseDto;
 import com.kusitms29.backendH.domain.post.domain.Post;
 import com.kusitms29.backendH.domain.post.domain.PostImage;
@@ -15,7 +17,6 @@ import com.kusitms29.backendH.domain.user.domain.User;
 import com.kusitms29.backendH.domain.user.repository.UserRepository;
 import com.kusitms29.backendH.global.error.exception.EntityNotFoundException;
 import com.kusitms29.backendH.infra.config.AwsS3Service;
-import jakarta.mail.Multipart;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -24,9 +25,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.kusitms29.backendH.global.error.ErrorCode.POST_NOT_FOUND;
 import static com.kusitms29.backendH.global.error.ErrorCode.USER_NOT_FOUND;
 
 @Slf4j
@@ -51,10 +54,7 @@ public class PostService {
     }
 
     private PostResponseDto mapToPostResponseDto(Post post, Long userId) {
-        int likeCount = postLikeRepository.countByPostId(post.getId());
-        boolean isLikedByUser = postLikeRepository.existsByPostIdAndUserId(post.getId(), userId);
-        int commentCount = commentRepository.countByPostId(post.getId());
-        boolean isPostedByUser = post.getUser().getId() == userId;
+        PostCalculateDto postCalculateDto = calculatePostDetail(post, userId);
 
         return PostResponseDto.of(
                 post.getId(),
@@ -64,11 +64,45 @@ public class PostService {
                 post.getCreatedAt(),
                 post.getTitle(),
                 post.getContent(),
-                likeCount,
-                isLikedByUser,
-                commentCount,
-                isPostedByUser
+                postCalculateDto.getLikeCount(),
+                postCalculateDto.isLikedByUser(),
+                postCalculateDto.getCommentCount(),
+                postCalculateDto.isPostedByUser()
         );
+    }
+
+    public PostDetailResponseDto getDetailPost(Long userId, Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(()-> new EntityNotFoundException(POST_NOT_FOUND));
+
+        PostCalculateDto postCalculateDto = calculatePostDetail(post, userId);
+
+        List<String> imageUrls = postImageRepository.findByPostId(post.getId())
+                .stream()
+                .map(PostImage::getImage_url)
+                .collect(Collectors.toList());
+
+        return PostDetailResponseDto.of(
+                post.getPostType().getStringPostType(),
+                post.getUser().getProfile(),
+                post.getUser().getUserName(),
+                post.getCreatedAt(),
+                post.getTitle(),
+                post.getContent(),
+                postCalculateDto.getLikeCount(),
+                postCalculateDto.isLikedByUser(),
+                postCalculateDto.getCommentCount(),
+                postCalculateDto.isPostedByUser(),
+                imageUrls
+        );
+    }
+
+    private PostCalculateDto calculatePostDetail(Post post, Long userId) {
+        int likeCount = postLikeRepository.countByPostId(post.getId());
+        boolean isLikedByUser = postLikeRepository.existsByPostIdAndUserId(post.getId(), userId);
+        int commentCount = commentRepository.countByPostId(post.getId());
+        boolean isPostedByUser = post.getUser().getId() == userId;
+        return new PostCalculateDto(likeCount, isLikedByUser, commentCount, isPostedByUser);
     }
 
     public PostCreateResponseDto createPost(Long userId, List<MultipartFile> images, PostCreateRequestDto requestDto) {

@@ -2,6 +2,7 @@ package com.kusitms29.backendH.domain.post.application.controller.dto;
 
 import com.kusitms29.backendH.domain.post.application.controller.dto.request.PostCreateRequestDto;
 import com.kusitms29.backendH.domain.post.application.controller.dto.response.PostCreateResponseDto;
+import com.kusitms29.backendH.domain.post.application.controller.dto.response.PostDetailResponseDto;
 import com.kusitms29.backendH.domain.post.application.controller.dto.response.PostResponseDto;
 import com.kusitms29.backendH.domain.post.application.service.PostService;
 import com.kusitms29.backendH.global.common.SuccessResponse;
@@ -23,6 +24,12 @@ public class PostController {
     @GetMapping
     public ResponseEntity<SuccessResponse<?>> getPagingPostByPostType(@UserId Long userId, @RequestParam String postType, Pageable pageable) {
         List<PostResponseDto> responseDto = postService.getPagingPostByPostType(userId, postType, pageable);
+        return SuccessResponse.ok(responseDto);
+    }
+
+    @GetMapping("/{postId}")
+    public ResponseEntity<SuccessResponse<?>> getDetailPost(@UserId Long userId, @PathVariable Long postId) {
+        PostDetailResponseDto responseDto = postService.getDetailPost(userId, postId);
         return SuccessResponse.ok(responseDto);
     }
 
