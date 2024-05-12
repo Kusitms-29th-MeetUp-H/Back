@@ -34,7 +34,6 @@ public class PostService {
     }
 
     private PostResponseDto mapToPostResponseDto(Post post, Long userId) {
-
         int likeCount = postLikeRepository.countByPostId(post.getId());
         boolean isLikedByUser = postLikeRepository.existsByPostIdAndUserId(post.getId(), userId);
         int commentCount = commentRepository.countByPostId(post.getId());
@@ -43,6 +42,7 @@ public class PostService {
         return PostResponseDto.of(
                 post.getId(),
                 post.getPostType().getStringPostType(),
+                post.getUser().getProfile(),
                 post.getUser().getUserName(),
                 post.getCreatedAt(),
                 post.getTitle(),

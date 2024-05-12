@@ -11,7 +11,8 @@ import java.time.LocalDateTime;
 public class PostResponseDto {
     private long postId;
     private String postType;
-    private String writer;
+    private String writerImage;
+    private String writerName;
     private LocalDateTime createdDate;
     private String title;
     private String content;
@@ -20,13 +21,14 @@ public class PostResponseDto {
     private int commentCnt;
     private boolean isPostedByUser;
 
-    public static PostResponseDto of(Long postId, String postType, String writer,
+    public static PostResponseDto of(Long postId, String postType, String writerImage, String writerName,
                                      LocalDateTime createdDate, String title, String content,
                                      int likeCnt, boolean isLikedByUser, int commentCnt, boolean isPostedByUser) {
         return PostResponseDto.builder()
                 .postId(postId)
                 .postType(postType)
-                .writer(writer)
+                .writerImage(writerImage)
+                .writerName(writerName)
                 .createdDate(createdDate)
                 .title(title)
                 .content(content)
