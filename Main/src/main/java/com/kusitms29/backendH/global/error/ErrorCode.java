@@ -61,6 +61,10 @@ public enum ErrorCode {
      */
     METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "잘못된 HTTP method 요청입니다."),
     PARTICIPATION_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "최대 인원 수가 모두 채워진 싱크입니다."),
+    TOO_LONG_TITLE_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "제목은 30자까지만 작성할 수 있어요"),
+    TOO_LONG_CONTENT_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "내용은 300자까지만 작성할 수 있어요"),
+    TOO_LONG_COMMENT_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "댓글은 30자까지만 작성할 수 있어요"),
+    TOO_MANY_IMAGES_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "이미지는 최대 5개까지 입니다."),
 
     /**
      * 409 Conflict

@@ -11,6 +11,7 @@ import com.kusitms29.backendH.domain.post.repository.PostRepository;
 import com.kusitms29.backendH.domain.user.domain.User;
 import com.kusitms29.backendH.domain.user.repository.UserRepository;
 import com.kusitms29.backendH.global.error.exception.EntityNotFoundException;
+import com.kusitms29.backendH.global.error.exception.NotAllowedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -61,6 +62,10 @@ public class CommentService {
                 .orElseThrow(() -> new EntityNotFoundException(POST_NOT_FOUND));
         User writer = userRepository.findById(userId)
                 .orElseThrow(()-> new EntityNotFoundException(USER_NOT_FOUND));
+
+        if(content.length() > 30) {
+            throw new NotAllowedException(TOO_LONG_COMMENT_NOT_ALLOWED);
+        }
 
         Comment newComment = commentRepository.save
                 (Comment.builder()

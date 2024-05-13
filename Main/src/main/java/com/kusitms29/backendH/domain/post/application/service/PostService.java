@@ -16,6 +16,7 @@ import com.kusitms29.backendH.domain.postLike.repository.PostLikeRepository;
 import com.kusitms29.backendH.domain.user.domain.User;
 import com.kusitms29.backendH.domain.user.repository.UserRepository;
 import com.kusitms29.backendH.global.error.exception.EntityNotFoundException;
+import com.kusitms29.backendH.global.error.exception.NotAllowedException;
 import com.kusitms29.backendH.infra.config.AwsS3Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,8 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.kusitms29.backendH.global.error.ErrorCode.POST_NOT_FOUND;
-import static com.kusitms29.backendH.global.error.ErrorCode.USER_NOT_FOUND;
+import static com.kusitms29.backendH.global.error.ErrorCode.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -109,6 +109,18 @@ public class PostService {
         User writer = userRepository.findById(userId)
                 .orElseThrow(()-> new EntityNotFoundException(USER_NOT_FOUND));
         PostType postType = PostType.getEnumPostTypeFromStringPostType(requestDto.getPostType());
+
+        String title = requestDto.getTitle();
+        String content = requestDto.getContent();
+        if(title.length() > 30) {
+            throw new NotAllowedException(TOO_LONG_TITLE_NOT_ALLOWED);
+        }
+        if(content.length() > 300) {
+            throw new NotAllowedException(TOO_LONG_CONTENT_NOT_ALLOWED);
+        }
+        if(images.size() > 5) {
+            throw new NotAllowedException(TOO_MANY_IMAGES_NOT_ALLOWED);
+        }
 
         Post newPost = postRepository.save
                 (Post.builder()
