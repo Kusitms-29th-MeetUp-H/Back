@@ -55,6 +55,9 @@ public enum ErrorCode {
     NOTIFICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "알림을 찾을 수 없습니다."),
     PARTICIPATION_NOT_FOUND(HttpStatus.NOT_FOUND, "참여자를 찾을 수 없습니다."),
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "게시물을 찾을 수 없습니다."),
+    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "댓글을 찾을 수 없습니다."),
+    POST_LIKE_NOT_FOUND(HttpStatus.NOT_FOUND, "게시물좋아요를 찾을 수 없습니다."),
+    COMMENT_LIKE_NOT_FOUND(HttpStatus.NOT_FOUND, "댓글좋아요를 찾을 수 없습니다."),
 
     /**
      * 405 Method Not Allowed
@@ -74,6 +77,8 @@ public enum ErrorCode {
     DUPLICATE_TEAM(HttpStatus.CONFLICT, "이미 존재하는 팀입니다."),
     DUPLICATE_PARTICIPATION(HttpStatus.CONFLICT, "이미 참여했습니다."),
     DUPLICATE_SCHOOL_MAIL(HttpStatus.CONFLICT, "이미 메일을 보냈습니다."),
+    DUPLICATE_POST_LIKE(HttpStatus.CONFLICT, "이미 게시글을 좋아요했습니다."),
+    DUPLICATE_COMMENT_LIKE(HttpStatus.CONFLICT, "이미 댓글을 좋아요했습니다."),
 
 
     /**
