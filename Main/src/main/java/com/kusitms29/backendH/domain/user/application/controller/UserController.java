@@ -36,10 +36,10 @@ public class UserController {
         return SuccessResponse.ok(responseDto);
     }
     @PostMapping("/onboarding")
-    public ResponseEntity<SuccessResponse<?>> onboarding(/*(@UserId Long userId,*/
+    public ResponseEntity<SuccessResponse<?>> onboarding(@UserId Long userId,
                                                          @RequestPart("profileImage") MultipartFile profileImage,
                                                          @RequestPart("onBoardingRequest") OnBoardingRequestDto requestDto) {
-         OnBoardingResponseDto responseDto = userService.onBoardingUser(Long.parseLong("2"), profileImage, requestDto);
+         OnBoardingResponseDto responseDto = userService.onBoardingUser(userId, profileImage, requestDto);
          return SuccessResponse.ok(responseDto);
     }
 

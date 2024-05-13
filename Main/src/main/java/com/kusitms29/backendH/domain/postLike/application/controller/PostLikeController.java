@@ -15,16 +15,16 @@ public class PostLikeController {
     private final PostLikeService postLikeService;
 
     @PostMapping("/{postId}")
-    public ResponseEntity<SuccessResponse<?>> createCommentLike(/*@UserId Long userId,*/
+    public ResponseEntity<SuccessResponse<?>> createCommentLike(@UserId Long userId,
                                                                 @PathVariable Long postId) {
-        postLikeService.createPostLike(Long.parseLong("2"), postId);
+        postLikeService.createPostLike(userId, postId);
         return SuccessResponse.ok(true);
     }
 
     @DeleteMapping("/{postId}")
-    public ResponseEntity<SuccessResponse<?>> deleteCommentLike(/*@UserId Long userId,*/
+    public ResponseEntity<SuccessResponse<?>> deleteCommentLike(@UserId Long userId,
                                                                 @PathVariable Long postId) {
-        postLikeService.deletePostLike(Long.parseLong("2"), postId);
+        postLikeService.deletePostLike(userId, postId);
         return SuccessResponse.ok(true);
     }
 

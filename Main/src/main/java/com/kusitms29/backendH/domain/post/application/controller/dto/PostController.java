@@ -34,10 +34,10 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<SuccessResponse<?>> createPost(/*@UserId Long userId,*/
+    public ResponseEntity<SuccessResponse<?>> createPost(@UserId Long userId,
                                                          @RequestPart List<MultipartFile> images,
                                                          @RequestPart PostCreateRequestDto requestDto) {
-        PostCreateResponseDto responseDto = postService.createPost(Long.parseLong("2"), images, requestDto);
+        PostCreateResponseDto responseDto = postService.createPost(userId, images, requestDto);
         return SuccessResponse.ok(responseDto);
     }
 
