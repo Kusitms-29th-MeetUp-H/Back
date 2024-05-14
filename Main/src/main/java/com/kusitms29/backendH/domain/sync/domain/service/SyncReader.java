@@ -18,6 +18,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.data.domain.Sort;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +30,10 @@ public class SyncReader {
 //    public List<Sync> findAllByAssociateIsExist(SyncType syncType, Type type){
 //        return syncRepository.findAllBySyncTypeAndTypeAndAssociateIsExistOrderByDateDesc(syncType, type).orElseThrow(()->new EntityNotFoundException(ErrorCode.SYNC_NOT_FOUND));
 //    }
+    public List<Sync> findAllByLocationAndDate(String location, LocalDateTime date){
+        List<Sync> syncList = syncRepository.findAllByLocationAndDate(location,date);
+        return ListUtils.throwIfEmpty(syncList, () -> new EntityNotFoundException(ErrorCode.SYNC_NOT_FOUND));
+    }
     public List<Sync> findAllByAssociateIsExist(SyncType syncType, Type type) {
         Specification<Sync> spec = (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
