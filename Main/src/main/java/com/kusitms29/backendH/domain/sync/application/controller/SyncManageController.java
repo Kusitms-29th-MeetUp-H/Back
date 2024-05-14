@@ -29,7 +29,7 @@ public class SyncManageController {
     @GetMapping("/recommend")
     public ResponseEntity<SuccessResponse<?>> recommendSync(@RequestParam(name = "userId") Long userId, HttpServletRequest request) throws NoSuchAlgorithmException, InvalidKeyException, IOException {
         String clientIp = ipService.getClientIpAddress(request);
-        GeoLocation geoLocation = geoLocationService.getGeoLocation(clientIp);
+//        GeoLocation geoLocation = geoLocationService.getGeoLocation(clientIp);
         List<SyncInfoResponseDto> syncInfoResponseDtos = syncManageService.recommendSync(userId, clientIp);
         return SuccessResponse.ok(syncInfoResponseDtos);
     }

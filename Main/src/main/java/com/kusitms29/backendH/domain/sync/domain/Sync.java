@@ -8,6 +8,7 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -39,6 +40,8 @@ public class Sync extends BaseEntity {
     private String location;
     private LocalDateTime date;
     //지속성에서 정기모임
+    private String regularDay;
+    private LocalTime regularTime;
     private LocalDateTime routineDate;
 
     //지속성 모임 : 모임 횟수
