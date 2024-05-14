@@ -19,8 +19,8 @@ import java.util.List;
 public class SyncReviewController {
     private final SyncReviewService syncReviewService;
     @GetMapping
-    public ResponseEntity<SuccessResponse<?>> getSyncReviewList(@RequestParam(name = "syncId") Long syncId){
-        List<SyncReviewResponseDto> syncReviewResponseDtos = syncReviewService.getSyncReviewList(syncId);
+    public ResponseEntity<SuccessResponse<?>> getSyncReviewList(@RequestParam(name = "syncId") Long syncId, @RequestParam(name = "take",defaultValue = "0") int take){
+        List<SyncReviewResponseDto> syncReviewResponseDtos = syncReviewService.getSyncReviewList(syncId, take);
         return SuccessResponse.ok(syncReviewResponseDtos);
     }
 }
