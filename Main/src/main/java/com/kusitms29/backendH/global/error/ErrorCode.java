@@ -88,7 +88,8 @@ public enum ErrorCode {
     JSON_PARSING_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Json 으로 변환할 수 없는 String 입니다."),
     S3_UPLOAD_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 업로드에 실패했습니다."),
     MAIL_FAIL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "메일 전송에 실패했습니다."),
-    UNIVERSITY_API_FAIL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "대학 검증 API요청을 실패했습니다.");
+    UNIVERSITY_API_FAIL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "대학 검증 API요청을 실패했습니다."),
+    PAPAGO_FAIL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "파파고 API요청을 실패했습니다.");
 
     private final HttpStatus httpStatus;
     private final String message;
