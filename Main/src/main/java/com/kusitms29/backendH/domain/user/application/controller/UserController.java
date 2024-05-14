@@ -13,6 +13,7 @@ import com.kusitms29.backendH.infra.config.auth.UserId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -35,19 +36,20 @@ public class UserController {
         return SuccessResponse.ok(responseDto);
     }
     @PostMapping("/onboarding")
-    public ResponseEntity<SuccessResponse<?>> onboarding(/*@UserId Long userId,*/
-                                                         @RequestBody OnBoardingRequestDto requestDto) {
-         OnBoardingResponseDto responseDto = userService.onBoardingUser(Long.parseLong("2"), requestDto);
+    public ResponseEntity<SuccessResponse<?>> onboarding(@UserId Long userId,
+                                                         @RequestPart("profileImage") MultipartFile profileImage,
+                                                         @RequestPart("onBoardingRequest") OnBoardingRequestDto requestDto) {
+         OnBoardingResponseDto responseDto = userService.onBoardingUser(userId, profileImage, requestDto);
          return SuccessResponse.ok(responseDto);
     }
 
     @PostMapping("/valid-university")
     public ResponseEntity<SuccessResponse<?>> isItValidUniversity(@RequestBody UniversityRequestDto requestDto) {
         universitySerivce.isValidUniversity(requestDto.getUnivName());
-        return SuccessResponse.ok(true);
+        return SuccessResponse.ok(true); //주석
     }
 
-    @GetMapping("/countries")
+    @PostMapping("/countries")
     public ResponseEntity<SuccessResponse<?>> getCountries(@RequestBody CountryCalloutRequestDto requestDto) {
         List<String> countryNames = countryDataService.listOfCountries(requestDto.getPage(), requestDto.getPerPage(), requestDto.getLanguage());
         return SuccessResponse.ok(countryNames);

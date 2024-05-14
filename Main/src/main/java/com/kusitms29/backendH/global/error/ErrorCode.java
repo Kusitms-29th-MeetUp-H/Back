@@ -23,6 +23,7 @@ public enum ErrorCode {
     INVALID_GENDER_TYPE(HttpStatus.BAD_REQUEST, "유효하지 않은 성별타입입니다."),
     INVALID_UNIVERSITY_NAME(HttpStatus.BAD_REQUEST, "유효하지 않은 대학이름입니다."),
     INVALID_UNIVERSITY_DOMAIN(HttpStatus.BAD_REQUEST, "대학과 일치하지 않는 메일 도메인입니다."),
+    INVALID_POST_TYPE(HttpStatus.BAD_REQUEST, "유효하지 않은 게시물타입입니다."),
 
     /**
      * 401 Unauthorized
