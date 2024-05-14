@@ -63,11 +63,11 @@ public class SyncManager {
 
         String status;
         if (beginnerPercent > intermediatePercent && beginnerPercent > advancedPercent) {
-            status = "싱크에 처음 참여해보는 멤버들이 가장 많은 편이에요";
+            status = "처음 참여해보는 멤버";
         } else if (intermediatePercent > beginnerPercent && intermediatePercent > advancedPercent) {
-            status = "싱크를 경험 해 본 멤버들이 가장 많은 편이에요";
+            status = "경험 해 본 멤버";
         } else if (advancedPercent > beginnerPercent && advancedPercent > intermediatePercent) {
-            status = "싱크를 여러 번 경험해 본 멤버들이 가장 많은 편이에요";
+            status = "여러 번 경험해 본 멤버";
         } else {
             status = "다양한 경험을 가진 멤버들이 고르게 분포되어 있어요";
         }
@@ -96,9 +96,9 @@ public class SyncManager {
 
         String status;
         if (koreanPercent < foreignerPercent) {
-            status = "내국인에 비해 외국인의 비율이 더 높은 편이에요";
+            status = "외국인";
         } else if (koreanPercent > foreignerPercent) {
-            status = "외국인에 비해 내국인의 비율이 더 높은 편이에요";
+            status = "내국인";
         } else {
             status = "내국인과 외국인의 비율이 동일해요";
         }
@@ -167,7 +167,7 @@ public class SyncManager {
                 .orElse(null);
 
         if (highestElement != null) {
-            return highestElement.getName() + "의 참여율이 가장 높은 편이에요.";
+            return highestElement.getName();
         } else {
             return "참여자가 없습니다.";
         }
