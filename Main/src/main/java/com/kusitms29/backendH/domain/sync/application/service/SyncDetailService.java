@@ -8,17 +8,21 @@ import com.kusitms29.backendH.domain.sync.application.controller.dto.response.Sy
 import com.kusitms29.backendH.domain.sync.application.controller.dto.response.SyncGraphResponseDto;
 import com.kusitms29.backendH.domain.sync.application.controller.dto.response.SyncInfoResponseDto;
 import com.kusitms29.backendH.domain.sync.domain.Sync;
+import com.kusitms29.backendH.domain.sync.domain.SyncType;
 import com.kusitms29.backendH.domain.sync.domain.service.SyncManager;
 import com.kusitms29.backendH.domain.sync.domain.service.SyncReader;
 import com.kusitms29.backendH.domain.user.domain.User;
 import com.kusitms29.backendH.domain.user.domain.service.UserReader;
 import com.kusitms29.backendH.global.error.ErrorCode;
 import com.kusitms29.backendH.global.error.exception.EntityNotFoundException;
+import com.kusitms29.backendH.global.error.exception.InvalidValueException;
 import com.kusitms29.backendH.global.error.exception.ListUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static com.kusitms29.backendH.global.error.ErrorCode.INVALID_SYNC_TYPE;
 
 @Service
 @RequiredArgsConstructor
@@ -32,21 +36,43 @@ public class SyncDetailService {
     public SyncDetailResponseDto getSyncDetail(Long syncId){
         Sync sync = syncReader.findById(syncId);
         User user = userReader.findByUserId(sync.getUser().getId());
-        return SyncDetailResponseDto.of(
-                sync.getSyncName(),
-                sync.getImage(),
-                sync.getSyncType(),
-                sync.getType(),
-                sync.getSyncIntro(),
-                sync.getDate(),
-                sync.getLocation(),
-                participationManager.countParticipationBySyncId(sync.getId()),
-                sync.getMember_max(),
-                user.getProfile(),
-                user.getUserName(),
-                user.getUniversity(),
-                sync.getUserIntro()
-        );
+        if (sync.getSyncType() == SyncType.ONETIME) {
+            return SyncDetailResponseDto.oneTimeOf(
+                    sync.getSyncName(),
+                    sync.getImage(),
+                    sync.getSyncType(),
+                    sync.getType(),
+                    sync.getSyncIntro(),
+                    sync.getDate(),
+                    sync.getLocation(),
+                    participationManager.countParticipationBySyncId(sync.getId()),
+                    sync.getMember_max(),
+                    user.getProfile(),
+                    user.getUserName(),
+                    user.getUniversity(),
+                    sync.getUserIntro()
+            );
+        } else if (sync.getSyncType() == SyncType.LONGTIME) {
+            return SyncDetailResponseDto.longTimeOf(
+                    sync.getSyncName(),
+                    sync.getImage(),
+                    sync.getSyncType(),
+                    sync.getType(),
+                    sync.getSyncIntro(),
+                    sync.getRegularDay(),
+                    sync.getRegularTime(),
+                    sync.getDate(),
+                    sync.getLocation(),
+                    participationManager.countParticipationBySyncId(sync.getId()),
+                    sync.getMember_max(),
+                    user.getProfile(),
+                    user.getUserName(),
+                    user.getUniversity(),
+                    sync.getUserIntro()
+            );
+        } else {
+            throw new InvalidValueException(INVALID_SYNC_TYPE);
+        }
     }
     public SyncGraphResponseDto getSyncDetailGraph(Long syncId, String graph){
         List<Participation> participations = participationReader.findAllBySyncId(syncId);

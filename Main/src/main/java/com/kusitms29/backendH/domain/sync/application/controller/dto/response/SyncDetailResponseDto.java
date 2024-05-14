@@ -4,6 +4,7 @@ import com.kusitms29.backendH.domain.category.domain.Type;
 import com.kusitms29.backendH.domain.sync.domain.SyncType;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public record SyncDetailResponseDto(
@@ -12,6 +13,7 @@ public record SyncDetailResponseDto(
         String syncType,
         String type,
         String syncIntro,
+        String regularDate,
         String date,
         String location,
         int userCnt,
@@ -22,7 +24,7 @@ public record SyncDetailResponseDto(
         String userIntro
 ) {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("M월 d일 (E) a h:mm");
-    public static SyncDetailResponseDto of(String syncName,
+    public static SyncDetailResponseDto oneTimeOf(String syncName,
                                            String syncImage,
                                            SyncType syncType,
                                            Type type,
@@ -36,6 +38,26 @@ public record SyncDetailResponseDto(
                                            String university,
                                            String userIntro){
         String formattedDate = date.format(DATE_TIME_FORMATTER);
-        return new SyncDetailResponseDto(syncName, syncImage, String.valueOf(syncType), String.valueOf(type), syncIntro, formattedDate, location, userCnt, totalCnt, userImage, userName, university, userIntro);
+        return new SyncDetailResponseDto(syncName, syncImage, String.valueOf(syncType), String.valueOf(type), syncIntro, null, formattedDate, location, userCnt, totalCnt, userImage, userName, university, userIntro);
+    }
+    public static SyncDetailResponseDto longTimeOf(String syncName,
+                                                  String syncImage,
+                                                  SyncType syncType,
+                                                  Type type,
+                                                  String syncIntro,
+                                                  String regularDay,
+                                                  LocalTime regularTime,
+                                                  LocalDateTime date,
+                                                  String location,
+                                                  int userCnt,
+                                                  int totalCnt,
+                                                  String userImage,
+                                                  String userName,
+                                                  String university,
+                                                  String userIntro){
+        String formattedDate = date.format(DATE_TIME_FORMATTER);
+        String formattedRegularTime = regularTime.format(DateTimeFormatter.ofPattern("a h:mm"));
+        String regularDate = "매주 " + regularDay + " " + formattedRegularTime;
+        return new SyncDetailResponseDto(syncName, syncImage, String.valueOf(syncType), String.valueOf(type), syncIntro, regularDate, formattedDate, location, userCnt, totalCnt, userImage, userName, university, userIntro);
     }
 }
