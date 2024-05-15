@@ -1,7 +1,8 @@
-package com.kusitms29.backendH.domain.post.service;
+package com.kusitms29.backendH.api.community.service;
 
 import com.kusitms29.backendH.domain.post.entity.Post;
 import com.kusitms29.backendH.domain.post.entity.PostLike;
+import com.kusitms29.backendH.domain.post.service.*;
 import com.kusitms29.backendH.domain.user.entity.User;
 import com.kusitms29.backendH.domain.user.service.UserReader;
 import com.kusitms29.backendH.global.error.exception.ConflictException;

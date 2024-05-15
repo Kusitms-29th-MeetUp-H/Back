@@ -7,7 +7,7 @@ import com.kusitms29.backendH.api.community.service.PostService;
 import com.kusitms29.backendH.api.community.service.dto.request.CommentCreateRequestDto;
 import com.kusitms29.backendH.api.community.service.dto.request.PostCreateRequestDto;
 import com.kusitms29.backendH.api.community.service.dto.response.*;
-import com.kusitms29.backendH.domain.post.service.PostLikeService;
+import com.kusitms29.backendH.api.community.service.PostLikeService;
 import com.kusitms29.backendH.global.common.SuccessResponse;
 import com.kusitms29.backendH.infra.config.auth.UserId;
 import lombok.RequiredArgsConstructor;
