@@ -1,4 +1,4 @@
-package com.kusitms29.backendH.domain.reply.domain;
+package com.kusitms29.backendH.domain.comment.domain;
 
 import com.kusitms29.backendH.global.common.BaseEntity;
 import com.kusitms29.backendH.domain.comment.domain.Comment;
@@ -10,12 +10,12 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Getter
-@Table(name = "reply")
+@Table(name = "commentLike")
 @Entity
-public class Reply extends BaseEntity {
+public class CommentLike extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "reply_id")
+    @Column(name = "comment_like_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -5,7 +5,7 @@ import com.kusitms29.backendH.domain.comment.application.controller.dto.response
 import com.kusitms29.backendH.domain.comment.domain.Comment;
 import com.kusitms29.backendH.domain.comment.repository.CommentPagingRepository;
 import com.kusitms29.backendH.domain.comment.repository.CommentRepository;
-import com.kusitms29.backendH.domain.commentLike.repository.CommentLikeRepository;
+import com.kusitms29.backendH.domain.comment.repository.CommentLikeRepository;
 import com.kusitms29.backendH.domain.post.domain.Post;
 import com.kusitms29.backendH.domain.post.repository.PostRepository;
 import com.kusitms29.backendH.domain.user.domain.User;

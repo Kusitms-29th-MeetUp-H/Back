@@ -1,6 +1,6 @@
-package com.kusitms29.backendH.domain.commentLike.repository;
+package com.kusitms29.backendH.domain.comment.repository;
 
-import com.kusitms29.backendH.domain.commentLike.domain.CommentLike;
+import com.kusitms29.backendH.domain.comment.domain.CommentLike;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
