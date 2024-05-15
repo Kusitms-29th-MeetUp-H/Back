@@ -16,7 +16,7 @@ import com.kusitms29.backendH.domain.user.domain.service.UserReader;
 import com.kusitms29.backendH.global.error.ErrorCode;
 import com.kusitms29.backendH.global.error.exception.EntityNotFoundException;
 import com.kusitms29.backendH.global.error.exception.InvalidValueException;
-import com.kusitms29.backendH.global.error.exception.ListUtils;
+import com.kusitms29.backendH.global.error.exception.ListException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -95,7 +95,7 @@ public class SyncDetailService {
                         sync.getLocation(),
                         sync.getDate()
                 )).toList(), take);
-        return ListUtils.throwIfEmpty(syncInfoResponseDtos, () -> new EntityNotFoundException(ErrorCode.SYNC_NOT_FOUND));
+        return ListException.throwIfEmpty(syncInfoResponseDtos, () -> new EntityNotFoundException(ErrorCode.SYNC_NOT_FOUND));
     }
 }
 
