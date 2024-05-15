@@ -60,14 +60,12 @@ public class CommunityController {
         return SuccessResponse.ok(responseDtos);
     }
     @PostMapping("/post/like/{postId}")
-    public ResponseEntity<SuccessResponse<?>> createPostLike(@UserId Long userId,
-                                                                @PathVariable Long postId) {
+    public ResponseEntity<SuccessResponse<?>> createPostLike(@UserId Long userId, @PathVariable Long postId) {
         postLikeService.createPostLike(userId, postId);
         return SuccessResponse.ok(true);
     }
     @DeleteMapping("/post/like/{postId}")
-    public ResponseEntity<SuccessResponse<?>> deletePostLike(@UserId Long userId,
-                                                                @PathVariable Long postId) {
+    public ResponseEntity<SuccessResponse<?>> deletePostLike(@UserId Long userId, @PathVariable Long postId) {
         postLikeService.deletePostLike(userId, postId);
         return SuccessResponse.ok(true);
     }
@@ -84,27 +82,27 @@ public class CommunityController {
         return SuccessResponse.ok(commentCreateResponseDto);
     }
     @PostMapping("/comment/like/{commentId}")
-    public ResponseEntity<SuccessResponse<?>> createCommentLike(@UserId Long userId,
-                                                                @PathVariable Long commentId) {
+    public ResponseEntity<SuccessResponse<?>> createCommentLike(@UserId Long userId, @PathVariable Long commentId) {
         commentLikeService.createCommentLike(userId, commentId);
         return SuccessResponse.ok(true);
     }
 
     @DeleteMapping("/comment/like/{commentId}")
-    public ResponseEntity<SuccessResponse<?>> deleteCommentLike(@UserId Long userId,
-                                                                @PathVariable Long commentId) {
+    public ResponseEntity<SuccessResponse<?>> deleteCommentLike(@UserId Long userId, @PathVariable Long commentId) {
         commentLikeService.deleteCommentLike(userId, commentId);
         return SuccessResponse.ok(true);
     }
 
     @PostMapping("/translate")
-    public ResponseEntity<SuccessResponse<?>> translateText(@RequestBody TextTranslationRequest requestDto) {
+    public ResponseEntity<SuccessResponse<?>> translateText(@UserId Long userId,
+                                                            @RequestBody TextTranslationRequest requestDto) {
         TextTranslationResponse responseDto = papagoService.translateText(requestDto);
         return SuccessResponse.ok(responseDto.getMessage().getResult());
     }
 
     @PostMapping("/check-language")
-    public ResponseEntity<SuccessResponse<?>> whatLanguageIsIt(@RequestBody LanguageDetectionRequest requestDto) {
+    public ResponseEntity<SuccessResponse<?>> whatLanguageIsIt(@UserId Long userId,
+                                                               @RequestBody LanguageDetectionRequest requestDto) {
         LanguageDetectionResponse responseDto = papagoService.checkLanguage(requestDto);
         return SuccessResponse.ok(responseDto);
     }
