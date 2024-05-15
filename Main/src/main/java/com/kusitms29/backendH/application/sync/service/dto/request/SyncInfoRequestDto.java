@@ -1,6 +1,4 @@
-package com.kusitms29.backendH.domain.sync.application.controller.dto.request;
-
-import java.util.List;
+package com.kusitms29.backendH.application.sync.service.dto.request;
 
 public record SyncInfoRequestDto(
         int take,

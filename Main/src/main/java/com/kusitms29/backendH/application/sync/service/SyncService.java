@@ -1,9 +1,10 @@
-package com.kusitms29.backendH.domain.sync.application.service;
+package com.kusitms29.backendH.application.sync.service;
 
+
+import com.kusitms29.backendH.application.sync.service.dto.response.SyncAssociateInfoResponseDto;
+import com.kusitms29.backendH.application.sync.service.dto.response.SyncInfoResponseDto;
 import com.kusitms29.backendH.domain.category.domain.Type;
 import com.kusitms29.backendH.domain.participation.domain.service.ParticipationManager;
-import com.kusitms29.backendH.domain.sync.application.controller.dto.response.SyncAssociateInfoResponseDto;
-import com.kusitms29.backendH.domain.sync.application.controller.dto.response.SyncInfoResponseDto;
 import com.kusitms29.backendH.domain.sync.domain.Sync;
 import com.kusitms29.backendH.domain.sync.domain.service.SyncReader;
 import com.kusitms29.backendH.domain.user.domain.User;
@@ -22,7 +23,7 @@ import static com.kusitms29.backendH.domain.sync.domain.SyncType.getEnumFROMStri
 
 @Service
 @RequiredArgsConstructor
-public class SyncManageService {
+public class SyncService {
     private final SyncReader syncReader;
     private final UserReader userReader;
     private final UserCategoryReader userCategoryReader;
@@ -51,16 +52,16 @@ public class SyncManageService {
                 //음 이거보다 위에서 if문써서 하는게 더 가독성 있는듯
 //                .filter(sync -> type == null || sync.getType().name().equals(type))
                 .map( sync -> SyncInfoResponseDto.of(
-                sync.getId(),
-                sync.getSyncType(),
-                sync.getType(),
-                sync.getImage(),
-                participationManager.countParticipationBySyncId(sync.getId()),
-                sync.getMember_max(),
-                sync.getSyncName(),
-                sync.getLocation(),
-                sync.getDate()
-        )).toList();
+                        sync.getId(),
+                        sync.getSyncType(),
+                        sync.getType(),
+                        sync.getImage(),
+                        participationManager.countParticipationBySyncId(sync.getId()),
+                        sync.getMember_max(),
+                        sync.getSyncName(),
+                        sync.getLocation(),
+                        sync.getDate()
+                )).toList();
     }
     public List<SyncAssociateInfoResponseDto> associateSync(String syncType, String type){
         List<Sync> syncList = syncReader.findAllByAssociateIsExist(getEnumFROMStringSyncType(syncType), getEnumTypeFromStringType(type));
@@ -100,3 +101,4 @@ public class SyncManageService {
         }
     }
 }
+

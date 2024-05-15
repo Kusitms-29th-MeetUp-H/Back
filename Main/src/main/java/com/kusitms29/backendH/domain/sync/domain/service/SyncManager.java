@@ -1,9 +1,9 @@
 package com.kusitms29.backendH.domain.sync.domain.service;
 
+import com.kusitms29.backendH.application.sync.service.dto.response.GraphElement;
+import com.kusitms29.backendH.application.sync.service.dto.response.SyncGraphResponseDto;
 import com.kusitms29.backendH.domain.participation.domain.Participation;
 import com.kusitms29.backendH.domain.participation.domain.service.ParticipationReader;
-import com.kusitms29.backendH.domain.sync.application.controller.dto.response.GraphElement;
-import com.kusitms29.backendH.domain.sync.application.controller.dto.response.SyncGraphResponseDto;
 import com.kusitms29.backendH.domain.sync.domain.Gender;
 import com.kusitms29.backendH.domain.user.domain.User;
 import com.kusitms29.backendH.domain.user.domain.service.UserReader;

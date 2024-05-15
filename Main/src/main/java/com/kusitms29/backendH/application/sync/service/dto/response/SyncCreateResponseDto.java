@@ -1,4 +1,4 @@
-package com.kusitms29.backendH.domain.sync.application.controller.dto.response;
+package com.kusitms29.backendH.application.sync.service.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;

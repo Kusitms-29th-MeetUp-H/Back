@@ -1,12 +1,12 @@
-package com.kusitms29.backendH.domain.sync.application.service;
+package com.kusitms29.backendH.application.sync.service;
 
+
+import com.kusitms29.backendH.application.sync.service.dto.response.SyncDetailResponseDto;
+import com.kusitms29.backendH.application.sync.service.dto.response.SyncGraphResponseDto;
+import com.kusitms29.backendH.application.sync.service.dto.response.SyncInfoResponseDto;
 import com.kusitms29.backendH.domain.participation.domain.Participation;
 import com.kusitms29.backendH.domain.participation.domain.service.ParticipationManager;
 import com.kusitms29.backendH.domain.participation.domain.service.ParticipationReader;
-import com.kusitms29.backendH.domain.sync.application.controller.dto.response.GraphElement;
-import com.kusitms29.backendH.domain.sync.application.controller.dto.response.SyncDetailResponseDto;
-import com.kusitms29.backendH.domain.sync.application.controller.dto.response.SyncGraphResponseDto;
-import com.kusitms29.backendH.domain.sync.application.controller.dto.response.SyncInfoResponseDto;
 import com.kusitms29.backendH.domain.sync.domain.Sync;
 import com.kusitms29.backendH.domain.sync.domain.SyncType;
 import com.kusitms29.backendH.domain.sync.domain.service.SyncManager;
@@ -32,7 +32,7 @@ public class SyncDetailService {
     private final ParticipationManager participationManager;
     private final SyncManager syncManager;
     private final ParticipationReader participationReader;
-    private final SyncManageService syncManageService;
+    private final com.kusitms29.backendH.infra.config.utils.ListUtils syncManageService;
     public SyncDetailResponseDto getSyncDetail(Long syncId){
         Sync sync = syncReader.findById(syncId);
         User user = userReader.findByUserId(sync.getUser().getId());
@@ -85,16 +85,17 @@ public class SyncDetailService {
         List<SyncInfoResponseDto> syncInfoResponseDtos = syncManageService.getSyncInfoByTake(syncList.stream()
                 .filter(sync -> !sync.getId().equals(syncId))
                 .map( sync -> SyncInfoResponseDto.of(
-                sync.getId(),
-                sync.getSyncType(),
-                sync.getType(),
-                sync.getImage(),
-                participationManager.countParticipationBySyncId(sync.getId()),
-                sync.getMember_max(),
-                sync.getSyncName(),
-                sync.getLocation(),
-                sync.getDate()
-        )).toList(), take);
+                        sync.getId(),
+                        sync.getSyncType(),
+                        sync.getType(),
+                        sync.getImage(),
+                        participationManager.countParticipationBySyncId(sync.getId()),
+                        sync.getMember_max(),
+                        sync.getSyncName(),
+                        sync.getLocation(),
+                        sync.getDate()
+                )).toList(), take);
         return ListUtils.throwIfEmpty(syncInfoResponseDtos, () -> new EntityNotFoundException(ErrorCode.SYNC_NOT_FOUND));
     }
 }
+
