@@ -92,6 +92,12 @@ public class CommunityController {
         return SuccessResponse.ok(true);
     }
 
+    @PostMapping("/comment/report/{commentId}")
+    public ResponseEntity<SuccessResponse<?>> reportComment(@UserId Long userId, @PathVariable Long commentId) {
+        int reportedCount = commentService.reportComment(userId, commentId);
+        return SuccessResponse.ok(true);
+    }
+
     @PostMapping("/translate")
     public ResponseEntity<SuccessResponse<?>> translateText(@UserId Long userId,
                                                             @RequestBody TextTranslationRequest requestDto) {

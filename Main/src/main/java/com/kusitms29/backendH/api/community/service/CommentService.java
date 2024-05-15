@@ -80,5 +80,18 @@ public class CommentService {
         );
     }
 
+    public int reportComment(Long userId, Long commentId) {
+        Comment comment = commentReader.findById(commentId);
+        User user = userReader.findByUserId(userId);
+
+        if(comment.getReported() >= 2) {
+            commentModifier.delete(comment);
+            return 3;
+        }
+
+        commentModifier.increaseReportedCount(commentId);
+        return comment.getReported();
+    }
+
 
 }

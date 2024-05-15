@@ -17,4 +17,12 @@ public class CommentModifier {
     public Comment save(Comment comment) {
         return commentRepository.save(comment);
     }
+
+    public void increaseReportedCount(Long commentId) {
+        commentRepository.increaseReportedCount(commentId);
+    }
+
+    public void delete(Comment comment) {
+        commentRepository.delete(comment);
+    }
 }
