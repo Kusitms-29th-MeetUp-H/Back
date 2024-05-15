@@ -1,6 +1,5 @@
-package com.kusitms29.backendH.domain.post.domain;
+package com.kusitms29.backendH.domain.post.entity;
 
-import com.kusitms29.backendH.global.error.ErrorCode;
 import com.kusitms29.backendH.global.error.exception.InvalidValueException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

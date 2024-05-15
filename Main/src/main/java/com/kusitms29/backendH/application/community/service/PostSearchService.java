@@ -1,7 +1,7 @@
 package com.kusitms29.backendH.application.community.service;
 
 import com.kusitms29.backendH.domain.post.application.controller.dto.response.PostSearchResponseDto;
-import com.kusitms29.backendH.domain.post.domain.Post;
+import com.kusitms29.backendH.domain.post.entity.Post;
 import com.kusitms29.backendH.domain.post.repository.PostPagingRepository;
 import com.kusitms29.backendH.domain.post.repository.PostRepository;
 import com.kusitms29.backendH.domain.user.domain.User;

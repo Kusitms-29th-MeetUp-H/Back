@@ -1,7 +1,7 @@
 package com.kusitms29.backendH.domain.comment.domain;
 
 import com.kusitms29.backendH.global.common.BaseEntity;
-import com.kusitms29.backendH.domain.post.domain.Post;
+import com.kusitms29.backendH.domain.post.entity.Post;
 import com.kusitms29.backendH.domain.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;

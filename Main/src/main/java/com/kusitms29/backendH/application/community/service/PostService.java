@@ -6,13 +6,13 @@ import com.kusitms29.backendH.domain.post.application.controller.dto.request.Pos
 import com.kusitms29.backendH.domain.post.application.controller.dto.response.PostCreateResponseDto;
 import com.kusitms29.backendH.domain.post.application.controller.dto.response.PostDetailResponseDto;
 import com.kusitms29.backendH.domain.post.application.controller.dto.response.PostResponseDto;
-import com.kusitms29.backendH.domain.post.domain.Post;
-import com.kusitms29.backendH.domain.post.domain.PostImage;
-import com.kusitms29.backendH.domain.post.domain.PostType;
+import com.kusitms29.backendH.domain.post.entity.Post;
+import com.kusitms29.backendH.domain.post.entity.PostImage;
+import com.kusitms29.backendH.domain.post.entity.PostType;
 import com.kusitms29.backendH.domain.post.repository.PostImageRepository;
 import com.kusitms29.backendH.domain.post.repository.PostPagingRepository;
 import com.kusitms29.backendH.domain.post.repository.PostRepository;
-import com.kusitms29.backendH.domain.postLike.repository.PostLikeRepository;
+import com.kusitms29.backendH.domain.post.repository.PostLikeRepository;
 import com.kusitms29.backendH.domain.user.domain.User;
 import com.kusitms29.backendH.domain.user.repository.UserRepository;
 import com.kusitms29.backendH.global.error.exception.EntityNotFoundException;

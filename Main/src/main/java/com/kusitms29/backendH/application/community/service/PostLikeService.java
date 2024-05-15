@@ -1,9 +1,9 @@
 package com.kusitms29.backendH.application.community.service;
 
-import com.kusitms29.backendH.domain.post.domain.Post;
+import com.kusitms29.backendH.domain.post.entity.Post;
 import com.kusitms29.backendH.domain.post.repository.PostRepository;
-import com.kusitms29.backendH.domain.postLike.domain.PostLike;
-import com.kusitms29.backendH.domain.postLike.repository.PostLikeRepository;
+import com.kusitms29.backendH.domain.post.entity.PostLike;
+import com.kusitms29.backendH.domain.post.repository.PostLikeRepository;
 import com.kusitms29.backendH.domain.user.domain.User;
 import com.kusitms29.backendH.domain.user.repository.UserRepository;
 import com.kusitms29.backendH.global.error.exception.ConflictException;
