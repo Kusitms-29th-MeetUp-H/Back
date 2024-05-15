@@ -13,8 +13,6 @@ import com.kusitms29.backendH.domain.user.service.UserReader;
 import com.kusitms29.backendH.global.error.exception.NotAllowedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,8 +32,8 @@ public class CommentService {
     private final UserReader userReader;
     private final CommentModifier commentModifier;
 
-    public List<CommentResponseDto> getCommentsInPost(Long userId, Long postId, Pageable pageable) {
-        Page<Comment> comments = commentReader.findByPostId(postId, pageable);
+    public List<CommentResponseDto> getCommentsInPost(Long userId, Long postId) {
+        List<Comment> comments = commentReader.findByPostId(postId);
         return comments.stream()
                 .map(comment -> mapToCommentResponseDto(comment, userId))
                 .collect(Collectors.toList());
