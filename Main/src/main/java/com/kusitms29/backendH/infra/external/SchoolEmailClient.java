@@ -2,12 +2,12 @@ package com.kusitms29.backendH.infra.external;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kusitms29.backendH.application.user.service.dto.request.schoolEmail.CalloutSchoolEmailRequestDto;
-import com.kusitms29.backendH.application.user.service.dto.request.schoolEmail.CalloutSchoolEmailVerificationRequestDto;
-import com.kusitms29.backendH.application.user.service.dto.request.schoolEmail.SchoolEmailRequestDto;
-import com.kusitms29.backendH.application.user.service.dto.request.schoolEmail.SchoolEmailVerificationRequestDto;
-import com.kusitms29.backendH.application.user.service.dto.response.schoolEmail.CalloutErrorResponse;
-import com.kusitms29.backendH.application.user.service.dto.response.schoolEmail.CalloutSchoolEmailVerificationResponseDto;
+import com.kusitms29.backendH.api.user.service.dto.request.schoolEmail.CalloutSchoolEmailRequestDto;
+import com.kusitms29.backendH.api.user.service.dto.request.schoolEmail.CalloutSchoolEmailVerificationRequestDto;
+import com.kusitms29.backendH.api.user.service.dto.request.schoolEmail.SchoolEmailRequestDto;
+import com.kusitms29.backendH.api.user.service.dto.request.schoolEmail.SchoolEmailVerificationRequestDto;
+import com.kusitms29.backendH.api.user.service.dto.response.schoolEmail.CalloutErrorResponse;
+import com.kusitms29.backendH.api.user.service.dto.response.schoolEmail.CalloutSchoolEmailVerificationResponseDto;
 import com.kusitms29.backendH.global.error.exception.InvalidValueException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

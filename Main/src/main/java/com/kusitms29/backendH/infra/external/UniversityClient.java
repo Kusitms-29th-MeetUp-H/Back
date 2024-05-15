@@ -1,6 +1,6 @@
 package com.kusitms29.backendH.infra.external;
 
-import com.kusitms29.backendH.application.user.service.dto.response.schoolEmail.CalloutErrorResponse;
+import com.kusitms29.backendH.api.user.service.dto.response.schoolEmail.CalloutErrorResponse;
 import com.kusitms29.backendH.global.error.exception.InvalidValueException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
