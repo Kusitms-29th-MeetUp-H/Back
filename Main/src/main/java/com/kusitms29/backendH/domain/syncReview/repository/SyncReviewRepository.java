@@ -1,4 +1,4 @@
-package com.kusitms29.backendH.domain.syncReview.domain.repository;
+package com.kusitms29.backendH.domain.syncReview.repository;
 
 import com.kusitms29.backendH.domain.syncReview.domain.SyncReview;
 import org.springframework.data.jpa.repository.JpaRepository;

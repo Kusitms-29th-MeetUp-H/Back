@@ -1,4 +1,4 @@
-package com.kusitms29.backendH.domain.syncReview.application.service.dto;
+package com.kusitms29.backendH.application.sync.service.dto.response;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
