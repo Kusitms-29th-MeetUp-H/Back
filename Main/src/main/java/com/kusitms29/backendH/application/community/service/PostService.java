@@ -1,6 +1,5 @@
 package com.kusitms29.backendH.application.community.service;
 
-import com.kusitms29.backendH.domain.comment.repository.CommentRepository;
 import com.kusitms29.backendH.domain.post.application.controller.dto.request.PostCalculateDto;
 import com.kusitms29.backendH.domain.post.application.controller.dto.request.PostCreateRequestDto;
 import com.kusitms29.backendH.domain.post.application.controller.dto.response.PostCreateResponseDto;
@@ -9,13 +8,7 @@ import com.kusitms29.backendH.domain.post.application.controller.dto.response.Po
 import com.kusitms29.backendH.domain.post.domain.Post;
 import com.kusitms29.backendH.domain.post.domain.PostImage;
 import com.kusitms29.backendH.domain.post.domain.PostType;
-import com.kusitms29.backendH.domain.post.repository.PostImageRepository;
-import com.kusitms29.backendH.domain.post.repository.PostPagingRepository;
-import com.kusitms29.backendH.domain.post.repository.PostRepository;
-import com.kusitms29.backendH.domain.postLike.repository.PostLikeRepository;
 import com.kusitms29.backendH.domain.user.domain.User;
-import com.kusitms29.backendH.domain.user.repository.UserRepository;
-import com.kusitms29.backendH.global.error.exception.EntityNotFoundException;
 import com.kusitms29.backendH.global.error.exception.NotAllowedException;
 import com.kusitms29.backendH.infra.config.AwsS3Service;
 import lombok.RequiredArgsConstructor;
@@ -36,17 +29,18 @@ import static com.kusitms29.backendH.global.error.ErrorCode.*;
 @Transactional
 @Service
 public class PostService {
-    private final PostPagingRepository postPagingRepository;
-    private final PostLikeRepository postLikeRepository;
-    private final CommentRepository commentRepository;
-    private final UserRepository userRepository;
     private final AwsS3Service awsS3Service;
-    private final PostRepository postRepository;
-    private final PostImageRepository postImageRepository;
+    private final PostReader postReader;
+    private final PostLikeManager postLikeManager;
+    private final CommentManager commentManager;
+    private final PostImageReader postImageReader;
+    private final UserReader userReader;
+    private final PostAppender postAppender;
+    private final PostImageAppender postImageAppender;
 
     public List<PostResponseDto> getPagingPostByPostType(Long userId, String postType, Pageable pageable) {
         PostType enumPostType = PostType.getEnumPostTypeFromStringPostType(postType);
-        Page<Post> lifePosts = postPagingRepository.findByPostType(enumPostType, pageable);
+        Page<Post> lifePosts = postReader.findByPostType(enumPostType, pageable);
         return lifePosts.stream()
                 .map(post -> mapToPostResponseDto(post, userId))
                 .collect(Collectors.toList());
@@ -54,7 +48,7 @@ public class PostService {
 
     private PostResponseDto mapToPostResponseDto(Post post, Long userId) {
         PostCalculateDto postCalculateDto = calculatePostDetail(post, userId);
-        PostImage postImage = postImageRepository.findByPostIdAndIsRepresentative(post.getId(), true);
+        PostImage postImage = postImageReader.findByPostIdAndIsRepresentative(post.getId(), true);
 
         return PostResponseDto.of(
                 post.getId(),
@@ -73,12 +67,10 @@ public class PostService {
     }
 
     public PostDetailResponseDto getDetailPost(Long userId, Long postId) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(()-> new EntityNotFoundException(POST_NOT_FOUND));
-
+        Post post = postReader.findById(postId);
         PostCalculateDto postCalculateDto = calculatePostDetail(post, userId);
 
-        List<String> imageUrls = postImageRepository.findByPostId(post.getId())
+        List<String> imageUrls = postImageReader.findByPostId(post.getId())
                 .stream()
                 .map(PostImage::getImage_url)
                 .collect(Collectors.toList());
@@ -99,16 +91,15 @@ public class PostService {
     }
 
     private PostCalculateDto calculatePostDetail(Post post, Long userId) {
-        int likeCount = postLikeRepository.countByPostId(post.getId());
-        boolean isLikedByUser = postLikeRepository.existsByPostIdAndUserId(post.getId(), userId);
-        int commentCount = commentRepository.countByPostId(post.getId());
+        int likeCount = postLikeManager.countByPostId(post.getId());
+        boolean isLikedByUser = postLikeManager.existsByPostIdAndUserId(post.getId(), userId);
+        int commentCount = commentManager.countByPostId(post.getId());
         boolean isPostedByUser = post.getUser().getId() == userId;
         return new PostCalculateDto(likeCount, isLikedByUser, commentCount, isPostedByUser);
     }
 
     public PostCreateResponseDto createPost(Long userId, List<MultipartFile> images, PostCreateRequestDto requestDto) {
-        User writer = userRepository.findById(userId)
-                .orElseThrow(()-> new EntityNotFoundException(USER_NOT_FOUND));
+        User writer = userReader.findById(userId);
         PostType postType = PostType.getEnumPostTypeFromStringPostType(requestDto.getPostType());
 
         String title = requestDto.getTitle();
@@ -123,7 +114,7 @@ public class PostService {
             throw new NotAllowedException(TOO_MANY_IMAGES_NOT_ALLOWED);
         }
 
-        Post newPost = postRepository.save
+        Post newPost = postAppender.save
                 (Post.builder()
                         .user(writer)
                         .postType(postType)
@@ -133,7 +124,7 @@ public class PostService {
 
         List<String> imageUrls = awsS3Service.uploadImages(images);
         for(int i=0; i<images.size(); i++) {
-            postImageRepository.save(PostImage.builder()
+            postImageAppender.save(PostImage.builder()
                     .post(newPost)
                     .image_url(imageUrls.get(i))
                     .isRepresentative(i == 0)
@@ -148,3 +139,4 @@ public class PostService {
         );
     }
 }
+

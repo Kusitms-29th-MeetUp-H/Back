@@ -1,13 +1,9 @@
 package com.kusitms29.backendH.application.community.service;
 
 import com.kusitms29.backendH.domain.comment.domain.Comment;
-import com.kusitms29.backendH.domain.comment.repository.CommentRepository;
 import com.kusitms29.backendH.domain.commentLike.domain.CommentLike;
-import com.kusitms29.backendH.domain.commentLike.repository.CommentLikeRepository;
 import com.kusitms29.backendH.domain.user.domain.User;
-import com.kusitms29.backendH.domain.user.repository.UserRepository;
 import com.kusitms29.backendH.global.error.exception.ConflictException;
-import com.kusitms29.backendH.global.error.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,21 +16,20 @@ import static com.kusitms29.backendH.global.error.ErrorCode.*;
 @Transactional
 @Service
 public class CommentLikeService {
-    private final UserRepository userRepository;
-    private final CommentRepository commentRepository;
-    private final CommentLikeRepository commentLikeRepository;
+    private final UserReader userReader;
+    private final CommentReader commentReader;
+    private final CommentLikeReader commentLikeReader;
+    private final CommentLikeModifier commentLikeModifier;
 
     public void createCommentLike(Long userId, Long commentId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException(USER_NOT_FOUND));
-        Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new EntityNotFoundException(COMMENT_NOT_FOUND));
+        User user = userReader.findById(userId);
+        Comment comment = commentReader.findById(commentId);
 
-        if(commentLikeRepository.existsByCommentIdAndUserId(commentId, userId)) {
+        if(commentLikeReader.existsByCommentIdAndUserId(commentId, userId)) {
             throw new ConflictException(DUPLICATE_COMMENT_LIKE);
         }
 
-        commentLikeRepository.save
+        commentLikeModifier.save
                 (CommentLike.builder()
                         .user(user)
                         .comment(comment)
@@ -42,17 +37,10 @@ public class CommentLikeService {
     }
 
     public void deleteCommentLike(Long userId, Long commentId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException(USER_NOT_FOUND));
-        Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new EntityNotFoundException(COMMENT_NOT_FOUND));
-
-        CommentLike commentLike = commentLikeRepository.findByCommentIdAndUserId(commentId, userId)
-                .orElseThrow(() -> new EntityNotFoundException(COMMENT_LIKE_NOT_FOUND));
-
-        commentLikeRepository.delete(commentLike);
+        User user = userReader.findById(userId);
+        Comment comment = commentReader.findById(commentId);
+        CommentLike commentLike = commentLikeReader.findByCommentIdAndUserId(commentId, userId);
+        commentLikeModifier.delete(commentLike);
     }
-
-
 
 }
