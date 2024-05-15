@@ -1,13 +1,10 @@
 package com.kusitms29.backendH.api.community.controller;
 
-import com.kusitms29.backendH.api.community.service.CommentLikeService;
-import com.kusitms29.backendH.api.community.service.CommentService;
-import com.kusitms29.backendH.api.community.service.PostSearchService;
-import com.kusitms29.backendH.api.community.service.PostService;
+import com.kusitms29.backendH.api.community.service.*;
 import com.kusitms29.backendH.api.community.service.dto.request.CommentCreateRequestDto;
 import com.kusitms29.backendH.api.community.service.dto.request.PostCreateRequestDto;
 import com.kusitms29.backendH.api.community.service.dto.response.*;
-import com.kusitms29.backendH.api.community.service.PostLikeService;
+import com.kusitms29.backendH.api.user.service.UserService;
 import com.kusitms29.backendH.global.common.SuccessResponse;
 import com.kusitms29.backendH.infra.config.auth.UserId;
 import com.kusitms29.backendH.infra.external.clova.papago.PapagoService;
@@ -26,12 +23,20 @@ import java.util.List;
 @RequestMapping("/api/community")
 @RestController
 public class CommunityController {
+    private final UserService userService;
     private final PostService postService;
     private final PostSearchService postSearchService;
     private final PostLikeService postLikeService;
     private final CommentService commentService;
     private final CommentLikeService commentLikeService;
+    private final ReplyService replyService;
     private final PapagoService papagoService;
+
+    @GetMapping("/banner-image")
+    public ResponseEntity<SuccessResponse<?>> getLoginUserImage(@UserId Long userId) {
+        BannerImageResponseDto responseDto = userService.getLoginUserImage(userId);
+        return SuccessResponse.ok(responseDto);
+    }
 
     @GetMapping("/post")
     public ResponseEntity<SuccessResponse<?>> getPostByPostType(@UserId Long userId, @RequestParam String postType) {
@@ -90,6 +95,19 @@ public class CommunityController {
     public ResponseEntity<SuccessResponse<?>> deleteCommentLike(@UserId Long userId, @PathVariable Long commentId) {
         commentLikeService.deleteCommentLike(userId, commentId);
         return SuccessResponse.ok(true);
+    }
+
+    @PostMapping("/comment/report/{commentId}")
+    public ResponseEntity<SuccessResponse<?>> reportComment(@UserId Long userId, @PathVariable Long commentId) {
+        int reportedCount = commentService.reportComment(userId, commentId);
+        return SuccessResponse.ok(true);
+    }
+
+    @PostMapping("/reply/{commentId}")
+    public ResponseEntity<SuccessResponse<?>> createReply(@UserId Long userId, @PathVariable Long commentId,
+                                                          @RequestBody CommentCreateRequestDto requestDto) {
+        ReplyCreateResponseDto responseDto = replyService.createReply(userId, commentId, requestDto.getContent());
+        return SuccessResponse.ok(responseDto);
     }
 
     @PostMapping("/translate")

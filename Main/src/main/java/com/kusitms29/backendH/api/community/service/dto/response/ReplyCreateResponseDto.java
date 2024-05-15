@@ -8,24 +8,24 @@ import java.time.LocalDateTime;
 
 @Builder
 @Getter
-public class CommentCreateResponseDto {
-    private Long commentId;
+public class ReplyCreateResponseDto {
+    private Long replyId;
     private String writerImage;
     private String writerName;
     private String createdDate;
     private String content;
-    private boolean isCommentedByUser;
+    private boolean isRepliedByUser;
 
-    public static CommentCreateResponseDto of(Long commentId, String writerImage, String writerName,
-                                              LocalDateTime createdDate, String content, boolean isCommentedByUser) {
+    public static ReplyCreateResponseDto of(Long commentId, String writerImage, String writerName,
+                                              LocalDateTime createdDate, String content, boolean isRepliedByUser) {
 
-        return CommentCreateResponseDto.builder()
-                .commentId(commentId)
+        return ReplyCreateResponseDto.builder()
+                .replyId(commentId)
                 .writerImage(writerImage)
                 .writerName(writerName)
                 .createdDate(TimeCalculator.calculateTimeDifference(createdDate))
                 .content(content)
-                .isCommentedByUser(isCommentedByUser)
+                .isRepliedByUser(isRepliedByUser)
                 .build();
     }
 }
