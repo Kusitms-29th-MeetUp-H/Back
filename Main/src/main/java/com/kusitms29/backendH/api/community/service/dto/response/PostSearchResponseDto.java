@@ -1,5 +1,6 @@
 package com.kusitms29.backendH.api.community.service.dto.response;
 
+import com.kusitms29.backendH.global.common.TimeCalculator;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -14,7 +15,7 @@ public class PostSearchResponseDto {
     private String userName;
     private String title;
     private String content;
-    private LocalDateTime createdAt;
+    private String createdAt;
 
     public static PostSearchResponseDto of(Long postId, String postType,
                                            String userImage, String userName,
@@ -27,7 +28,7 @@ public class PostSearchResponseDto {
                 .userName(userName)
                 .title(title)
                 .content(content)
-                .createdAt(createdAt)
+                .createdAt(TimeCalculator.calculateTimeDifference(createdAt))
                 .build();
     }
 }

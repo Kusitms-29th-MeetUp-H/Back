@@ -1,5 +1,6 @@
 package com.kusitms29.backendH.api.community.service.dto.response;
 
+import com.kusitms29.backendH.global.common.TimeCalculator;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -12,7 +13,7 @@ public class PostDetailResponseDto {
     private String postType;
     private String writerImage;
     private String writerName;
-    private LocalDateTime createdDate;
+    private String createdDate;
     private String title;
     private String content;
     private int likeCnt;
@@ -29,7 +30,7 @@ public class PostDetailResponseDto {
                 .postType(postType)
                 .writerImage(writerImage)
                 .writerName(writerName)
-                .createdDate(createdDate)
+                .createdDate(TimeCalculator.calculateTimeDifference(createdDate))
                 .title(title)
                 .content(content)
                 .likeCnt(likeCnt)

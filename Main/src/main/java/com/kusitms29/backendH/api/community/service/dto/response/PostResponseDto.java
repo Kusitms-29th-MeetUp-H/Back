@@ -1,8 +1,10 @@
 package com.kusitms29.backendH.api.community.service.dto.response;
 
+import com.kusitms29.backendH.global.common.TimeCalculator;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Builder
@@ -12,7 +14,7 @@ public class PostResponseDto {
     private String postType;
     private String writerImage;
     private String writerName;
-    private LocalDateTime createdDate;
+    private String createdDate;
     private String title;
     private String content;
     private String representativeImage;
@@ -29,7 +31,7 @@ public class PostResponseDto {
                 .postType(postType)
                 .writerImage(writerImage)
                 .writerName(writerName)
-                .createdDate(createdDate)
+                .createdDate(TimeCalculator.calculateTimeDifference(createdDate))
                 .title(title)
                 .content(content)
                 .representativeImage(representativeImage)

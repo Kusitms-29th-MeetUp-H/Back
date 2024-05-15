@@ -43,6 +43,7 @@ public class CommentService {
         int commentLikeCnt = commentLikeManager.countByCommentId(comment.getId());
         boolean isCommentedByUser = comment.getUser().getId() == userId;
 
+        log.info("commentservice : comment.getCreatedAt() {} ", comment.getCreatedAt());
         return CommentResponseDto.of(
                 comment.getId(),
                 comment.getUser().getProfile(),

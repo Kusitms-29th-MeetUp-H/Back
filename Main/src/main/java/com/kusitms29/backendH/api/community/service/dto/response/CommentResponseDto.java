@@ -1,5 +1,6 @@
 package com.kusitms29.backendH.api.community.service.dto.response;
 
+import com.kusitms29.backendH.global.common.TimeCalculator;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -11,7 +12,7 @@ public class CommentResponseDto {
     private Long commentId;
     private String writerImage;
     private String writerName;
-    private LocalDateTime createdDate;
+    private String createdDate;
     private String content;
     private int likeCnt;
     private int reportedCnt;
@@ -21,11 +22,12 @@ public class CommentResponseDto {
     public static CommentResponseDto of(Long commentId, String writerImage, String writerName,
                                         LocalDateTime createdDate, String content,
                                         int likeCnt, int reportedCnt, Boolean isCommentedByUser) {
+
         return CommentResponseDto.builder()
                 .commentId(commentId)
                 .writerImage(writerImage)
                 .writerName(writerName)
-                .createdDate(createdDate)
+                .createdDate(TimeCalculator.calculateTimeDifference(createdDate))
                 .content(content)
                 .likeCnt(likeCnt)
                 .reportedCnt(reportedCnt)
