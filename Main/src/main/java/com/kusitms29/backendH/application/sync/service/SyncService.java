@@ -4,12 +4,12 @@ package com.kusitms29.backendH.application.sync.service;
 import com.kusitms29.backendH.application.sync.service.dto.request.SyncInfoRequestDto;
 import com.kusitms29.backendH.application.sync.service.dto.response.SyncAssociateInfoResponseDto;
 import com.kusitms29.backendH.application.sync.service.dto.response.SyncInfoResponseDto;
-import com.kusitms29.backendH.domain.category.domain.Type;
+import com.kusitms29.backendH.domain.category.entity.Type;
 import com.kusitms29.backendH.domain.participation.domain.service.ParticipationManager;
 import com.kusitms29.backendH.domain.sync.entity.Sync;
 import com.kusitms29.backendH.domain.sync.service.SyncReader;
 import com.kusitms29.backendH.domain.user.entity.User;
-import com.kusitms29.backendH.domain.user.entity.UserCategory;
+import com.kusitms29.backendH.domain.category.entity.UserCategory;
 import com.kusitms29.backendH.domain.user.service.UserCategoryManager;
 import com.kusitms29.backendH.domain.user.service.UserCategoryReader;
 import com.kusitms29.backendH.domain.user.service.UserReader;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.kusitms29.backendH.domain.category.domain.Type.getEnumTypeFromStringType;
+import static com.kusitms29.backendH.domain.category.entity.Type.getEnumTypeFromStringType;
 import static com.kusitms29.backendH.domain.sync.entity.SyncType.FROM_FRIEND;
 import static com.kusitms29.backendH.domain.sync.entity.SyncType.getEnumFROMStringSyncType;
 

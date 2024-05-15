@@ -1,6 +1,6 @@
 package com.kusitms29.backendH.domain.sync.service;
 
-import com.kusitms29.backendH.domain.category.domain.Type;
+import com.kusitms29.backendH.domain.category.entity.Type;
 import com.kusitms29.backendH.domain.sync.entity.Sync;
 import com.kusitms29.backendH.domain.sync.entity.SyncType;
 import com.kusitms29.backendH.domain.sync.repository.SyncRepository;

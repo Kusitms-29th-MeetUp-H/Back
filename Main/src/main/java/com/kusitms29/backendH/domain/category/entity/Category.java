@@ -1,4 +1,4 @@
-package com.kusitms29.backendH.domain.category.domain;
+package com.kusitms29.backendH.domain.category.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

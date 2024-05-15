@@ -1,4 +1,4 @@
-package com.kusitms29.backendH.domain.comment.domain;
+package com.kusitms29.backendH.domain.comment.entity;
 
 import com.kusitms29.backendH.global.common.BaseEntity;
 import com.kusitms29.backendH.domain.user.entity.User;

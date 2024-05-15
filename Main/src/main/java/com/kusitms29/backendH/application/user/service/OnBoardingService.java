@@ -2,14 +2,14 @@ package com.kusitms29.backendH.application.user.service;
 
 import com.kusitms29.backendH.application.user.service.dto.request.OnBoardingRequestDto;
 import com.kusitms29.backendH.application.user.service.dto.response.OnBoardingResponseDto;
-import com.kusitms29.backendH.domain.category.domain.Category;
+import com.kusitms29.backendH.domain.category.entity.Category;
 import com.kusitms29.backendH.domain.category.repository.CategoryRepository;
 import com.kusitms29.backendH.domain.sync.entity.Gender;
 import com.kusitms29.backendH.domain.sync.entity.Language;
 import com.kusitms29.backendH.domain.sync.entity.SyncType;
 import com.kusitms29.backendH.domain.user.entity.User;
-import com.kusitms29.backendH.domain.user.entity.UserCategory;
-import com.kusitms29.backendH.domain.user.repository.UserCategoryRepository;
+import com.kusitms29.backendH.domain.category.entity.UserCategory;
+import com.kusitms29.backendH.domain.category.repository.UserCategoryRepository;
 import com.kusitms29.backendH.domain.user.repository.UserRepository;
 import com.kusitms29.backendH.global.error.exception.EntityNotFoundException;
 import com.kusitms29.backendH.infra.config.AwsS3Service;

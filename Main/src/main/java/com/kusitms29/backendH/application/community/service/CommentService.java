@@ -2,7 +2,7 @@ package com.kusitms29.backendH.application.community.service;
 
 import com.kusitms29.backendH.domain.comment.application.controller.dto.response.CommentCreateResponseDto;
 import com.kusitms29.backendH.domain.comment.application.controller.dto.response.CommentResponseDto;
-import com.kusitms29.backendH.domain.comment.domain.Comment;
+import com.kusitms29.backendH.domain.comment.entity.Comment;
 import com.kusitms29.backendH.domain.comment.repository.CommentPagingRepository;
 import com.kusitms29.backendH.domain.comment.repository.CommentRepository;
 import com.kusitms29.backendH.domain.comment.repository.CommentLikeRepository;

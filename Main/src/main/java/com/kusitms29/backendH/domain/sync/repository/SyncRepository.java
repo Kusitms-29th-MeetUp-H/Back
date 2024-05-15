@@ -1,6 +1,6 @@
 package com.kusitms29.backendH.domain.sync.repository;
 
-import com.kusitms29.backendH.domain.category.domain.Type;
+import com.kusitms29.backendH.domain.category.entity.Type;
 import com.kusitms29.backendH.domain.sync.entity.Sync;
 import com.kusitms29.backendH.domain.sync.entity.SyncType;
 import org.springframework.data.domain.Sort;
