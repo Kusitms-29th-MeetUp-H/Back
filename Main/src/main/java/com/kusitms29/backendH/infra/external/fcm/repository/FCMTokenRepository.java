@@ -1,4 +1,4 @@
-package com.kusitms29.backendH.domain.fcm.repository;
+package com.kusitms29.backendH.infra.external.fcm.repository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;

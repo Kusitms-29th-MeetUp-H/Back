@@ -1,5 +1,6 @@
-package com.kusitms29.backendH.domain.fcm.application.service;
+package com.kusitms29.backendH.infra.external.fcm;
 
+import com.kusitms29.backendH.infra.external.fcm.service.SyncReminderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;

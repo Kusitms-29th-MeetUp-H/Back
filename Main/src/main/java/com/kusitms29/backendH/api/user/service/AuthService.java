@@ -2,7 +2,7 @@ package com.kusitms29.backendH.api.user.service;
 
 import com.kusitms29.backendH.api.user.service.dto.request.UserSignInRequestDto;
 import com.kusitms29.backendH.api.user.service.dto.response.UserAuthResponseDto;
-import com.kusitms29.backendH.domain.fcm.application.service.SyncReminderService;
+import com.kusitms29.backendH.infra.external.fcm.service.SyncReminderService;
 import com.kusitms29.backendH.domain.user.auth.PlatformUserInfo;
 import com.kusitms29.backendH.domain.user.auth.RestTemplateProvider;
 import com.kusitms29.backendH.domain.user.entity.Platform;
