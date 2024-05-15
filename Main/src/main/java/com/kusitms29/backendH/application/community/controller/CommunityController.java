@@ -4,6 +4,7 @@ import com.kusitms29.backendH.domain.comment.application.controller.dto.request.
 import com.kusitms29.backendH.domain.comment.application.controller.dto.response.CommentCreateResponseDto;
 import com.kusitms29.backendH.domain.comment.application.controller.dto.response.CommentResponseDto;
 import com.kusitms29.backendH.domain.comment.application.service.CommentService;
+import com.kusitms29.backendH.domain.commentLike.application.service.CommentLikeService;
 import com.kusitms29.backendH.domain.post.application.controller.dto.request.PostCreateRequestDto;
 import com.kusitms29.backendH.domain.post.application.controller.dto.response.PostCreateResponseDto;
 import com.kusitms29.backendH.domain.post.application.controller.dto.response.PostDetailResponseDto;
@@ -30,6 +31,7 @@ public class CommunityController {
     private final PostSearchService postSearchService;
     private final PostLikeService postLikeService;
     private final CommentService commentService;
+    private final CommentLikeService commentLikeService;
     @GetMapping("/post")
     public ResponseEntity<SuccessResponse<?>> getPagingPostByPostType(@UserId Long userId, @RequestParam String postType, Pageable pageable) {
         List<PostResponseDto> responseDto = postService.getPagingPostByPostType(userId, postType, pageable);
@@ -73,13 +75,23 @@ public class CommunityController {
         List<CommentResponseDto> comments = commentService.getCommentsInPost(userId, postId, pageable);
         return SuccessResponse.ok(comments);
     }
-    @PostMapping("/commment/{postId}")
+    @PostMapping("/comment/{postId}")
     public ResponseEntity<SuccessResponse<?>> createComment(@UserId Long userId, @PathVariable Long postId,
                                                             @RequestBody CommentCreateRequestDto content) {
         CommentCreateResponseDto commentCreateResponseDto = commentService.createComment(userId, postId, content.getContent());
         return SuccessResponse.ok(commentCreateResponseDto);
     }
+    @PostMapping("/comment/like/{commentId}")
+    public ResponseEntity<SuccessResponse<?>> createCommentLike(@UserId Long userId,
+                                                                @PathVariable Long commentId) {
+        commentLikeService.createCommentLike(userId, commentId);
+        return SuccessResponse.ok(true);
+    }
 
-
-
+    @DeleteMapping("/comment/like/{commentId}")
+    public ResponseEntity<SuccessResponse<?>> deleteCommentLike(@UserId Long userId,
+                                                                @PathVariable Long commentId) {
+        commentLikeService.deleteCommentLike(userId, commentId);
+        return SuccessResponse.ok(true);
+    }
 }
