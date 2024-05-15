@@ -55,6 +55,7 @@ public class PostService {
 
     private PostResponseDto mapToPostResponseDto(Post post, Long userId) {
         PostCalculateDto postCalculateDto = calculatePostDetail(post, userId);
+        PostImage postImage = postImageRepository.findByPostIdAndIsRepresentative(post.getId(), true);
 
         return PostResponseDto.of(
                 post.getId(),
@@ -64,6 +65,7 @@ public class PostService {
                 post.getCreatedAt(),
                 post.getTitle(),
                 post.getContent(),
+                (postImage != null)  ? postImage.getImage_url() : null,
                 postCalculateDto.getLikeCount(),
                 postCalculateDto.isLikedByUser(),
                 postCalculateDto.getCommentCount(),
@@ -131,10 +133,11 @@ public class PostService {
                         .build());
 
         List<String> imageUrls = awsS3Service.uploadImages(images);
-        for (String imageUrl : imageUrls) {
+        for(int i=0; i<images.size(); i++) {
             postImageRepository.save(PostImage.builder()
                     .post(newPost)
-                    .image_url(imageUrl)
+                    .image_url(imageUrls.get(i))
+                    .isRepresentative(i == 0)
                     .build());
         }
 

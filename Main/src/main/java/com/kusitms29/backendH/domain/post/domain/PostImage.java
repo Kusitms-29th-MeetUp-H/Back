@@ -21,4 +21,6 @@ public class PostImage extends BaseEntity {
     private Post post;
 
     private String image_url;
+
+    private boolean isRepresentative;
 }
