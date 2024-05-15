@@ -10,6 +10,11 @@ import com.kusitms29.backendH.api.community.service.dto.response.*;
 import com.kusitms29.backendH.api.community.service.PostLikeService;
 import com.kusitms29.backendH.global.common.SuccessResponse;
 import com.kusitms29.backendH.infra.config.auth.UserId;
+import com.kusitms29.backendH.infra.external.clova.papago.PapagoService;
+import com.kusitms29.backendH.infra.external.clova.papago.detection.LanguageDetectionRequest;
+import com.kusitms29.backendH.infra.external.clova.papago.detection.LanguageDetectionResponse;
+import com.kusitms29.backendH.infra.external.clova.papago.translation.TextTranslationRequest;
+import com.kusitms29.backendH.infra.external.clova.papago.translation.TextTranslationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +32,8 @@ public class CommunityController {
     private final PostLikeService postLikeService;
     private final CommentService commentService;
     private final CommentLikeService commentLikeService;
+    private final PapagoService papagoService;
+
     @GetMapping("/post")
     public ResponseEntity<SuccessResponse<?>> getPagingPostByPostType(@UserId Long userId, @RequestParam String postType, Pageable pageable) {
         List<PostResponseDto> responseDto = postService.getPagingPostByPostType(userId, postType, pageable);
@@ -89,4 +96,17 @@ public class CommunityController {
         commentLikeService.deleteCommentLike(userId, commentId);
         return SuccessResponse.ok(true);
     }
+
+    @PostMapping("/translate")
+    public ResponseEntity<SuccessResponse<?>> translateText(@RequestBody TextTranslationRequest requestDto) {
+        TextTranslationResponse responseDto = papagoService.translateText(requestDto);
+        return SuccessResponse.ok(responseDto.getMessage().getResult());
+    }
+
+    @PostMapping("/check-language")
+    public ResponseEntity<SuccessResponse<?>> whatLanguageIsIt(@RequestBody LanguageDetectionRequest requestDto) {
+        LanguageDetectionResponse responseDto = papagoService.checkLanguage(requestDto);
+        return SuccessResponse.ok(responseDto);
+    }
+
 }

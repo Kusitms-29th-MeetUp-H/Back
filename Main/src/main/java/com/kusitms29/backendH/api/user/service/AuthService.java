@@ -1,15 +1,15 @@
 package com.kusitms29.backendH.api.user.service;
 
-
 import com.kusitms29.backendH.api.user.service.dto.request.UserSignInRequestDto;
 import com.kusitms29.backendH.api.user.service.dto.response.UserAuthResponseDto;
-import com.kusitms29.backendH.domain.fcm.application.service.SyncReminderService;
+import com.kusitms29.backendH.infra.external.fcm.service.SyncReminderService;
 import com.kusitms29.backendH.domain.user.auth.PlatformUserInfo;
 import com.kusitms29.backendH.domain.user.auth.RestTemplateProvider;
 import com.kusitms29.backendH.domain.user.entity.Platform;
 import com.kusitms29.backendH.domain.user.entity.User;
 import com.kusitms29.backendH.domain.user.repository.RefreshTokenRepository;
-import com.kusitms29.backendH.domain.user.repository.UserRepository;
+import com.kusitms29.backendH.domain.user.service.UserModifier;
+import com.kusitms29.backendH.domain.user.service.UserReader;
 import com.kusitms29.backendH.global.error.exception.EntityNotFoundException;
 import com.kusitms29.backendH.infra.config.auth.JwtProvider;
 import com.kusitms29.backendH.infra.config.auth.TokenInfo;
@@ -24,7 +24,6 @@ import java.util.UUID;
 import static com.kusitms29.backendH.domain.user.entity.Platform.getEnumPlatformFromStringPlatform;
 import static com.kusitms29.backendH.domain.user.entity.RefreshToken.createRefreshToken;
 import static com.kusitms29.backendH.global.error.ErrorCode.FCMTOKEN_NOT_FOUND;
-import static com.kusitms29.backendH.global.error.ErrorCode.USER_NOT_FOUND;
 
 
 @Slf4j
@@ -32,11 +31,12 @@ import static com.kusitms29.backendH.global.error.ErrorCode.USER_NOT_FOUND;
 @Transactional
 @Service
 public class AuthService {
-    private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
     private final RestTemplateProvider restTemplateProvider;
     private final RefreshTokenRepository refreshTokenRepository;
     private final SyncReminderService syncReminderService;
+    private final UserReader userReader;
+    private final UserModifier userModifier;
 
     public UserAuthResponseDto signIn(UserSignInRequestDto userSignInRequestDto, String authToken, String fcmToken) {
         if (fcmToken == null || fcmToken.isEmpty()) {
@@ -63,7 +63,7 @@ public class AuthService {
 
     private User saveUser(PlatformUserInfo platformUserInfo, Platform platform, String fcmToken) {
         User createdUser = getUserByPlatformUserInfo(platformUserInfo, platform, fcmToken);
-        return userRepository.save(createdUser);
+        return userModifier.save(createdUser);
     }
 
     private void updateRefreshToken(String refreshToken, User user) {
@@ -76,12 +76,11 @@ public class AuthService {
     }
 
     private User getUserFromUserId(Long userId) {
-        return userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException(USER_NOT_FOUND));
+        return userReader.findByUserId(userId);
     }
 
     private User getUserByPlatformUserInfo(PlatformUserInfo platformUserInfo, Platform platform, String fcmToken) {
-        Optional<User> optionalUser = userRepository.findByPlatformId(platformUserInfo.getId());
+        Optional<User> optionalUser = userReader.findByPlatformId(platformUserInfo.getId());
         if(optionalUser.isPresent()) {
             return optionalUser.get();
         } else {

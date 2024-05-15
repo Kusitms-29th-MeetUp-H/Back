@@ -1,10 +1,10 @@
-package com.kusitms29.backendH.domain.fcm.application.service;
+package com.kusitms29.backendH.infra.external.fcm.service;
 
 import com.google.firebase.messaging.*;
-import com.kusitms29.backendH.domain.fcm.application.controller.dto.SyncReminderDto;
-import com.kusitms29.backendH.domain.fcm.MessageTemplate;
+import com.kusitms29.backendH.infra.external.fcm.MessageTemplate;
 import com.kusitms29.backendH.domain.sync.repository.SyncRepository;
-import com.kusitms29.backendH.domain.fcm.repository.FCMTokenRepository;
+import com.kusitms29.backendH.infra.external.fcm.repository.FCMTokenRepository;
+import com.kusitms29.backendH.infra.external.fcm.service.dto.SyncReminderDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

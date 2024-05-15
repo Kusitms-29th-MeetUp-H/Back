@@ -1,4 +1,4 @@
-package com.kusitms29.backendH.domain.fcm;
+package com.kusitms29.backendH.infra.external.fcm;
 
 import lombok.Getter;
 

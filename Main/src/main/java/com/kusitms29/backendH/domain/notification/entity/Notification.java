@@ -1,4 +1,4 @@
-package com.kusitms29.backendH.domain.notification.domain;
+package com.kusitms29.backendH.domain.notification.entity;
 
 import com.kusitms29.backendH.domain.user.entity.User;
 import com.kusitms29.backendH.global.common.BaseEntity;

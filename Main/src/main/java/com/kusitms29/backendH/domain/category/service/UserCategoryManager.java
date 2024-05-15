@@ -1,4 +1,4 @@
-package com.kusitms29.backendH.domain.user.service;
+package com.kusitms29.backendH.domain.category.service;
 
 import com.kusitms29.backendH.domain.category.entity.Type;
 import com.kusitms29.backendH.domain.category.entity.UserCategory;
