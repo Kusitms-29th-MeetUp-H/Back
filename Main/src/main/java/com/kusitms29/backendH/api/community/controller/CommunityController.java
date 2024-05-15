@@ -8,6 +8,7 @@ import com.kusitms29.backendH.api.community.service.dto.request.CommentCreateReq
 import com.kusitms29.backendH.api.community.service.dto.request.PostCreateRequestDto;
 import com.kusitms29.backendH.api.community.service.dto.response.*;
 import com.kusitms29.backendH.api.community.service.PostLikeService;
+import com.kusitms29.backendH.api.user.service.UserService;
 import com.kusitms29.backendH.global.common.SuccessResponse;
 import com.kusitms29.backendH.infra.config.auth.UserId;
 import com.kusitms29.backendH.infra.external.clova.papago.PapagoService;
@@ -26,12 +27,19 @@ import java.util.List;
 @RequestMapping("/api/community")
 @RestController
 public class CommunityController {
+    private final UserService userService;
     private final PostService postService;
     private final PostSearchService postSearchService;
     private final PostLikeService postLikeService;
     private final CommentService commentService;
     private final CommentLikeService commentLikeService;
     private final PapagoService papagoService;
+
+    @GetMapping("/banner-image")
+    public ResponseEntity<SuccessResponse<?>> getLoginUserImage(@UserId Long userId) {
+        BannerImageResponseDto responseDto = userService.getLoginUserImage(userId);
+        return SuccessResponse.ok(responseDto);
+    }
 
     @GetMapping("/post")
     public ResponseEntity<SuccessResponse<?>> getPostByPostType(@UserId Long userId, @RequestParam String postType) {
