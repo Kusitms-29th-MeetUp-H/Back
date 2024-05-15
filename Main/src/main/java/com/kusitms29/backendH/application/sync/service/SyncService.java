@@ -93,12 +93,5 @@ public class SyncService {
                 sync.getDate()
         )).toList();
     }
-    public <T> List<T> getSyncInfoByTake(List<T> dtos, int take) {
-        if (take == 0 || take >= dtos.size()) {
-            return dtos;
-        } else {
-            return dtos.subList(0, take);
-        }
-    }
 }
 
