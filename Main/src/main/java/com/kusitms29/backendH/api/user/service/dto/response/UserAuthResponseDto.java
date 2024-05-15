@@ -17,13 +17,13 @@ public class UserAuthResponseDto {
     private Boolean isFirst;
     private String sessionId;
 
-    public static UserAuthResponseDto of(User user, TokenInfo token/*, Boolean isFirst*/) {
+    public static UserAuthResponseDto of(User user, TokenInfo token, Boolean isFirst) {
         return UserAuthResponseDto.builder()
                 .userId(user.getId())
                 .email(user.getEmail())
                 .name(user.getUserName())
                 .picture(user.getProfile())
-//                .isFirst(isFirst)
+                .isFirst(isFirst)
                 .accessToken(token.getAccessToken())
                 .refreshToken(token.getRefreshToken())
                 .sessionId(user.getSessionId())
