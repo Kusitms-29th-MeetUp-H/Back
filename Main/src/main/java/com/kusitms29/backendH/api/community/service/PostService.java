@@ -5,7 +5,10 @@ import com.kusitms29.backendH.api.community.service.dto.request.PostCreateReques
 import com.kusitms29.backendH.api.community.service.dto.response.PostCreateResponseDto;
 import com.kusitms29.backendH.api.community.service.dto.response.PostDetailResponseDto;
 import com.kusitms29.backendH.api.community.service.dto.response.PostResponseDto;
+import com.kusitms29.backendH.domain.comment.entity.Comment;
 import com.kusitms29.backendH.domain.comment.service.CommentManager;
+import com.kusitms29.backendH.domain.comment.service.CommentReader;
+import com.kusitms29.backendH.domain.comment.service.ReplyManager;
 import com.kusitms29.backendH.domain.post.entity.Post;
 import com.kusitms29.backendH.domain.post.entity.PostImage;
 import com.kusitms29.backendH.domain.post.entity.PostType;
@@ -34,6 +37,8 @@ public class PostService {
     private final PostReader postReader;
     private final PostLikeManager postLikeManager;
     private final CommentManager commentManager;
+    private final CommentReader commentReader;
+    private final ReplyManager replyManager;
     private final PostImageReader postImageReader;
     private final UserReader userReader;
     private final PostAppender postAppender;
@@ -94,9 +99,15 @@ public class PostService {
     private PostCalculateDto calculatePostDetail(Post post, Long userId) {
         int likeCount = postLikeManager.countByPostId(post.getId());
         boolean isLikedByUser = postLikeManager.existsByPostIdAndUserId(post.getId(), userId);
-        int commentCount = commentManager.countByPostId(post.getId());
+
+        int totalCommentCount = commentManager.countByPostId(post.getId());
+        int replyCount = commentReader.findByPostId(post.getId()).stream()
+                .mapToInt(comment -> replyManager.countByCommentId(comment.getId()))
+                .sum();
+        totalCommentCount += replyCount;
+
         boolean isPostedByUser = post.getUser().getId() == userId;
-        return new PostCalculateDto(likeCount, isLikedByUser, commentCount, isPostedByUser);
+        return new PostCalculateDto(likeCount, isLikedByUser, totalCommentCount, isPostedByUser);
     }
 
     public PostCreateResponseDto createPost(Long userId, List<MultipartFile> images, PostCreateRequestDto requestDto) {
