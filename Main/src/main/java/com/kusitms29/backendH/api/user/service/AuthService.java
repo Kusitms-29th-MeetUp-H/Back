@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -45,10 +46,10 @@ public class AuthService {
         Platform platform = getEnumPlatformFromStringPlatform(userSignInRequestDto.getPlatform());
         PlatformUserInfo platformUser = getPlatformUserInfoFromRestTemplate(platform, authToken);
         User getUser = saveUser(platformUser, platform, fcmToken);
-//        Boolean isFirstLogin = Objects.isNull(getUser.getUserType()) ? Boolean.TRUE : Boolean.FALSE;
+        Boolean isFirstLogin = Objects.isNull(getUser.getPlatform()) ? Boolean.TRUE : Boolean.FALSE;
         TokenInfo tokenInfo = issueAccessTokenAndRefreshToken(getUser);
         updateRefreshToken(tokenInfo.getRefreshToken(), getUser);
-        return UserAuthResponseDto.of(getUser, tokenInfo/*, isFirstLogin*/);
+        return UserAuthResponseDto.of(getUser, tokenInfo, isFirstLogin);
     }
 
     public void signOut(Long userId) {
