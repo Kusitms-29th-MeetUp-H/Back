@@ -16,13 +16,14 @@ public class PostResponseDto {
     private LocalDateTime createdDate;
     private String title;
     private String content;
+    private String representativeImage;
     private int likeCnt;
     private boolean isLikedByUser;
     private int commentCnt;
     private boolean isPostedByUser;
 
     public static PostResponseDto of(Long postId, String postType, String writerImage, String writerName,
-                                     LocalDateTime createdDate, String title, String content,
+                                     LocalDateTime createdDate, String title, String content, String representativeImage,
                                      int likeCnt, boolean isLikedByUser, int commentCnt, boolean isPostedByUser) {
         return PostResponseDto.builder()
                 .postId(postId)
@@ -32,6 +33,7 @@ public class PostResponseDto {
                 .createdDate(createdDate)
                 .title(title)
                 .content(content)
+                .representativeImage(representativeImage)
                 .likeCnt(likeCnt)
                 .isLikedByUser(isLikedByUser)
                 .commentCnt(commentCnt)
