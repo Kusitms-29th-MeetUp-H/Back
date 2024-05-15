@@ -3,7 +3,7 @@ package com.kusitms29.backendH.infra.utils;
 import java.util.List;
 
 public class ListUtils {
-    public <T> List<T> getSyncInfoByTake(List<T> dtos, int take) {
+    public <T> List<T> getListByTake(List<T> dtos, int take) {
         if (take == 0 || take >= dtos.size()) {
             return dtos;
         } else {

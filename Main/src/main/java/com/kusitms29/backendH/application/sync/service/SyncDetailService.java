@@ -83,7 +83,7 @@ public class SyncDetailService {
     public List<SyncInfoResponseDto> getSyncListBySameDateAndSameLocation(Long syncId, int take){
         Sync csync = syncReader.findById(syncId);
         List<Sync> syncList= syncReader.findAllByLocationAndDate(csync.getLocation(), csync.getDate());
-        List<SyncInfoResponseDto> syncInfoResponseDtos = listUtils.getSyncInfoByTake(syncList.stream()
+        List<SyncInfoResponseDto> syncInfoResponseDtos = listUtils.getListByTake(syncList.stream()
                 .filter(sync -> !sync.getId().equals(syncId))
                 .map( sync -> SyncInfoResponseDto.of(
                         sync.getId(),

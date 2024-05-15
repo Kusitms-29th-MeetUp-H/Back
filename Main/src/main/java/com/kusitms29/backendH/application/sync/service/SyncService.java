@@ -1,6 +1,7 @@
 package com.kusitms29.backendH.application.sync.service;
 
 
+import com.kusitms29.backendH.application.sync.service.dto.request.SyncInfoRequestDto;
 import com.kusitms29.backendH.application.sync.service.dto.response.SyncAssociateInfoResponseDto;
 import com.kusitms29.backendH.application.sync.service.dto.response.SyncInfoResponseDto;
 import com.kusitms29.backendH.domain.category.domain.Type;
@@ -12,6 +13,7 @@ import com.kusitms29.backendH.domain.user.domain.UserCategory;
 import com.kusitms29.backendH.domain.user.domain.service.UserCategoryManager;
 import com.kusitms29.backendH.domain.user.domain.service.UserCategoryReader;
 import com.kusitms29.backendH.domain.user.domain.service.UserReader;
+import com.kusitms29.backendH.infra.utils.ListUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +31,7 @@ public class SyncService {
     private final UserCategoryReader userCategoryReader;
     private final UserCategoryManager userCategoryManager;
     private final ParticipationManager participationManager;
+    private final ListUtils listUtils;
     public List<SyncInfoResponseDto> recommendSync(Long userId, String clientIp){
         User user = userReader.findByUserId(userId);
         List<UserCategory> userCategories = userCategoryReader.findAllByUserId(userId);
@@ -46,9 +49,9 @@ public class SyncService {
                 sync.getDate()
         )).toList();
     }
-    public List<SyncInfoResponseDto> friendSync(String type){
-        List<Sync> syncList = syncReader.findAllBySyncTypeAndType(FROM_FRIEND, getEnumTypeFromStringType(type));
-        return syncList.stream()
+    public List<SyncInfoResponseDto> friendSync(SyncInfoRequestDto syncInfoRequestDto){
+        List<Sync> syncList = syncReader.findAllBySyncTypeAndType(FROM_FRIEND, getEnumTypeFromStringType(syncInfoRequestDto.type()));
+        List<SyncInfoResponseDto> syncInfoResponseDtos = syncList.stream()
                 //음 이거보다 위에서 if문써서 하는게 더 가독성 있는듯
 //                .filter(sync -> type == null || sync.getType().name().equals(type))
                 .map( sync -> SyncInfoResponseDto.of(
@@ -62,10 +65,11 @@ public class SyncService {
                         sync.getLocation(),
                         sync.getDate()
                 )).toList();
+        return listUtils.getListByTake(syncInfoResponseDtos, syncInfoRequestDto.take());
     }
-    public List<SyncAssociateInfoResponseDto> associateSync(String syncType, String type){
-        List<Sync> syncList = syncReader.findAllByAssociateIsExist(getEnumFROMStringSyncType(syncType), getEnumTypeFromStringType(type));
-        return syncList.stream().map( sync -> SyncAssociateInfoResponseDto.of(
+    public List<SyncAssociateInfoResponseDto> associateSync(SyncInfoRequestDto syncInfoRequestDto){
+        List<Sync> syncList = syncReader.findAllByAssociateIsExist(getEnumFROMStringSyncType(syncInfoRequestDto.syncType()), getEnumTypeFromStringType(syncInfoRequestDto.type()));
+        List<SyncAssociateInfoResponseDto> syncAssociateInfoResponseDtos = syncList.stream().map( sync -> SyncAssociateInfoResponseDto.of(
                 sync.getId(),
                 sync.getSyncType(),
                 sync.getType(),
@@ -77,11 +81,12 @@ public class SyncService {
                 sync.getDate(),
                 sync.getAssociate()
         )).toList();
+        return listUtils.getListByTake(syncAssociateInfoResponseDtos, syncInfoRequestDto.take());
     }
-    public List<SyncInfoResponseDto> searchSync(String syncType, String type){
-        List<Sync> syncList = syncReader.findAllBySyncTypeAndType(getEnumFROMStringSyncType(syncType), getEnumTypeFromStringType(type));
+    public List<SyncInfoResponseDto> searchSync(SyncInfoRequestDto syncInfoRequestDto){
+        List<Sync> syncList = syncReader.findAllBySyncTypeAndType(getEnumFROMStringSyncType(syncInfoRequestDto.syncType()), getEnumTypeFromStringType(syncInfoRequestDto.type()));
 
-        return syncList.stream().map( sync -> SyncInfoResponseDto.of(
+        List<SyncInfoResponseDto> syncInfoResponseDtos = syncList.stream().map( sync -> SyncInfoResponseDto.of(
                 sync.getId(),
                 sync.getSyncType(),
                 sync.getType(),
@@ -92,6 +97,7 @@ public class SyncService {
                 sync.getLocation(),
                 sync.getDate()
         )).toList();
+        return listUtils.getListByTake(syncInfoResponseDtos, syncInfoRequestDto.take());
     }
 }
 
