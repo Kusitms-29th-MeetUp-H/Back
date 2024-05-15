@@ -1,7 +1,7 @@
 package com.kusitms29.backendH.application.sync.service.dto.response;
 
 import com.kusitms29.backendH.domain.category.domain.Type;
-import com.kusitms29.backendH.domain.sync.domain.SyncType;
+import com.kusitms29.backendH.domain.sync.entity.SyncType;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;

@@ -1,4 +1,4 @@
-package com.kusitms29.backendH.domain.sync.domain;
+package com.kusitms29.backendH.domain.sync.entity;
 
 import com.kusitms29.backendH.global.error.exception.InvalidValueException;
 import lombok.Getter;
@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import java.util.Arrays;
 
 import static com.kusitms29.backendH.global.error.ErrorCode.INVALID_GENDER_TYPE;
-import static com.kusitms29.backendH.global.error.ErrorCode.INVALID_SYNC_TYPE;
 
 @RequiredArgsConstructor
 @Getter

@@ -1,8 +1,8 @@
-package com.kusitms29.backendH.domain.sync.domain.service;
+package com.kusitms29.backendH.domain.sync.service;
 
 import com.kusitms29.backendH.domain.category.domain.Type;
-import com.kusitms29.backendH.domain.sync.domain.Sync;
-import com.kusitms29.backendH.domain.sync.domain.SyncType;
+import com.kusitms29.backendH.domain.sync.entity.Sync;
+import com.kusitms29.backendH.domain.sync.entity.SyncType;
 import com.kusitms29.backendH.domain.sync.repository.SyncRepository;
 import com.kusitms29.backendH.global.error.ErrorCode;
 import com.kusitms29.backendH.global.error.exception.EntityNotFoundException;

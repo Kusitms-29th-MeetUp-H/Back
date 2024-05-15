@@ -1,4 +1,4 @@
-package com.kusitms29.backendH.domain.sync.domain;
+package com.kusitms29.backendH.domain.sync.entity;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

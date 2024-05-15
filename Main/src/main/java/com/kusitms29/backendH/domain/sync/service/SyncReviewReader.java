@@ -1,7 +1,7 @@
-package com.kusitms29.backendH.domain.syncReview.service;
+package com.kusitms29.backendH.domain.sync.service;
 
-import com.kusitms29.backendH.domain.syncReview.domain.SyncReview;
-import com.kusitms29.backendH.domain.syncReview.repository.SyncReviewRepository;
+import com.kusitms29.backendH.domain.sync.entity.SyncReview;
+import com.kusitms29.backendH.domain.sync.repository.SyncReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

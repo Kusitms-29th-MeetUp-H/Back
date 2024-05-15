@@ -1,4 +1,4 @@
-package com.kusitms29.backendH.domain.sync.domain;
+package com.kusitms29.backendH.domain.sync.entity;
 
 import com.kusitms29.backendH.global.error.exception.InvalidValueException;
 import lombok.Getter;

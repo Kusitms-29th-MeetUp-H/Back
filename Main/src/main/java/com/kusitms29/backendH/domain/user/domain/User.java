@@ -2,14 +2,12 @@ package com.kusitms29.backendH.domain.user.domain;
 
 import com.kusitms29.backendH.domain.user.application.controller.dto.request.OnBoardingRequestDto;
 import com.kusitms29.backendH.global.common.BaseEntity;
-import com.kusitms29.backendH.domain.sync.domain.Gender;
-import com.kusitms29.backendH.domain.sync.domain.Language;
-import com.kusitms29.backendH.domain.sync.domain.SyncType;
+import com.kusitms29.backendH.domain.sync.entity.Gender;
+import com.kusitms29.backendH.domain.sync.entity.Language;
+import com.kusitms29.backendH.domain.sync.entity.SyncType;
 import com.kusitms29.backendH.domain.user.auth.PlatformUserInfo;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.Set;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor

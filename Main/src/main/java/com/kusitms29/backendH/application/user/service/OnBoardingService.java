@@ -4,9 +4,9 @@ import com.kusitms29.backendH.application.user.service.dto.request.OnBoardingReq
 import com.kusitms29.backendH.application.user.service.dto.response.OnBoardingResponseDto;
 import com.kusitms29.backendH.domain.category.domain.Category;
 import com.kusitms29.backendH.domain.category.repository.CategoryRepository;
-import com.kusitms29.backendH.domain.sync.domain.Gender;
-import com.kusitms29.backendH.domain.sync.domain.Language;
-import com.kusitms29.backendH.domain.sync.domain.SyncType;
+import com.kusitms29.backendH.domain.sync.entity.Gender;
+import com.kusitms29.backendH.domain.sync.entity.Language;
+import com.kusitms29.backendH.domain.sync.entity.SyncType;
 import com.kusitms29.backendH.domain.user.domain.User;
 import com.kusitms29.backendH.domain.user.domain.UserCategory;
 import com.kusitms29.backendH.domain.user.repository.UserCategoryRepository;

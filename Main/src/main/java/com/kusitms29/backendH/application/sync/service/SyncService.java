@@ -6,8 +6,8 @@ import com.kusitms29.backendH.application.sync.service.dto.response.SyncAssociat
 import com.kusitms29.backendH.application.sync.service.dto.response.SyncInfoResponseDto;
 import com.kusitms29.backendH.domain.category.domain.Type;
 import com.kusitms29.backendH.domain.participation.domain.service.ParticipationManager;
-import com.kusitms29.backendH.domain.sync.domain.Sync;
-import com.kusitms29.backendH.domain.sync.domain.service.SyncReader;
+import com.kusitms29.backendH.domain.sync.entity.Sync;
+import com.kusitms29.backendH.domain.sync.service.SyncReader;
 import com.kusitms29.backendH.domain.user.domain.User;
 import com.kusitms29.backendH.domain.user.domain.UserCategory;
 import com.kusitms29.backendH.domain.user.domain.service.UserCategoryManager;
@@ -20,8 +20,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static com.kusitms29.backendH.domain.category.domain.Type.getEnumTypeFromStringType;
-import static com.kusitms29.backendH.domain.sync.domain.SyncType.FROM_FRIEND;
-import static com.kusitms29.backendH.domain.sync.domain.SyncType.getEnumFROMStringSyncType;
+import static com.kusitms29.backendH.domain.sync.entity.SyncType.FROM_FRIEND;
+import static com.kusitms29.backendH.domain.sync.entity.SyncType.getEnumFROMStringSyncType;
 
 @Service
 @RequiredArgsConstructor
