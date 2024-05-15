@@ -16,8 +16,6 @@ import com.kusitms29.backendH.global.error.exception.NotAllowedException;
 import com.kusitms29.backendH.infra.config.AwsS3Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -41,9 +39,9 @@ public class PostService {
     private final PostAppender postAppender;
     private final PostImageAppender postImageAppender;
 
-    public List<PostResponseDto> getPagingPostByPostType(Long userId, String postType, Pageable pageable) {
+    public List<PostResponseDto> getPostByPostType(Long userId, String postType) {
         PostType enumPostType = PostType.getEnumPostTypeFromStringPostType(postType);
-        Page<Post> lifePosts = postReader.findByPostType(enumPostType, pageable);
+        List<Post> lifePosts = postReader.findByPostType(enumPostType);
         return lifePosts.stream()
                 .map(post -> mapToPostResponseDto(post, userId))
                 .collect(Collectors.toList());

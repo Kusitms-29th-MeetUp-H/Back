@@ -8,8 +8,6 @@ import com.kusitms29.backendH.domain.user.entity.User;
 import com.kusitms29.backendH.domain.user.service.UserReader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,14 +22,14 @@ import java.util.stream.Collectors;
 public class PostSearchService {
     private final UserReader userReader;
     private final PostReader postReader;
-    public List<PostSearchResponseDto> searchPosts(Long userId, String keyword, Pageable pageable) {
+    public List<PostSearchResponseDto> searchPosts(Long userId, String keyword) {
         User user = userReader.findByUserId(userId);
 
         if(keyword == null || keyword.isEmpty()) {
             return new ArrayList<>();
         }
 
-        Page<Post> posts = postReader.searchByTitleOrContent(keyword, pageable);
+        List<Post> posts = postReader.searchByTitleOrContent(keyword);
         return posts.stream()
                 .map(post -> PostSearchResponseDto.of(
                         post.getId(), post.getPostType().getStringPostType(),

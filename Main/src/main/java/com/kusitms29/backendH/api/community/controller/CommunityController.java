@@ -16,7 +16,6 @@ import com.kusitms29.backendH.infra.external.clova.papago.detection.LanguageDete
 import com.kusitms29.backendH.infra.external.clova.papago.translation.TextTranslationRequest;
 import com.kusitms29.backendH.infra.external.clova.papago.translation.TextTranslationResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,8 +34,8 @@ public class CommunityController {
     private final PapagoService papagoService;
 
     @GetMapping("/post")
-    public ResponseEntity<SuccessResponse<?>> getPagingPostByPostType(@UserId Long userId, @RequestParam String postType, Pageable pageable) {
-        List<PostResponseDto> responseDto = postService.getPagingPostByPostType(userId, postType, pageable);
+    public ResponseEntity<SuccessResponse<?>> getPostByPostType(@UserId Long userId, @RequestParam String postType) {
+        List<PostResponseDto> responseDto = postService.getPostByPostType(userId, postType);
         return SuccessResponse.ok(responseDto);
     }
 
@@ -55,8 +54,8 @@ public class CommunityController {
     }
 
     @GetMapping("/post/search")
-    public ResponseEntity<SuccessResponse<?>> searchPost(@UserId Long userId, @RequestParam String keyword, Pageable pageable) {
-        List<PostSearchResponseDto> responseDtos = postSearchService.searchPosts(userId, keyword, pageable);
+    public ResponseEntity<SuccessResponse<?>> searchPost(@UserId Long userId, @RequestParam String keyword) {
+        List<PostSearchResponseDto> responseDtos = postSearchService.searchPosts(userId, keyword);
         return SuccessResponse.ok(responseDtos);
     }
     @PostMapping("/post/like/{postId}")
@@ -71,8 +70,8 @@ public class CommunityController {
     }
 
     @GetMapping("/comment/{postId}")
-    public ResponseEntity<SuccessResponse<?>> getCommentsInPost(@UserId Long userId, @PathVariable Long postId, Pageable pageable) {
-        List<CommentResponseDto> comments = commentService.getCommentsInPost(userId, postId, pageable);
+    public ResponseEntity<SuccessResponse<?>> getCommentsInPost(@UserId Long userId, @PathVariable Long postId) {
+        List<CommentResponseDto> comments = commentService.getCommentsInPost(userId, postId);
         return SuccessResponse.ok(comments);
     }
     @PostMapping("/comment/{postId}")
