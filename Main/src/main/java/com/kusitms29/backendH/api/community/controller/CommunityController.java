@@ -1,13 +1,9 @@
 package com.kusitms29.backendH.api.community.controller;
 
-import com.kusitms29.backendH.api.community.service.CommentLikeService;
-import com.kusitms29.backendH.api.community.service.CommentService;
-import com.kusitms29.backendH.api.community.service.PostSearchService;
-import com.kusitms29.backendH.api.community.service.PostService;
+import com.kusitms29.backendH.api.community.service.*;
 import com.kusitms29.backendH.api.community.service.dto.request.CommentCreateRequestDto;
 import com.kusitms29.backendH.api.community.service.dto.request.PostCreateRequestDto;
 import com.kusitms29.backendH.api.community.service.dto.response.*;
-import com.kusitms29.backendH.api.community.service.PostLikeService;
 import com.kusitms29.backendH.api.user.service.UserService;
 import com.kusitms29.backendH.global.common.SuccessResponse;
 import com.kusitms29.backendH.infra.config.auth.UserId;
@@ -33,6 +29,7 @@ public class CommunityController {
     private final PostLikeService postLikeService;
     private final CommentService commentService;
     private final CommentLikeService commentLikeService;
+    private final ReplyService replyService;
     private final PapagoService papagoService;
 
     @GetMapping("/banner-image")
@@ -104,6 +101,13 @@ public class CommunityController {
     public ResponseEntity<SuccessResponse<?>> reportComment(@UserId Long userId, @PathVariable Long commentId) {
         int reportedCount = commentService.reportComment(userId, commentId);
         return SuccessResponse.ok(true);
+    }
+
+    @PostMapping("/reply/{commentId}")
+    public ResponseEntity<SuccessResponse<?>> createReply(@UserId Long userId, @PathVariable Long commentId,
+                                                          @RequestBody CommentCreateRequestDto requestDto) {
+        ReplyCreateResponseDto responseDto = replyService.createReply(userId, commentId, requestDto.getContent());
+        return SuccessResponse.ok(responseDto);
     }
 
     @PostMapping("/translate")
