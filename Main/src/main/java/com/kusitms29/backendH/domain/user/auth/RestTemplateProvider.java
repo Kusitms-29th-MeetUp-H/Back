@@ -4,7 +4,7 @@ import com.kusitms29.backendH.domain.user.auth.google.GoogleAuthProvider;
 import com.kusitms29.backendH.domain.user.auth.google.GoogleUserInfo;
 import com.kusitms29.backendH.domain.user.auth.kakao.KakaoAuthProvider;
 import com.kusitms29.backendH.domain.user.auth.kakao.KakaoUserInfo;
-import com.kusitms29.backendH.domain.user.domain.Platform;
+import com.kusitms29.backendH.domain.user.entity.Platform;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;

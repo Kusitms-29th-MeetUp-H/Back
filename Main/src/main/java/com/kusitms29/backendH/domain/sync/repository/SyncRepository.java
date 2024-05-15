@@ -1,8 +1,8 @@
 package com.kusitms29.backendH.domain.sync.repository;
 
-import com.kusitms29.backendH.domain.category.domain.Type;
-import com.kusitms29.backendH.domain.sync.domain.Sync;
-import com.kusitms29.backendH.domain.sync.domain.SyncType;
+import com.kusitms29.backendH.domain.category.entity.Type;
+import com.kusitms29.backendH.domain.sync.entity.Sync;
+import com.kusitms29.backendH.domain.sync.entity.SyncType;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,7 +12,6 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public interface SyncRepository extends JpaRepository<Sync, Long> {
     //모임이 하루 안으로 임박한 Sync의 정보 가져오기

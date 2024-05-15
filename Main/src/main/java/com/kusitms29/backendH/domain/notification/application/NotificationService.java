@@ -2,7 +2,7 @@ package com.kusitms29.backendH.domain.notification.application;
 
 import com.kusitms29.backendH.domain.notification.domain.Notification;
 import com.kusitms29.backendH.domain.notification.repository.NotificationRepository;
-import com.kusitms29.backendH.domain.user.domain.User;
+import com.kusitms29.backendH.domain.user.entity.User;
 import com.kusitms29.backendH.global.error.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
