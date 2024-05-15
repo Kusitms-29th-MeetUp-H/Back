@@ -6,8 +6,8 @@ import com.kusitms29.backendH.application.user.service.dto.response.UserAuthResp
 import com.kusitms29.backendH.domain.fcm.application.service.SyncReminderService;
 import com.kusitms29.backendH.domain.user.auth.PlatformUserInfo;
 import com.kusitms29.backendH.domain.user.auth.RestTemplateProvider;
-import com.kusitms29.backendH.domain.user.domain.Platform;
-import com.kusitms29.backendH.domain.user.domain.User;
+import com.kusitms29.backendH.domain.user.entity.Platform;
+import com.kusitms29.backendH.domain.user.entity.User;
 import com.kusitms29.backendH.domain.user.repository.RefreshTokenRepository;
 import com.kusitms29.backendH.domain.user.repository.UserRepository;
 import com.kusitms29.backendH.global.error.exception.EntityNotFoundException;
@@ -21,8 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.kusitms29.backendH.domain.user.domain.Platform.getEnumPlatformFromStringPlatform;
-import static com.kusitms29.backendH.domain.user.domain.RefreshToken.createRefreshToken;
+import static com.kusitms29.backendH.domain.user.entity.Platform.getEnumPlatformFromStringPlatform;
+import static com.kusitms29.backendH.domain.user.entity.RefreshToken.createRefreshToken;
 import static com.kusitms29.backendH.global.error.ErrorCode.FCMTOKEN_NOT_FOUND;
 import static com.kusitms29.backendH.global.error.ErrorCode.USER_NOT_FOUND;
 

@@ -1,6 +1,6 @@
 package com.kusitms29.backendH.domain.notification.domain;
 
-import com.kusitms29.backendH.domain.user.domain.User;
+import com.kusitms29.backendH.domain.user.entity.User;
 import com.kusitms29.backendH.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;

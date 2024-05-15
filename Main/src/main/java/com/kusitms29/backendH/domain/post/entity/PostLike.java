@@ -1,8 +1,7 @@
 package com.kusitms29.backendH.domain.post.entity;
 
 import com.kusitms29.backendH.global.common.BaseEntity;
-import com.kusitms29.backendH.domain.post.entity.Post;
-import com.kusitms29.backendH.domain.user.domain.User;
+import com.kusitms29.backendH.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 

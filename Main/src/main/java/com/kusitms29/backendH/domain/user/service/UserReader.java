@@ -1,6 +1,6 @@
-package com.kusitms29.backendH.domain.user.domain.service;
+package com.kusitms29.backendH.domain.user.service;
 
-import com.kusitms29.backendH.domain.user.domain.User;
+import com.kusitms29.backendH.domain.user.entity.User;
 import com.kusitms29.backendH.domain.user.repository.UserRepository;
 import com.kusitms29.backendH.global.error.ErrorCode;
 import com.kusitms29.backendH.global.error.exception.EntityNotFoundException;

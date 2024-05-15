@@ -1,6 +1,6 @@
 package com.kusitms29.backendH.application.user.service.dto.response;
 
-import com.kusitms29.backendH.domain.user.domain.User;
+import com.kusitms29.backendH.domain.user.entity.User;
 import com.kusitms29.backendH.infra.config.auth.TokenInfo;
 import lombok.Builder;
 import lombok.Getter;

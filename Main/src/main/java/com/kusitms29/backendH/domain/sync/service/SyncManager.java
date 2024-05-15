@@ -5,8 +5,8 @@ import com.kusitms29.backendH.application.sync.service.dto.response.SyncGraphRes
 import com.kusitms29.backendH.domain.participation.domain.Participation;
 import com.kusitms29.backendH.domain.participation.domain.service.ParticipationReader;
 import com.kusitms29.backendH.domain.sync.entity.Gender;
-import com.kusitms29.backendH.domain.user.domain.User;
-import com.kusitms29.backendH.domain.user.domain.service.UserReader;
+import com.kusitms29.backendH.domain.user.entity.User;
+import com.kusitms29.backendH.domain.user.service.UserReader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

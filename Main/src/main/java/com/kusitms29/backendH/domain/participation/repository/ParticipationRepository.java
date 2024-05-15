@@ -2,7 +2,7 @@ package com.kusitms29.backendH.domain.participation.repository;
 
 import com.kusitms29.backendH.domain.participation.domain.Participation;
 import com.kusitms29.backendH.domain.sync.entity.Sync;
-import com.kusitms29.backendH.domain.user.domain.User;
+import com.kusitms29.backendH.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

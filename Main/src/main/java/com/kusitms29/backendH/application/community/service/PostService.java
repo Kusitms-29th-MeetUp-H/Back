@@ -13,7 +13,7 @@ import com.kusitms29.backendH.domain.post.repository.PostImageRepository;
 import com.kusitms29.backendH.domain.post.repository.PostPagingRepository;
 import com.kusitms29.backendH.domain.post.repository.PostRepository;
 import com.kusitms29.backendH.domain.post.repository.PostLikeRepository;
-import com.kusitms29.backendH.domain.user.domain.User;
+import com.kusitms29.backendH.domain.user.entity.User;
 import com.kusitms29.backendH.domain.user.repository.UserRepository;
 import com.kusitms29.backendH.global.error.exception.EntityNotFoundException;
 import com.kusitms29.backendH.global.error.exception.NotAllowedException;

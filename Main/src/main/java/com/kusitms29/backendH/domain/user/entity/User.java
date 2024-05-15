@@ -1,4 +1,4 @@
-package com.kusitms29.backendH.domain.user.domain;
+package com.kusitms29.backendH.domain.user.entity;
 
 import com.kusitms29.backendH.domain.user.application.controller.dto.request.OnBoardingRequestDto;
 import com.kusitms29.backendH.global.common.BaseEntity;

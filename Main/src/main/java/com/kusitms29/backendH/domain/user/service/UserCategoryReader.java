@@ -1,6 +1,6 @@
-package com.kusitms29.backendH.domain.user.domain.service;
+package com.kusitms29.backendH.domain.user.service;
 
-import com.kusitms29.backendH.domain.user.domain.UserCategory;
+import com.kusitms29.backendH.domain.user.entity.UserCategory;
 import com.kusitms29.backendH.domain.user.repository.UserCategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

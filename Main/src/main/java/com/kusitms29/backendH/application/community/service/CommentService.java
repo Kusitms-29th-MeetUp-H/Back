@@ -8,7 +8,7 @@ import com.kusitms29.backendH.domain.comment.repository.CommentRepository;
 import com.kusitms29.backendH.domain.comment.repository.CommentLikeRepository;
 import com.kusitms29.backendH.domain.post.entity.Post;
 import com.kusitms29.backendH.domain.post.repository.PostRepository;
-import com.kusitms29.backendH.domain.user.domain.User;
+import com.kusitms29.backendH.domain.user.entity.User;
 import com.kusitms29.backendH.domain.user.repository.UserRepository;
 import com.kusitms29.backendH.global.error.exception.EntityNotFoundException;
 import com.kusitms29.backendH.global.error.exception.NotAllowedException;

@@ -4,7 +4,7 @@ import com.kusitms29.backendH.domain.comment.domain.Comment;
 import com.kusitms29.backendH.domain.comment.repository.CommentRepository;
 import com.kusitms29.backendH.domain.comment.domain.CommentLike;
 import com.kusitms29.backendH.domain.comment.repository.CommentLikeRepository;
-import com.kusitms29.backendH.domain.user.domain.User;
+import com.kusitms29.backendH.domain.user.entity.User;
 import com.kusitms29.backendH.domain.user.repository.UserRepository;
 import com.kusitms29.backendH.global.error.exception.ConflictException;
 import com.kusitms29.backendH.global.error.exception.EntityNotFoundException;
