@@ -17,6 +17,7 @@ import com.kusitms29.backendH.global.error.ErrorCode;
 import com.kusitms29.backendH.global.error.exception.EntityNotFoundException;
 import com.kusitms29.backendH.global.error.exception.InvalidValueException;
 import com.kusitms29.backendH.global.error.exception.ListException;
+import com.kusitms29.backendH.infra.utils.ListUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +33,7 @@ public class SyncDetailService {
     private final ParticipationManager participationManager;
     private final SyncManager syncManager;
     private final ParticipationReader participationReader;
-    private final com.kusitms29.backendH.infra.config.utils.ListUtils syncManageService;
+    private final ListUtils listUtils;
     public SyncDetailResponseDto getSyncDetail(Long syncId){
         Sync sync = syncReader.findById(syncId);
         User user = userReader.findByUserId(sync.getUser().getId());
@@ -82,7 +83,7 @@ public class SyncDetailService {
     public List<SyncInfoResponseDto> getSyncListBySameDateAndSameLocation(Long syncId, int take){
         Sync csync = syncReader.findById(syncId);
         List<Sync> syncList= syncReader.findAllByLocationAndDate(csync.getLocation(), csync.getDate());
-        List<SyncInfoResponseDto> syncInfoResponseDtos = syncManageService.getSyncInfoByTake(syncList.stream()
+        List<SyncInfoResponseDto> syncInfoResponseDtos = listUtils.getSyncInfoByTake(syncList.stream()
                 .filter(sync -> !sync.getId().equals(syncId))
                 .map( sync -> SyncInfoResponseDto.of(
                         sync.getId(),
