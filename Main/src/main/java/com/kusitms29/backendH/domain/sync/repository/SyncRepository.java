@@ -53,4 +53,5 @@ public interface SyncRepository extends JpaRepository<Sync, Long> {
     List<Sync> findAllBySyncTypeAndTypeAndAssociateIsExistOrderByDateDesc(SyncType syncType, Type type);
     List<Sync> findAll(Specification<Sync> spec, Sort sort);
     List<Sync> findAllByLocationAndDate(String location, LocalDateTime date);
+    List<Sync> findAllByUserId(Long userId);
 }

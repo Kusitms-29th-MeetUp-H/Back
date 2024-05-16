@@ -180,4 +180,8 @@ public class SyncReader {
     public Sync findById(Long syncId){
         return syncRepository.findById(syncId).orElseThrow(() -> new EntityNotFoundException(ErrorCode.SYNC_NOT_FOUND));
     }
+    public List<Sync> findAllByUserId(Long userId){
+        List<Sync> syncList = syncRepository.findAllByUserId(userId);
+        return ListException.throwIfEmpty(syncList, () -> new EntityNotFoundException(ErrorCode.SYNC_NOT_FOUND));
+    }
 }
