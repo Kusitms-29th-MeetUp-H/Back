@@ -20,4 +20,9 @@ public class MyPageController {
         List< SyncInfoResponseDto> syncInfoResponseDtos = myPageService.getMySyncList(userId,take);
         return SuccessResponse.ok(syncInfoResponseDtos);
     }
+    @GetMapping("/join")
+    public ResponseEntity<SuccessResponse<?>> getJoinSyncList(@UserId Long userId,@RequestParam(name = "take",defaultValue = "0") int take) {
+        List< SyncInfoResponseDto> syncInfoResponseDtos = myPageService.getJoinSyncList(userId,take);
+        return SuccessResponse.ok(syncInfoResponseDtos);
+    }
 }
