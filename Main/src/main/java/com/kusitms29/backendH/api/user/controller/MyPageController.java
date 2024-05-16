@@ -38,7 +38,7 @@ public class MyPageController {
         CreateReviewResponse createReviewResponse = myPageService.createReview(userId,createReviewRequest);
         return SuccessResponse.created(createReviewResponse);
     }
-    @GetMapping
+    @GetMapping("/bookmark")
     public ResponseEntity<SuccessResponse<?>> getBookMarkSyncList(@UserId Long userId, @RequestParam(name = "take",defaultValue = "0") int take) {
         List<SyncInfoResponseDto> userInfoResponseDto = myPageService.getBookMarkSyncList(userId, take);
         return SuccessResponse.ok(userInfoResponseDto);
