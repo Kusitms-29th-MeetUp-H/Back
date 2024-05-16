@@ -64,6 +64,10 @@ public class Sync extends BaseEntity {
         RECRUITING, COMPLETED, DELETED;
     }
 
+    public static Sync from(Long syncId) {
+        return new Sync(syncId,null,null,null,null,null,null,null,null,null,null,null,null,null,0,0,null,null,null,null);
+    }
+
     public static Sync createSync(User user, String syncIntro, SyncType syncType,
                                   String syncName, String image, String location, LocalDateTime date,
                                   String regularDay, LocalTime regularTime, LocalDateTime routineDate,
