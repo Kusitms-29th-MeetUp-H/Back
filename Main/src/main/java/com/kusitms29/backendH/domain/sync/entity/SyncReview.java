@@ -27,7 +27,9 @@ public class SyncReview extends BaseEntity {
     private String content;
 
     public SyncReview(User user, Sync sync, String content) {
-
+        this.user = user;
+        this.sync = sync;
+        this.content = content;
     }
 
     public static SyncReview createReview(User user, Sync sync, String content){
