@@ -1,37 +1,51 @@
 package com.kusitms29.backendH.api.sync.service;
 
 
+import com.kusitms29.backendH.api.sync.service.dto.request.SyncCreateRequestDto;
 import com.kusitms29.backendH.api.sync.service.dto.request.SyncInfoRequestDto;
 import com.kusitms29.backendH.api.sync.service.dto.response.SyncAssociateInfoResponseDto;
 import com.kusitms29.backendH.api.sync.service.dto.response.SyncInfoResponseDto;
+import com.kusitms29.backendH.api.sync.service.dto.response.SyncSaveResponseDto;
 import com.kusitms29.backendH.domain.category.entity.Type;
 import com.kusitms29.backendH.domain.category.service.UserCategoryManager;
 import com.kusitms29.backendH.domain.category.service.UserCategoryReader;
+import com.kusitms29.backendH.domain.sync.entity.SyncType;
 import com.kusitms29.backendH.domain.sync.service.ParticipationManager;
 import com.kusitms29.backendH.domain.sync.entity.Sync;
+import com.kusitms29.backendH.domain.sync.service.SyncAppender;
 import com.kusitms29.backendH.domain.sync.service.SyncReader;
 import com.kusitms29.backendH.domain.user.entity.User;
 import com.kusitms29.backendH.domain.category.entity.UserCategory;
 import com.kusitms29.backendH.domain.user.service.UserReader;
+import com.kusitms29.backendH.infra.config.AwsS3Service;
 import com.kusitms29.backendH.infra.utils.ListUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static com.kusitms29.backendH.domain.category.entity.Type.getEnumTypeFromStringType;
 import static com.kusitms29.backendH.domain.sync.entity.SyncType.FROM_FRIEND;
 import static com.kusitms29.backendH.domain.sync.entity.SyncType.getEnumFROMStringSyncType;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SyncService {
     private final SyncReader syncReader;
+    private final SyncAppender syncAppender;
     private final UserReader userReader;
     private final UserCategoryReader userCategoryReader;
     private final UserCategoryManager userCategoryManager;
     private final ParticipationManager participationManager;
     private final ListUtils listUtils;
+    private final AwsS3Service awsS3Service;
+
     public List<SyncInfoResponseDto> recommendSync(Long userId, String clientIp){
         User user = userReader.findByUserId(userId);
         List<UserCategory> userCategories = userCategoryReader.findAllByUserId(userId);
@@ -98,6 +112,72 @@ public class SyncService {
                 sync.getDate()
         )).toList();
         return listUtils.getListByTake(syncInfoResponseDtos, syncInfoRequestDto.take());
+    }
+
+    public SyncSaveResponseDto createSync(Long userId, MultipartFile file, SyncCreateRequestDto requestDto) {
+        User user = userReader.findByUserId(userId);
+        String image = awsS3Service.uploadImage(file);
+        SyncType enumSyncType = SyncType.getEnumFROMStringSyncType(requestDto.getSyncType());
+        Type enumType = Type.getEnumTypeFromStringType(requestDto.getType());
+
+        LocalDateTime oneTimeLocalDateTime = null;
+        if(!requestDto.getDate().isEmpty()) {
+            oneTimeLocalDateTime= parseToLocalDateTime(requestDto.getDate()); //2023-04-13 15:30
+        }
+        String regularDay = null;
+        if(!requestDto.getRegularDay().isEmpty()) {
+            regularDay = requestDto.getRegularDay();
+        }
+        LocalDateTime regularLocalDateTime = null;
+        if(!requestDto.getRoutineDate().isEmpty()) {
+            regularLocalDateTime = parseToLocalDateTime(requestDto.getRoutineDate()); //2023-04-13 15:30
+        }
+        LocalTime regularLocalTime = null;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        if(!requestDto.getRegularTime().isEmpty()) { //15:30
+            regularLocalTime = LocalTime.parse(requestDto.getRegularTime(), formatter);
+        }
+
+        //TODO sync type : 예외처리
+        //TODO location : validation
+        //TODO detailType : validation
+        //TODO member_min / max : validation - 최소 3명 최대 30명
+        //TODO detail type : 예외 처리
+
+        Sync newSync = syncAppender.save(Sync.createSync(user,
+                requestDto.getSyncIntro(),
+                enumSyncType,
+                requestDto.getSyncName(),
+                image,
+                requestDto.getLocation(),
+                oneTimeLocalDateTime,
+                regularDay,
+                regularLocalTime,
+                regularLocalDateTime,
+                requestDto.getMember_min(),
+                requestDto.getMember_max(),
+                enumType,
+                requestDto.getDetailType()));
+
+        return SyncSaveResponseDto.of(newSync.getId(),
+                newSync.getSyncIntro(),
+                newSync.getSyncType(),
+                newSync.getSyncName(),
+                newSync.getImage(),
+                newSync.getLocation(),
+                newSync.getDate(),
+                newSync.getRegularDay(),
+                newSync.getRegularTime(),
+                newSync.getRoutineDate(),
+                newSync.getMember_min(),
+                newSync.getMember_max(),
+                newSync.getType(),
+                newSync.getDetailType());
+    }
+
+    private LocalDateTime parseToLocalDateTime(String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        return LocalDateTime.parse(date, formatter);
     }
 }
 
