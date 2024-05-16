@@ -65,7 +65,7 @@ public class MyPageService {
     }
     public CreateReviewResponse createReview(Long userId, CreateReviewRequest createReviewRequest){
         SyncReview syncReview = SyncReview.createReview(User.from(userId),Sync.from(createReviewRequest.syncId()), createReviewRequest.content() );
-        syncReviewAppender.createReview(syncReview);
+        syncReview = syncReviewAppender.createReview(syncReview);
         return CreateReviewResponse.of(syncReview);
     }
     public List<SyncInfoResponseDto> getBookMarkSyncList(Long userId, int take){
