@@ -1,6 +1,7 @@
 package com.kusitms29.backendH.api.user.service;
 
 import com.kusitms29.backendH.api.sync.service.dto.response.SyncInfoResponseDto;
+import com.kusitms29.backendH.api.user.service.dto.response.UserInfoResponseDto;
 import com.kusitms29.backendH.domain.sync.entity.Participation;
 import com.kusitms29.backendH.domain.sync.entity.Sync;
 import com.kusitms29.backendH.domain.sync.service.ParticipationManager;
@@ -20,6 +21,7 @@ public class MyPageService {
     private final ListUtils listUtils;
     private final SyncReader syncReader;
     private final ParticipationReader participationReader;
+    private final UserReader userReader;
     public List<SyncInfoResponseDto> getMySyncList(Long userId, int take){
         List<Sync> syncList = syncReader.findAllByUserId(userId);
         List<SyncInfoResponseDto> syncInfoResponseDtos = syncList.stream()
@@ -52,5 +54,8 @@ public class MyPageService {
                         sync.getDate()
                 )).toList();
         return listUtils.getListByTake(syncInfoResponseDtos, take);
+    }
+    public UserInfoResponseDto getMyInfo(Long userId){
+        return UserInfoResponseDto.of(userReader.findByUserId(userId));
     }
 }

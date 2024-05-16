@@ -2,6 +2,7 @@ package com.kusitms29.backendH.api.user.controller;
 
 import com.kusitms29.backendH.api.sync.service.dto.response.SyncInfoResponseDto;
 import com.kusitms29.backendH.api.user.service.MyPageService;
+import com.kusitms29.backendH.api.user.service.dto.response.UserInfoResponseDto;
 import com.kusitms29.backendH.global.common.SuccessResponse;
 import com.kusitms29.backendH.infra.config.auth.UserId;
 import lombok.RequiredArgsConstructor;
@@ -25,4 +26,10 @@ public class MyPageController {
         List< SyncInfoResponseDto> syncInfoResponseDtos = myPageService.getJoinSyncList(userId,take);
         return SuccessResponse.ok(syncInfoResponseDtos);
     }
+    @GetMapping
+    public ResponseEntity<SuccessResponse<?>> getMyInfo(@UserId Long userId) {
+        UserInfoResponseDto userInfoResponseDto = myPageService.getMyInfo(userId);
+        return SuccessResponse.ok(userInfoResponseDto);
+    }
+
 }
