@@ -139,23 +139,23 @@ public class SyncService {
         String image = awsS3Service.uploadImage(file);
 
         LocalDateTime oneTimeLocalDateTime = null;
-        if(!requestDto.getDate().isEmpty()) {
+        if(requestDto.getDate() != null && !requestDto.getDate().isEmpty()) {
             oneTimeLocalDateTime= parseToLocalDateTime(requestDto.getDate()); //2023-04-13 15:30
         }
 
         String regularDay = null;
-        if(!requestDto.getRegularDay().isEmpty()) {
+        if(requestDto.getRegularDay() != null && !requestDto.getRegularDay().isEmpty()) {
             regularDay = requestDto.getRegularDay();
         }
 
         LocalDateTime regularLocalDateTime = null;
-        if(!requestDto.getRoutineDate().isEmpty()) {
+        if(requestDto.getRoutineDate() != null && !requestDto.getRoutineDate().isEmpty()) {
             regularLocalDateTime = parseToLocalDateTime(requestDto.getRoutineDate()); //2023-04-13 15:30
         }
 
         LocalTime regularLocalTime = null;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        if(!requestDto.getRegularTime().isEmpty()) { //15:30
+        if(requestDto.getRegularTime() != null && !requestDto.getRegularTime().isEmpty()) { //15:30
             regularLocalTime = LocalTime.parse(requestDto.getRegularTime(), formatter);
         }
 
