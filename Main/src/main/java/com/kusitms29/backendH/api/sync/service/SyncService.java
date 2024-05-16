@@ -7,6 +7,7 @@ import com.kusitms29.backendH.api.sync.service.dto.response.SyncAssociateInfoRes
 import com.kusitms29.backendH.api.sync.service.dto.response.SyncInfoResponseDto;
 import com.kusitms29.backendH.api.sync.service.dto.response.SyncSaveResponseDto;
 import com.kusitms29.backendH.domain.category.entity.Type;
+import com.kusitms29.backendH.domain.category.service.CategoryReader;
 import com.kusitms29.backendH.domain.category.service.UserCategoryManager;
 import com.kusitms29.backendH.domain.category.service.UserCategoryReader;
 import com.kusitms29.backendH.domain.sync.entity.SyncType;
@@ -144,22 +145,28 @@ public class SyncService {
         //TODO member_min / max : validation - 최소 3명 최대 30명
         //TODO detail type : 예외 처리
 
-        Sync newSync = syncAppender.save(Sync.createSync(user,
-                requestDto.getSyncIntro(),
-                enumSyncType,
-                requestDto.getSyncName(),
-                image,
-                requestDto.getLocation(),
-                oneTimeLocalDateTime,
-                regularDay,
-                regularLocalTime,
-                regularLocalDateTime,
-                requestDto.getMember_min(),
-                requestDto.getMember_max(),
-                enumType,
-                requestDto.getDetailType()));
+        Sync newSync = syncAppender.save(
+                Sync.createSync(
+                        user,
+                        requestDto.getUserIntro(),
+                        requestDto.getSyncIntro(),
+                        enumSyncType,
+                        requestDto.getSyncName(),
+                        image,
+                        requestDto.getLocation(),
+                        oneTimeLocalDateTime,
+                        regularDay,
+                        regularLocalTime,
+                        regularLocalDateTime,
+                        requestDto.getMember_min(),
+                        requestDto.getMember_max(),
+                        enumType,
+                        requestDto.getDetailType())
+        );
 
-        return SyncSaveResponseDto.of(newSync.getId(),
+        return SyncSaveResponseDto.of(
+                newSync.getId(),
+                newSync.getUserIntro(),
                 newSync.getSyncIntro(),
                 newSync.getSyncType(),
                 newSync.getSyncName(),
@@ -172,7 +179,8 @@ public class SyncService {
                 newSync.getMember_min(),
                 newSync.getMember_max(),
                 newSync.getType(),
-                newSync.getDetailType());
+                newSync.getDetailType()
+        );
     }
 
     private LocalDateTime parseToLocalDateTime(String date) {

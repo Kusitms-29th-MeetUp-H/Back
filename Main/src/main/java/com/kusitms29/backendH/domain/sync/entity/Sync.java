@@ -68,13 +68,14 @@ public class Sync extends BaseEntity {
         return new Sync(syncId,null,null,null,null,null,null,null,null,null,null,null,null,null,0,0,null,null,null,null);
     }
 
-    public static Sync createSync(User user, String syncIntro, SyncType syncType,
+    public static Sync createSync(User user, String userIntro, String syncIntro, SyncType syncType,
                                   String syncName, String image, String location, LocalDateTime date,
                                   String regularDay, LocalTime regularTime, LocalDateTime routineDate,
                                   int member_min, int member_max,
                                   Type type, String detailType){
         return Sync.builder()
                 .user(user)
+                .userIntro(userIntro)
                 .syncIntro(syncIntro)
                 .syncType(syncType)
                 .syncName(syncName)

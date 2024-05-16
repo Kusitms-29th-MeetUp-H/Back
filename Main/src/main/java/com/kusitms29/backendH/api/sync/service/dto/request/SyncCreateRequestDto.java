@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class SyncCreateRequestDto {
+    private String userIntro;
     private String syncIntro;
     private String syncType;
     private String syncName;

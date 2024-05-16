@@ -12,7 +12,7 @@ import java.time.LocalTime;
 @Getter
 public class SyncSaveResponseDto {
     private long syncId;
-    private String link;
+    private String userIntro;
     private String syncIntro;
     private String syncType;
     private String syncName;
@@ -33,7 +33,7 @@ public class SyncSaveResponseDto {
     private String detailType;
 
 
-    public static SyncSaveResponseDto of(Long syncId, String syncIntro,
+    public static SyncSaveResponseDto of(Long syncId, String userIntro, String syncIntro,
                                          SyncType syncType, String syncName,
                                          String image, String location,
                                          LocalDateTime date,
@@ -42,6 +42,7 @@ public class SyncSaveResponseDto {
                                          Type type, String detailType) {
         return SyncSaveResponseDto.builder()
                 .syncId(syncId)
+                .userIntro(userIntro)
                 .syncIntro(syncIntro)
                 .syncType(syncType.getStringSyncType())
                 .syncName(syncName)
