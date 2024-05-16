@@ -2,6 +2,8 @@ package com.kusitms29.backendH.api.user.controller;
 
 import com.kusitms29.backendH.api.sync.service.dto.response.SyncInfoResponseDto;
 import com.kusitms29.backendH.api.user.service.MyPageService;
+import com.kusitms29.backendH.api.user.service.dto.request.CreateReviewRequest;
+import com.kusitms29.backendH.api.user.service.dto.response.CreateReviewResponse;
 import com.kusitms29.backendH.api.user.service.dto.response.UserInfoResponseDto;
 import com.kusitms29.backendH.global.common.SuccessResponse;
 import com.kusitms29.backendH.infra.config.auth.UserId;
@@ -31,5 +33,9 @@ public class MyPageController {
         UserInfoResponseDto userInfoResponseDto = myPageService.getMyInfo(userId);
         return SuccessResponse.ok(userInfoResponseDto);
     }
-
+    @PostMapping("/review")
+    public ResponseEntity<SuccessResponse<?>> createReview(@UserId Long userId, @RequestBody CreateReviewRequest createReviewRequest) {
+        CreateReviewResponse createReviewResponse = myPageService.createReview(userId,createReviewRequest);
+        return SuccessResponse.created(createReviewResponse);
+    }
 }

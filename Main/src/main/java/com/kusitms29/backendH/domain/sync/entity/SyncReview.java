@@ -7,7 +7,6 @@ import lombok.*;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Builder
 @Getter
 @Table(name = "syncReview")
 @Entity
@@ -26,4 +25,13 @@ public class SyncReview extends BaseEntity {
     private Sync sync;
 
     private String content;
+
+    public SyncReview(User user, Sync sync, String content) {
+
+    }
+
+    public static SyncReview createReview(User user, Sync sync, String content){
+        return new SyncReview(user, sync, content);
+    }
+
 }
