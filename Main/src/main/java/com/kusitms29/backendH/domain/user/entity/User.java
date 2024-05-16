@@ -55,6 +55,9 @@ public class User extends BaseEntity {
                 .sessionId(sessionId)
                 .build();
     }
+    public static User from(Long userId) {
+        return new User(userId,null,null,null,null,null,null,null,null,null,null,null,null,null,null);
+    }
 
     public void updateOnBoardingWithoutCategory(String language, String profileImage, String userName, String countryName, String gender,
                                                 String university, String email, String sycnType) {

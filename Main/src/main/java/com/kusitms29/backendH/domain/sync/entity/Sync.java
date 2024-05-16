@@ -63,7 +63,9 @@ public class Sync extends BaseEntity {
     public enum Status {
         RECRUITING, COMPLETED, DELETED;
     }
-
+    public static Sync from(Long syncId) {
+        return new Sync(syncId,null,null,null,null,null,null,null,null,null,null,null,null,null,0,0,null,null,null,null);
+    }
     public static Sync createSync(User user, String link, SyncType syncType,
                                    String name, String image, String content, String location,
                                    LocalDateTime localDateTime, int member_min, int member_max) {
