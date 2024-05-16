@@ -24,6 +24,8 @@ public enum ErrorCode {
     INVALID_UNIVERSITY_NAME(HttpStatus.BAD_REQUEST, "유효하지 않은 대학이름입니다."),
     INVALID_UNIVERSITY_DOMAIN(HttpStatus.BAD_REQUEST, "대학과 일치하지 않는 메일 도메인입니다."),
     INVALID_POST_TYPE(HttpStatus.BAD_REQUEST, "유효하지 않은 게시물타입입니다."),
+    INVALID_PARENT_CHILD_CATEGORY(HttpStatus.BAD_REQUEST, "부모 카테고리가 불일치합니다."),
+
 
     /**
      * 401 Unauthorized
@@ -68,6 +70,11 @@ public enum ErrorCode {
     TOO_LONG_CONTENT_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "내용은 300자까지만 작성할 수 있어요"),
     TOO_LONG_COMMENT_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "댓글은 30자까지만 작성할 수 있어요"),
     TOO_MANY_IMAGES_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "이미지는 최대 5개까지 입니다."),
+    SYNC_NAME_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "싱크 제목은 15자까지만 작성할 수 있어요"),
+    SYNC_INTRO_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "싱크 내용은 500자까지만 작성할 수 있어요."),
+    USER_INTRO_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "싱크장 소개는 50자까지만 작성할 수 있어요,"),
+    SYNC_MIN_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "최소인원은 3명부터입니다."),
+    SYNC_MAX_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "최대인원은 30명까지입니다."),
 
     /**
      * 409 Conflict
@@ -79,7 +86,6 @@ public enum ErrorCode {
     DUPLICATE_SCHOOL_MAIL(HttpStatus.CONFLICT, "이미 메일을 보냈습니다."),
     DUPLICATE_POST_LIKE(HttpStatus.CONFLICT, "이미 게시글을 좋아요했습니다."),
     DUPLICATE_COMMENT_LIKE(HttpStatus.CONFLICT, "이미 댓글을 좋아요했습니다."),
-
 
     /**
      * 500 Internal Server Error

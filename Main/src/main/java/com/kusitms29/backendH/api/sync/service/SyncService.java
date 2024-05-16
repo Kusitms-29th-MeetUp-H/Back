@@ -6,6 +6,7 @@ import com.kusitms29.backendH.api.sync.service.dto.request.SyncInfoRequestDto;
 import com.kusitms29.backendH.api.sync.service.dto.response.SyncAssociateInfoResponseDto;
 import com.kusitms29.backendH.api.sync.service.dto.response.SyncInfoResponseDto;
 import com.kusitms29.backendH.api.sync.service.dto.response.SyncSaveResponseDto;
+import com.kusitms29.backendH.domain.category.entity.Category;
 import com.kusitms29.backendH.domain.category.entity.Type;
 import com.kusitms29.backendH.domain.category.service.CategoryReader;
 import com.kusitms29.backendH.domain.category.service.UserCategoryManager;
@@ -18,6 +19,8 @@ import com.kusitms29.backendH.domain.sync.service.SyncReader;
 import com.kusitms29.backendH.domain.user.entity.User;
 import com.kusitms29.backendH.domain.category.entity.UserCategory;
 import com.kusitms29.backendH.domain.user.service.UserReader;
+import com.kusitms29.backendH.global.error.exception.InvalidValueException;
+import com.kusitms29.backendH.global.error.exception.NotAllowedException;
 import com.kusitms29.backendH.infra.config.AwsS3Service;
 import com.kusitms29.backendH.infra.utils.ListUtils;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +36,7 @@ import java.util.List;
 import static com.kusitms29.backendH.domain.category.entity.Type.getEnumTypeFromStringType;
 import static com.kusitms29.backendH.domain.sync.entity.SyncType.FROM_FRIEND;
 import static com.kusitms29.backendH.domain.sync.entity.SyncType.getEnumFROMStringSyncType;
+import static com.kusitms29.backendH.global.error.ErrorCode.*;
 
 @Slf4j
 @Service
@@ -46,6 +50,7 @@ public class SyncService {
     private final ParticipationManager participationManager;
     private final ListUtils listUtils;
     private final AwsS3Service awsS3Service;
+    private final CategoryReader categoryReader;
 
     public List<SyncInfoResponseDto> recommendSync(Long userId, String clientIp){
         User user = userReader.findByUserId(userId);
@@ -117,33 +122,56 @@ public class SyncService {
 
     public SyncSaveResponseDto createSync(Long userId, MultipartFile file, SyncCreateRequestDto requestDto) {
         User user = userReader.findByUserId(userId);
-        String image = awsS3Service.uploadImage(file);
+
+        if(requestDto.getUserIntro().length() > 50) {
+            throw new NotAllowedException(USER_INTRO_NOT_ALLOWED);
+        }
+        if(requestDto.getSyncIntro().length() > 500) {
+            throw new NotAllowedException(SYNC_INTRO_NOT_ALLOWED);
+        }
+
         SyncType enumSyncType = SyncType.getEnumFROMStringSyncType(requestDto.getSyncType());
-        Type enumType = Type.getEnumTypeFromStringType(requestDto.getType());
+
+        if(requestDto.getSyncName().length() > 15) {
+            throw new NotAllowedException(SYNC_NAME_NOT_ALLOWED);
+        }
+
+        String image = awsS3Service.uploadImage(file);
 
         LocalDateTime oneTimeLocalDateTime = null;
         if(!requestDto.getDate().isEmpty()) {
             oneTimeLocalDateTime= parseToLocalDateTime(requestDto.getDate()); //2023-04-13 15:30
         }
+
         String regularDay = null;
         if(!requestDto.getRegularDay().isEmpty()) {
             regularDay = requestDto.getRegularDay();
         }
+
         LocalDateTime regularLocalDateTime = null;
         if(!requestDto.getRoutineDate().isEmpty()) {
             regularLocalDateTime = parseToLocalDateTime(requestDto.getRoutineDate()); //2023-04-13 15:30
         }
+
         LocalTime regularLocalTime = null;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         if(!requestDto.getRegularTime().isEmpty()) { //15:30
             regularLocalTime = LocalTime.parse(requestDto.getRegularTime(), formatter);
         }
 
-        //TODO sync type : 예외처리
-        //TODO location : validation
-        //TODO detailType : validation
-        //TODO member_min / max : validation - 최소 3명 최대 30명
-        //TODO detail type : 예외 처리
+        if(requestDto.getMember_min() < 3) {
+            throw new NotAllowedException(SYNC_MIN_NOT_ALLOWED);
+        }
+        if(requestDto.getMember_max() > 30) {
+            throw new NotAllowedException(SYNC_MAX_NOT_ALLOWED);
+        }
+
+        Type enumType = Type.getEnumTypeFromStringType(requestDto.getType());
+
+        Category detailCategory = categoryReader.findByName(requestDto.getDetailType());
+        if(!detailCategory.getType().getStringType().equals(requestDto.getType())) {
+            throw new InvalidValueException(INVALID_PARENT_CHILD_CATEGORY);
+        }
 
         Sync newSync = syncAppender.save(
                 Sync.createSync(

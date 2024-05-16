@@ -28,7 +28,7 @@ public class SyncSaveResponseDto {
 
     private int member_max;
 
-    private String type; //언어교환, 엔터테인먼트, ...
+    private String type; //외국어, 엔터테인먼트, ...
 
     private String detailType;
 
