@@ -63,23 +63,32 @@ public class Sync extends BaseEntity {
     public enum Status {
         RECRUITING, COMPLETED, DELETED;
     }
+
     public static Sync from(Long syncId) {
         return new Sync(syncId,null,null,null,null,null,null,null,null,null,null,null,null,null,0,0,null,null,null,null);
     }
-    public static Sync createSync(User user, String link, SyncType syncType,
-                                   String name, String image, String content, String location,
-                                   LocalDateTime localDateTime, int member_min, int member_max) {
+
+    public static Sync createSync(User user, String userIntro, String syncIntro, SyncType syncType,
+                                  String syncName, String image, String location, LocalDateTime date,
+                                  String regularDay, LocalTime regularTime, LocalDateTime routineDate,
+                                  int member_min, int member_max,
+                                  Type type, String detailType){
         return Sync.builder()
                 .user(user)
-                .link(link)
+                .userIntro(userIntro)
+                .syncIntro(syncIntro)
                 .syncType(syncType)
-                .syncName(name)
+                .syncName(syncName)
                 .image(image)
-                .content(content)
                 .location(location)
-                .date(localDateTime)
+                .date(date)
+                .regularDay(regularDay)
+                .regularTime(regularTime)
+                .routineDate(routineDate)
                 .member_min(member_min)
                 .member_max(member_max)
+                .type(type)
+                .detailType(detailType)
                 .build();
     }
 
