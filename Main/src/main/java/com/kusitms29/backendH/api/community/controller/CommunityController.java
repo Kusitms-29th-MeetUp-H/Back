@@ -111,15 +111,13 @@ public class CommunityController {
     }
 
     @PostMapping("/translate")
-    public ResponseEntity<SuccessResponse<?>> translateText(@UserId Long userId,
-                                                            @RequestBody TextTranslationRequest requestDto) {
+    public ResponseEntity<SuccessResponse<?>> translateText(@RequestBody TextTranslationRequest requestDto) {
         TextTranslationResponse responseDto = papagoService.translateText(requestDto);
         return SuccessResponse.ok(responseDto.getMessage().getResult());
     }
 
     @PostMapping("/check-language")
-    public ResponseEntity<SuccessResponse<?>> whatLanguageIsIt(@UserId Long userId,
-                                                               @RequestBody LanguageDetectionRequest requestDto) {
+    public ResponseEntity<SuccessResponse<?>> whatLanguageIsIt(@RequestBody LanguageDetectionRequest requestDto) {
         LanguageDetectionResponse responseDto = papagoService.checkLanguage(requestDto);
         return SuccessResponse.ok(responseDto);
     }

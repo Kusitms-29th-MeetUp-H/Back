@@ -3,9 +3,7 @@ package com.kusitms29.backendH.api.sync.service;
 
 import com.kusitms29.backendH.api.sync.service.dto.request.SyncCreateRequestDto;
 import com.kusitms29.backendH.api.sync.service.dto.request.SyncInfoRequestDto;
-import com.kusitms29.backendH.api.sync.service.dto.response.SyncAssociateInfoResponseDto;
-import com.kusitms29.backendH.api.sync.service.dto.response.SyncInfoResponseDto;
-import com.kusitms29.backendH.api.sync.service.dto.response.SyncSaveResponseDto;
+import com.kusitms29.backendH.api.sync.service.dto.response.*;
 import com.kusitms29.backendH.domain.category.entity.Category;
 import com.kusitms29.backendH.domain.category.entity.Type;
 import com.kusitms29.backendH.domain.category.service.CategoryReader;
@@ -22,6 +20,7 @@ import com.kusitms29.backendH.domain.user.service.UserReader;
 import com.kusitms29.backendH.global.error.exception.InvalidValueException;
 import com.kusitms29.backendH.global.error.exception.NotAllowedException;
 import com.kusitms29.backendH.infra.config.AwsS3Service;
+import com.kusitms29.backendH.infra.external.SeoulAddressClient;
 import com.kusitms29.backendH.infra.utils.ListUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +30,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.kusitms29.backendH.domain.category.entity.Type.getEnumTypeFromStringType;
 import static com.kusitms29.backendH.domain.sync.entity.SyncType.FROM_FRIEND;
@@ -51,6 +52,7 @@ public class SyncService {
     private final ListUtils listUtils;
     private final AwsS3Service awsS3Service;
     private final CategoryReader categoryReader;
+    private final SeoulAddressClient seoulAddressClient;
 
     public List<SyncInfoResponseDto> recommendSync(Long userId, String clientIp){
         User user = userReader.findByUserId(userId);
@@ -214,6 +216,18 @@ public class SyncService {
     private LocalDateTime parseToLocalDateTime(String date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         return LocalDateTime.parse(date, formatter);
+    }
+
+    public List<String> getSeoulAddresses() {
+        List<String> nameList = new ArrayList<>();
+        SeoulAddressResponse seoulAddressResponse = seoulAddressClient.calloutSeoulAddressAPI();
+
+        seoulAddressResponse.getRegcodes().forEach(result -> {
+            String address = result.getName().replace("특별", "");
+            nameList.add(address);
+        });
+
+        return nameList;
     }
 }
 
