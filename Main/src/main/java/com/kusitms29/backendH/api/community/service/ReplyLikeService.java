@@ -40,7 +40,7 @@ public class ReplyLikeService {
         );
     }
 
-    public void deleteCommentLike(Long userId, Long replyId) {
+    public void deleteReplyLike(Long userId, Long replyId) {
         User user = userReader.findByUserId(userId);
         Reply reply = replyReader.findById(replyId);
 

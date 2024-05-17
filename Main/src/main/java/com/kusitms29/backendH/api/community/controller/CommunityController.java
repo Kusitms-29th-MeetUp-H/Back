@@ -119,7 +119,7 @@ public class CommunityController {
 
     @DeleteMapping("/reply/like/{replyId}")
     public ResponseEntity<SuccessResponse<?>> deleteReplyLike(@UserId Long userId, @PathVariable Long replyId) {
-        replyLikeService.deleteCommentLike(userId, replyId);
+        replyLikeService.deleteReplyLike(userId, replyId);
         return SuccessResponse.ok(true);
     }
 
