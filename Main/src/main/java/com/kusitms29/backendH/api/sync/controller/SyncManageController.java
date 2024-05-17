@@ -26,7 +26,7 @@ public class SyncManageController {
     }
 
     @GetMapping("/seoul-address")
-    public ResponseEntity<SuccessResponse<?>> getSeoulAddresses(@UserId Long userId) {
+    public ResponseEntity<SuccessResponse<?>> getSeoulAddresses() {
         List<String> responseDto = syncService.getSeoulAddresses();
         return SuccessResponse.ok(responseDto);
     }
