@@ -30,6 +30,7 @@ public class CommunityController {
     private final CommentService commentService;
     private final CommentLikeService commentLikeService;
     private final ReplyService replyService;
+    private final ReplyLikeService replyLikeService;
     private final PapagoService papagoService;
 
     @GetMapping("/banner-image")
@@ -108,6 +109,18 @@ public class CommunityController {
                                                           @RequestBody CommentCreateRequestDto requestDto) {
         ReplyCreateResponseDto responseDto = replyService.createReply(userId, commentId, requestDto.getContent());
         return SuccessResponse.ok(responseDto);
+    }
+
+    @PostMapping("/reply/like/{replyId}")
+    public ResponseEntity<SuccessResponse<?>> createReplyLike(@UserId Long userId, @PathVariable Long replyId) {
+        replyLikeService.createReplyLike(userId, replyId);
+        return SuccessResponse.ok(true);
+    }
+
+    @DeleteMapping("/reply/like/{replyId}")
+    public ResponseEntity<SuccessResponse<?>> deleteReplyLike(@UserId Long userId, @PathVariable Long replyId) {
+        replyLikeService.deleteCommentLike(userId, replyId);
+        return SuccessResponse.ok(true);
     }
 
     @PostMapping("/translate")
