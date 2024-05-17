@@ -60,6 +60,8 @@ public enum ErrorCode {
     COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "댓글을 찾을 수 없습니다."),
     POST_LIKE_NOT_FOUND(HttpStatus.NOT_FOUND, "게시물좋아요를 찾을 수 없습니다."),
     COMMENT_LIKE_NOT_FOUND(HttpStatus.NOT_FOUND, "댓글좋아요를 찾을 수 없습니다."),
+    REPLY_NOT_FOUND(HttpStatus.NOT_FOUND, "대댓글을 찾을 수 없습니다."),
+    REPLY_LIKE_NOT_FOUND(HttpStatus.NOT_FOUND, "대댓글좋아요를 찾을 수 없습니다."),
 
     /**
      * 405 Method Not Allowed
@@ -86,6 +88,7 @@ public enum ErrorCode {
     DUPLICATE_SCHOOL_MAIL(HttpStatus.CONFLICT, "이미 메일을 보냈습니다."),
     DUPLICATE_POST_LIKE(HttpStatus.CONFLICT, "이미 게시글을 좋아요했습니다."),
     DUPLICATE_COMMENT_LIKE(HttpStatus.CONFLICT, "이미 댓글을 좋아요했습니다."),
+    DUPLICATE_REPLY_LIKE(HttpStatus.CONFLICT, "이미 대댓글을 좋아요했습니다."),
 
     /**
      * 500 Internal Server Error
