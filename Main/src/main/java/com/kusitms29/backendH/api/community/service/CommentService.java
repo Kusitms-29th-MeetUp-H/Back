@@ -5,10 +5,7 @@ import com.kusitms29.backendH.api.community.service.dto.response.CommentResponse
 import com.kusitms29.backendH.api.community.service.dto.response.ReplyCreateResponseDto;
 import com.kusitms29.backendH.domain.comment.entity.Comment;
 import com.kusitms29.backendH.domain.comment.entity.Reply;
-import com.kusitms29.backendH.domain.comment.service.CommentLikeManager;
-import com.kusitms29.backendH.domain.comment.service.CommentModifier;
-import com.kusitms29.backendH.domain.comment.service.CommentReader;
-import com.kusitms29.backendH.domain.comment.service.ReplyReader;
+import com.kusitms29.backendH.domain.comment.service.*;
 import com.kusitms29.backendH.domain.post.entity.Post;
 import com.kusitms29.backendH.domain.post.service.PostReader;
 import com.kusitms29.backendH.domain.user.entity.User;
@@ -33,6 +30,7 @@ import static com.kusitms29.backendH.global.error.ErrorCode.*;
 @Service
 public class CommentService {
     private final CommentReader commentReader;
+    private final CommentLikeReader commentLikeReader;
     private final CommentLikeManager commentLikeManager;
     private final PostReader postReader;
     private final UserReader userReader;
@@ -49,6 +47,11 @@ public class CommentService {
     private CommentResponseDto mapToCommentResponseDto(Comment comment, Long userId) {
         User user = userReader.findByUserId(userId);
         int commentLikeCnt = commentLikeManager.countByCommentId(comment.getId());
+
+        boolean isLikedByUser = commentLikeReader.findByCommentId(comment.getId())
+                .stream()
+                .anyMatch(commentLike -> commentLike.getUser().getId() == userId);
+
         boolean isCommentedByUser = comment.getUser().getId() == userId;
 
         List<Reply> replyList = replyReader.findByCommentId(comment.getId());
@@ -70,6 +73,7 @@ public class CommentService {
                 comment.getCreatedAt(),
                 comment.getContent(),
                 commentLikeCnt,
+                isLikedByUser,
                 comment.getReported(),
                 isCommentedByUser,
                 replyResponseDto
