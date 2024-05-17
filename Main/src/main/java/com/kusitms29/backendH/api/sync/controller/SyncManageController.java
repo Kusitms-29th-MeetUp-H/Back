@@ -7,11 +7,10 @@ import com.kusitms29.backendH.global.common.SuccessResponse;
 import com.kusitms29.backendH.infra.config.auth.UserId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/sync")
@@ -23,6 +22,12 @@ public class SyncManageController {
                                                          @RequestPart MultipartFile image,
                                                          @RequestPart SyncCreateRequestDto requestDto) {
         SyncSaveResponseDto responseDto = syncService.createSync(userId, image, requestDto);
+        return SuccessResponse.ok(responseDto);
+    }
+
+    @GetMapping("/seoul-address")
+    public ResponseEntity<SuccessResponse<?>> getSeoulAddresses(@UserId Long userId) {
+        List<String> responseDto = syncService.getSeoulAddresses();
         return SuccessResponse.ok(responseDto);
     }
 
