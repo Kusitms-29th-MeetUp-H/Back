@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,8 +47,11 @@ public class PostService {
 
     public List<PostResponseDto> getPostByPostType(Long userId, String postType) {
         PostType enumPostType = PostType.getEnumPostTypeFromStringPostType(postType);
-        List<Post> lifePosts = postReader.findByPostType(enumPostType);
-        return lifePosts.stream()
+        List<Post> posts = postReader.findByPostType(enumPostType);
+
+        posts.sort(Comparator.comparing(Post :: getCreatedAt).reversed());
+
+        return posts.stream()
                 .map(post -> mapToPostResponseDto(post, userId))
                 .collect(Collectors.toList());
     }

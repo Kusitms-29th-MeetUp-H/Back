@@ -16,13 +16,14 @@ public class CommentResponseDto {
     private String createdDate;
     private String content;
     private int likeCnt;
+    private boolean isLikedByUser;
     private int reportedCnt;
     private boolean isCommentedByUser;
     private List<ReplyCreateResponseDto> replyList;
 
     public static CommentResponseDto of(Long commentId, String writerImage, String writerName,
-                                        LocalDateTime createdDate, String content,
-                                        int likeCnt, int reportedCnt, Boolean isCommentedByUser,
+                                        LocalDateTime createdDate, String content, int likeCnt,
+                                        boolean isLikedByUser, int reportedCnt, Boolean isCommentedByUser,
                                         List<ReplyCreateResponseDto> replyList) {
 
         return CommentResponseDto.builder()
@@ -32,6 +33,7 @@ public class CommentResponseDto {
                 .createdDate(TimeCalculator.calculateTimeDifference(createdDate))
                 .content(content)
                 .likeCnt(likeCnt)
+                .isLikedByUser(isLikedByUser)
                 .reportedCnt(reportedCnt)
                 .isCommentedByUser(isCommentedByUser)
                 .replyList(replyList)

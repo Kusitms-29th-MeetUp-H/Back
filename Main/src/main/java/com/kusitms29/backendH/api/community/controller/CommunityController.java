@@ -30,6 +30,7 @@ public class CommunityController {
     private final CommentService commentService;
     private final CommentLikeService commentLikeService;
     private final ReplyService replyService;
+    private final ReplyLikeService replyLikeService;
     private final PapagoService papagoService;
 
     @GetMapping("/banner-image")
@@ -110,16 +111,26 @@ public class CommunityController {
         return SuccessResponse.ok(responseDto);
     }
 
+    @PostMapping("/reply/like/{replyId}")
+    public ResponseEntity<SuccessResponse<?>> createReplyLike(@UserId Long userId, @PathVariable Long replyId) {
+        replyLikeService.createReplyLike(userId, replyId);
+        return SuccessResponse.ok(true);
+    }
+
+    @DeleteMapping("/reply/like/{replyId}")
+    public ResponseEntity<SuccessResponse<?>> deleteReplyLike(@UserId Long userId, @PathVariable Long replyId) {
+        replyLikeService.deleteReplyLike(userId, replyId);
+        return SuccessResponse.ok(true);
+    }
+
     @PostMapping("/translate")
-    public ResponseEntity<SuccessResponse<?>> translateText(@UserId Long userId,
-                                                            @RequestBody TextTranslationRequest requestDto) {
+    public ResponseEntity<SuccessResponse<?>> translateText(@RequestBody TextTranslationRequest requestDto) {
         TextTranslationResponse responseDto = papagoService.translateText(requestDto);
         return SuccessResponse.ok(responseDto.getMessage().getResult());
     }
 
     @PostMapping("/check-language")
-    public ResponseEntity<SuccessResponse<?>> whatLanguageIsIt(@UserId Long userId,
-                                                               @RequestBody LanguageDetectionRequest requestDto) {
+    public ResponseEntity<SuccessResponse<?>> whatLanguageIsIt(@RequestBody LanguageDetectionRequest requestDto) {
         LanguageDetectionResponse responseDto = papagoService.checkLanguage(requestDto);
         return SuccessResponse.ok(responseDto);
     }

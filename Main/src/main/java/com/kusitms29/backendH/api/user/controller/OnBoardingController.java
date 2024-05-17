@@ -37,32 +37,32 @@ public class OnBoardingController {
         return SuccessResponse.ok(responseDto);
     }
     @PostMapping("/valid-university")
-    public ResponseEntity<SuccessResponse<?>> isItValidUniversity(@UserId Long userId, @RequestBody UniversityRequestDto requestDto) {
+    public ResponseEntity<SuccessResponse<?>> isItValidUniversity(@RequestBody UniversityRequestDto requestDto) {
         universityClient.isValidUniversity(requestDto.getUnivName());
         return SuccessResponse.ok(true); //주석
     }
 
     @PostMapping("/countries")
-    public ResponseEntity<SuccessResponse<?>> getCountries(@UserId Long userId, @RequestBody CountryCalloutRequestDto requestDto) {
+    public ResponseEntity<SuccessResponse<?>> getCountries(@RequestBody CountryCalloutRequestDto requestDto) {
         List<String> countryNames = countryDataClient.listOfCountries(requestDto.getPage(), requestDto.getPerPage(), requestDto.getLanguage());
         return SuccessResponse.ok(countryNames);
     }
 
 
     @PostMapping("/school-emails/verification-requests")
-    public ResponseEntity<SuccessResponse<?>> sendMessageToSchool(@UserId Long userId, @RequestBody SchoolEmailRequestDto requestDto) {
+    public ResponseEntity<SuccessResponse<?>> sendMessageToSchool(@RequestBody SchoolEmailRequestDto requestDto) {
         CalloutErrorResponse responseDto = schoolEmailClient.callOutSendSchoolEmail(requestDto);
         return SuccessResponse.ok(responseDto.isSuccess());
     }
 
     @PostMapping("/school-emails/verifications")
-    public ResponseEntity<SuccessResponse<?>> verificationSchoolEmail(@UserId Long userId, @RequestBody SchoolEmailVerificationRequestDto requestDto) {
+    public ResponseEntity<SuccessResponse<?>> verificationSchoolEmail(@RequestBody SchoolEmailVerificationRequestDto requestDto) {
         CalloutSchoolEmailVerificationResponseDto responseDto = schoolEmailClient.callOutAuthSchoolEmail(requestDto);
         return SuccessResponse.ok(responseDto);
     }
 
     @PostMapping("/school-emails/reset")
-    public ResponseEntity<SuccessResponse<?>> resetForTryEmailTest(@UserId Long userId) {
+    public ResponseEntity<SuccessResponse<?>> resetForTryEmailTest() {
         CalloutErrorResponse responseDto = schoolEmailClient.clearAuthCode();
         return SuccessResponse.ok(responseDto.isSuccess());
     }

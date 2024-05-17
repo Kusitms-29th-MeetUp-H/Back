@@ -24,6 +24,8 @@ public enum ErrorCode {
     INVALID_UNIVERSITY_NAME(HttpStatus.BAD_REQUEST, "유효하지 않은 대학이름입니다."),
     INVALID_UNIVERSITY_DOMAIN(HttpStatus.BAD_REQUEST, "대학과 일치하지 않는 메일 도메인입니다."),
     INVALID_POST_TYPE(HttpStatus.BAD_REQUEST, "유효하지 않은 게시물타입입니다."),
+    INVALID_PARENT_CHILD_CATEGORY(HttpStatus.BAD_REQUEST, "부모 카테고리가 불일치합니다."),
+
 
     /**
      * 401 Unauthorized
@@ -58,6 +60,8 @@ public enum ErrorCode {
     COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "댓글을 찾을 수 없습니다."),
     POST_LIKE_NOT_FOUND(HttpStatus.NOT_FOUND, "게시물좋아요를 찾을 수 없습니다."),
     COMMENT_LIKE_NOT_FOUND(HttpStatus.NOT_FOUND, "댓글좋아요를 찾을 수 없습니다."),
+    REPLY_NOT_FOUND(HttpStatus.NOT_FOUND, "대댓글을 찾을 수 없습니다."),
+    REPLY_LIKE_NOT_FOUND(HttpStatus.NOT_FOUND, "대댓글좋아요를 찾을 수 없습니다."),
 
     /**
      * 405 Method Not Allowed
@@ -68,6 +72,11 @@ public enum ErrorCode {
     TOO_LONG_CONTENT_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "내용은 300자까지만 작성할 수 있어요"),
     TOO_LONG_COMMENT_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "댓글은 30자까지만 작성할 수 있어요"),
     TOO_MANY_IMAGES_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "이미지는 최대 5개까지 입니다."),
+    SYNC_NAME_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "싱크 제목은 15자까지만 작성할 수 있어요"),
+    SYNC_INTRO_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "싱크 내용은 500자까지만 작성할 수 있어요."),
+    USER_INTRO_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "싱크장 소개는 50자까지만 작성할 수 있어요,"),
+    SYNC_MIN_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "최소인원은 3명부터입니다."),
+    SYNC_MAX_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "최대인원은 30명까지입니다."),
 
     /**
      * 409 Conflict
@@ -79,7 +88,7 @@ public enum ErrorCode {
     DUPLICATE_SCHOOL_MAIL(HttpStatus.CONFLICT, "이미 메일을 보냈습니다."),
     DUPLICATE_POST_LIKE(HttpStatus.CONFLICT, "이미 게시글을 좋아요했습니다."),
     DUPLICATE_COMMENT_LIKE(HttpStatus.CONFLICT, "이미 댓글을 좋아요했습니다."),
-
+    DUPLICATE_REPLY_LIKE(HttpStatus.CONFLICT, "이미 대댓글을 좋아요했습니다."),
 
     /**
      * 500 Internal Server Error
@@ -89,7 +98,9 @@ public enum ErrorCode {
     S3_UPLOAD_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 업로드에 실패했습니다."),
     MAIL_FAIL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "메일 전송에 실패했습니다."),
     UNIVERSITY_API_FAIL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "대학 검증 API요청을 실패했습니다."),
-    PAPAGO_FAIL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "파파고 API요청을 실패했습니다.");
+    PAPAGO_FAIL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "파파고 API요청을 실패했습니다."),
+    SEOUL_ADDRESS_FAIL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서울 주소 요청을 실패했습니다.");
+
 
     private final HttpStatus httpStatus;
     private final String message;
