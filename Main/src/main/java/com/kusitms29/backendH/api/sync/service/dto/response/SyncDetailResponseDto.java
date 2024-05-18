@@ -23,7 +23,7 @@ public record SyncDetailResponseDto(
         String university,
         String userIntro
 ) {
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("M월 d일 (E) a h:mm");
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("M월 d일 (EE) a h:mm");
     public static SyncDetailResponseDto oneTimeOf(String syncName,
                                            String syncImage,
                                            SyncType syncType,
