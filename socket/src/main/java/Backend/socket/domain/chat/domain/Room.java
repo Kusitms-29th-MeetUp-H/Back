@@ -15,6 +15,7 @@ public class Room {
     @Id
     private String roomId;
     private String roomName;
+    private String roomSession;
 
     @Builder.Default
     private List<ChatUser> chatUserList = new ArrayList<>();
