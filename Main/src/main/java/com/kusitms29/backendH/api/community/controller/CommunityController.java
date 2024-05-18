@@ -53,7 +53,7 @@ public class CommunityController {
 
     @PostMapping("/post")
     public ResponseEntity<SuccessResponse<?>> createPost(@UserId Long userId,
-                                                         @RequestPart List<MultipartFile> images,
+                                                         @RequestPart(required = false) List<MultipartFile> images,
                                                          @RequestPart PostCreateRequestDto requestDto) {
         PostCreateResponseDto responseDto = postService.createPost(userId, images, requestDto);
         return SuccessResponse.ok(responseDto);
