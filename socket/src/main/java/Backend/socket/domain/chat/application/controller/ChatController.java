@@ -18,6 +18,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,12 +39,12 @@ public class ChatController {
 //        final ChatMessageResponseDto responseDto = chatService.createSendMessageContent(sessionId, chatMessageRequestDto);
 //        redisTemplate.convertAndSend("meetingRoom", responseDto);
 //    }
-    @MessageMapping("/room/{roomName}")
-    public void sendChatMessageInRoom(@DestinationVariable("roomName") final String roomName,
-                                @RequestBody final ChatMessageRoomRequestDto chatMessageRoomRequestDto) {
-        final ChatMessageRoomResponseDto responseDto = chatService.createSendMessageContentInRoom(roomName, chatMessageRoomRequestDto);
-        redisTemplate.convertAndSend("meetingRoom", responseDto);
-    }
+@MessageMapping("/room/{roomName}")
+@SendTo("/sub/room/{roomName}")
+public ChatMessageRoomResponseDto sendChatMessageInRoom(@DestinationVariable("roomName") final String roomName,
+                                                        @RequestBody final ChatMessageRoomRequestDto chatMessageRoomRequestDto) {
+    return chatService.createSendMessageContentInRoom(roomName, chatMessageRoomRequestDto);
+}
 
     @MessageMapping("/chat/detail/{sessionId}")
     public void sendChatDetailMessage(@DestinationVariable("sessionId") final String sessionId,
