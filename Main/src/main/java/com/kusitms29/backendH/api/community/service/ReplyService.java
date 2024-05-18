@@ -4,6 +4,7 @@ import com.kusitms29.backendH.api.community.service.dto.response.ReplyCreateResp
 import com.kusitms29.backendH.domain.comment.entity.Comment;
 import com.kusitms29.backendH.domain.comment.entity.Reply;
 import com.kusitms29.backendH.domain.comment.service.CommentReader;
+import com.kusitms29.backendH.domain.comment.service.ReplyLikeModifier;
 import com.kusitms29.backendH.domain.comment.service.ReplyModifier;
 import com.kusitms29.backendH.domain.comment.service.ReplyReader;
 import com.kusitms29.backendH.domain.user.entity.User;
@@ -22,6 +23,7 @@ public class ReplyService {
     private final CommentReader commentReader;
     private final ReplyReader replyReader;
     private final ReplyModifier replyModifier;
+    private final ReplyLikeModifier replyLikeModifier;
 
     public ReplyCreateResponseDto createReply(Long userId, Long commentId, String content) {
         User user = userReader.findByUserId(userId);
@@ -46,6 +48,7 @@ public class ReplyService {
         User user = userReader.findByUserId(userId);
 
         if(reply.getReported() >= 2) {
+            replyLikeModifier.deleteAllByReplyId(replyId);
             replyModifier.delete(reply);
             return 3;
         }

@@ -32,6 +32,7 @@ public class CommentService {
     private final CommentReader commentReader;
     private final CommentLikeReader commentLikeReader;
     private final CommentLikeManager commentLikeManager;
+    private final CommentLikeModifier commentLikeModifier;
     private final PostReader postReader;
     private final UserReader userReader;
     private final CommentModifier commentModifier;
@@ -117,6 +118,7 @@ public class CommentService {
         User user = userReader.findByUserId(userId);
 
         if(comment.getReported() >= 2) {
+            commentLikeModifier.deleteAllByCommentId(commentId);
             commentModifier.delete(comment);
             return 3;
         }

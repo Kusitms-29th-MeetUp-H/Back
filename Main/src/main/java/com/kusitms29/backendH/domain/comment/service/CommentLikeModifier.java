@@ -17,7 +17,12 @@ public class CommentLikeModifier {
     public void save(CommentLike commentLike) {
         commentLikeRepository.save(commentLike);
     }
+
     public void delete(CommentLike commentLike) {
         commentLikeRepository.delete(commentLike);
+    }
+
+    public void deleteAllByCommentId(Long commentId) {
+        commentLikeRepository.deleteAllByCommentId(commentId);
     }
 }
