@@ -8,6 +8,7 @@ import com.kusitms29.backendH.api.user.service.dto.response.CreateReviewResponse
 import com.kusitms29.backendH.api.user.service.dto.response.UserInfoResponseDto;
 import com.kusitms29.backendH.global.common.SuccessResponse;
 import com.kusitms29.backendH.infra.config.auth.UserId;
+import com.kusitms29.backendH.infra.utils.TranslateUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ import java.util.List;
 @RequestMapping("/api/mypage")
 public class MyPageController {
     private final MyPageService myPageService;
+    private final TranslateUtil translateUtil;
     @GetMapping("/mysync")
     public ResponseEntity<SuccessResponse<?>> getMySyncList(@UserId Long userId,@RequestParam(name = "take",defaultValue = "0") int take) {
         List< SyncInfoResponseDto> syncInfoResponseDtos = myPageService.getMySyncList(userId,take);
@@ -30,8 +32,9 @@ public class MyPageController {
         return SuccessResponse.ok(syncInfoResponseDtos);
     }
     @GetMapping
-    public ResponseEntity<SuccessResponse<?>> getMyInfo(@UserId Long userId) {
+    public ResponseEntity<SuccessResponse<?>> getMyInfo(@UserId Long userId, @RequestParam (name = "language")String language) {
         UserInfoResponseDto userInfoResponseDto = myPageService.getMyInfo(userId);
+        if (language.equals("영어"))userInfoResponseDto=translateUtil.translateObject(userInfoResponseDto);
         return SuccessResponse.ok(userInfoResponseDto);
     }
     @PostMapping("/review")
