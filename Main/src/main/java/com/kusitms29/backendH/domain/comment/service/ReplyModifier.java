@@ -17,4 +17,12 @@ public class ReplyModifier {
     public Reply save(Reply reply) {
         return replyRepository.save(reply);
     }
+
+    public void increaseReportedCount(Long replyId) {
+        replyRepository.increaseReportedCount(replyId);
+    }
+
+    public void delete(Reply reply) {
+        replyRepository.delete(reply);
+    }
 }

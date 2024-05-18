@@ -123,6 +123,12 @@ public class CommunityController {
         return SuccessResponse.ok(true);
     }
 
+    @PostMapping("/reply/report/{replyId}")
+    public ResponseEntity<SuccessResponse<?>> reportReply(@UserId Long userId, @PathVariable Long replyId) {
+        int reportedCount = replyService.reportReply(userId, replyId);
+        return SuccessResponse.ok(true);
+    }
+
     @PostMapping("/translate")
     public ResponseEntity<SuccessResponse<?>> translateText(@RequestBody TextTranslationRequest requestDto) {
         TextTranslationResponse responseDto = papagoService.translateText(requestDto);
