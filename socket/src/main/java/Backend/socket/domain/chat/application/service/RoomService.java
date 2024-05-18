@@ -26,8 +26,6 @@ import java.util.stream.Collectors;
 @Service
 public class RoomService {
     private final MongoTemplate mongoTemplate;
-    private final ChatRepository chatRepository;
-    private final UserRepository userRepository;
     private final RoomRepository roomRepository;
     private final Formatter formatter;
     public RoomMessageListResponseDto sendRoomDetailMessage(String roomName) {
@@ -72,7 +70,6 @@ public class RoomService {
         return RoomListResponseDto.of(sessionId, roomChatResponseDtos);
     }
     private List<RoomChatResponseDto> createRoomChatResponseDto(List<Room> rooms) {
-//        List<Chat> filterChat = getChatEmptyContentFilter(chatList);
         return rooms.stream()
                 .map(room ->
                         RoomChatResponseDto.of(
