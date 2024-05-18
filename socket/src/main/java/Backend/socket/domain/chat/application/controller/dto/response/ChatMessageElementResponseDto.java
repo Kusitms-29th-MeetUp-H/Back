@@ -15,20 +15,24 @@ public class ChatMessageElementResponseDto {
     private String userName;
     private String content;
     private String time;
+    private String sessionId;
+    private String profile;
 
 
-    public static List<ChatMessageElementResponseDto> listOf(List<ChatContent> chatContentList) {
+    public static List<ChatMessageElementResponseDto> listOf(List<ChatContent> chatContentList,String sessionId,String profile) {
         return chatContentList.stream()
-                .map(chatContent -> ChatMessageElementResponseDto.of(chatContent))
+                .map(chatContent -> ChatMessageElementResponseDto.of(chatContent, sessionId, profile))
                 .collect(Collectors.toList());
     }
 
 
-    public static ChatMessageElementResponseDto of(ChatContent chatContent) {
+    public static ChatMessageElementResponseDto of(ChatContent chatContent, String sessionId,String profile) {
         return ChatMessageElementResponseDto.builder()
                 .userName(chatContent.getUserName())
                 .content(chatContent.getContent())
                 .time(chatContent.getTime().toString())
+                .sessionId(sessionId)
+                .profile(profile)
                 .build();
     }
 
