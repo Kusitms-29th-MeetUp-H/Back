@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static com.kusitms29.backendH.global.error.ErrorCode.REPLY_LIKE_NOT_FOUND;
 
 @Slf4j
@@ -17,12 +19,16 @@ import static com.kusitms29.backendH.global.error.ErrorCode.REPLY_LIKE_NOT_FOUND
 public class ReplyLikeReader {
     private final ReplyLikeRepository replyLikeRepository;
 
-    public ReplyLike findById(Long replyId) {
-        return replyLikeRepository.findByReplyId(replyId)
-                .orElseThrow(() -> new EntityNotFoundException(REPLY_LIKE_NOT_FOUND));
+    public List<ReplyLike> findByReplyId(Long replyId) {
+        return replyLikeRepository.findByReplyId(replyId);
     }
 
     public boolean existsByReplyIdAndUserId(Long replyId, Long userId) {
         return replyLikeRepository.existsByReplyIdAndUserId(replyId, userId);
+    }
+
+    public ReplyLike findByReplyIdAndUserId(Long replyId, Long userId) {
+        return replyLikeRepository.findByReplyIdAndUserId(replyId, userId)
+                .orElseThrow(() -> new EntityNotFoundException(REPLY_LIKE_NOT_FOUND));
     }
 }

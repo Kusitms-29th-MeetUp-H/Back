@@ -5,12 +5,11 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Builder
 @Getter
-public class CommentResponseDto {
-    private Long commentId;
+public class ReplyResponseDto {
+    private Long replyId;
     private String writerImage;
     private String writerName;
     private String createdDate;
@@ -18,16 +17,13 @@ public class CommentResponseDto {
     private int likeCnt;
     private boolean isLikedByUser;
     private int reportedCnt;
-    private boolean isCommentedByUser;
-    private List<ReplyResponseDto> replyList;
+    private boolean isRepliedByUser;
 
-    public static CommentResponseDto of(Long commentId, String writerImage, String writerName,
-                                        LocalDateTime createdDate, String content, int likeCnt,
-                                        boolean isLikedByUser, int reportedCnt, Boolean isCommentedByUser,
-                                        List<ReplyResponseDto> replyList) {
-
-        return CommentResponseDto.builder()
-                .commentId(commentId)
+    public static ReplyResponseDto of(Long replyId, String writerImage, String writerName,
+                                      LocalDateTime createdDate, String content,
+                                      int likeCnt, boolean isLikedByUser, int reportedCnt, boolean isRepliedByUser) {
+        return ReplyResponseDto.builder()
+                .replyId(replyId)
                 .writerImage(writerImage)
                 .writerName(writerName)
                 .createdDate(TimeCalculator.calculateTimeDifference(createdDate))
@@ -35,8 +31,8 @@ public class CommentResponseDto {
                 .likeCnt(likeCnt)
                 .isLikedByUser(isLikedByUser)
                 .reportedCnt(reportedCnt)
-                .isCommentedByUser(isCommentedByUser)
-                .replyList(replyList)
+                .isRepliedByUser(isRepliedByUser)
                 .build();
     }
+
 }

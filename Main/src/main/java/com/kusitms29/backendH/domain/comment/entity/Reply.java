@@ -4,6 +4,7 @@ import com.kusitms29.backendH.global.common.BaseEntity;
 import com.kusitms29.backendH.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -26,4 +27,8 @@ public class Reply extends BaseEntity {
     private Comment comment;
 
     private String content;
+
+    @ColumnDefault("0")
+    @Builder.Default()
+    private int reported = 0;
 }

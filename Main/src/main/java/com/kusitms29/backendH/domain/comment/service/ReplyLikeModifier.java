@@ -21,4 +21,8 @@ public class ReplyLikeModifier {
         replyLikeRepository.delete(replyLike);
     }
 
+    public void deleteAllByReplyId(Long replyId) {
+        replyLikeRepository.deleteAllByReplyId(replyId);
+    }
+
 }
