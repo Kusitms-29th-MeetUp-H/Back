@@ -41,9 +41,9 @@ public class ChatController {
 //    }
 @MessageMapping("/room/{roomName}")
 @SendTo("/sub/room/{roomName}")
-public ChatMessageRoomResponseDto sendChatMessageInRoom(@DestinationVariable("roomName") final String roomName,
+public MessageSuccessResponse sendChatMessageInRoom(@DestinationVariable("roomName") final String roomName,
                                                         @RequestBody final ChatMessageRoomRequestDto chatMessageRoomRequestDto) {
-    return MessageSuccessResponse.of(MessageSuccessCode.RECEIVED, chatService.createSendMessageContentInRoom(roomName, chatMessageRoomRequestDto)));
+    return MessageSuccessResponse.of(MessageSuccessCode.RECEIVED, chatService.createSendMessageContentInRoom(roomName, chatMessageRoomRequestDto).getMessage());
 }
 //    @MessageMapping("/room/{roomName}")
 //    public void sendChatMessageInRoom(@DestinationVariable("roomName") final String roomName,
