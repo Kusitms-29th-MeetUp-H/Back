@@ -20,4 +20,15 @@ public class UserCategory {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
+
+    public void updateUserCategory(User user, Category category){
+        this.user = user;
+        this.category = category;
+    }
+    public static UserCategory createUserCategory(User user, Category category){
+        return UserCategory.builder()
+                .user(user)
+                .category(category)
+                .build();
+    }
 }

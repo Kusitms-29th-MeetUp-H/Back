@@ -3,6 +3,7 @@ package com.kusitms29.backendH.api.user.controller;
 import com.kusitms29.backendH.api.sync.service.dto.response.SyncInfoResponseDto;
 import com.kusitms29.backendH.api.user.service.MyPageService;
 import com.kusitms29.backendH.api.user.service.dto.request.CreateReviewRequest;
+import com.kusitms29.backendH.api.user.service.dto.request.EditProfileRequest;
 import com.kusitms29.backendH.api.user.service.dto.response.CreateReviewResponse;
 import com.kusitms29.backendH.api.user.service.dto.response.UserInfoResponseDto;
 import com.kusitms29.backendH.global.common.SuccessResponse;
@@ -42,5 +43,10 @@ public class MyPageController {
     public ResponseEntity<SuccessResponse<?>> getBookMarkSyncList(@UserId Long userId, @RequestParam(name = "take",defaultValue = "0") int take) {
         List<SyncInfoResponseDto> userInfoResponseDto = myPageService.getBookMarkSyncList(userId, take);
         return SuccessResponse.ok(userInfoResponseDto);
+    }
+    @PatchMapping
+    public ResponseEntity<SuccessResponse<?>> editBoard(@UserId Long userId, @ModelAttribute EditProfileRequest editProfileRequest) {
+        myPageService.editProfile(userId, editProfileRequest);
+        return SuccessResponse.ok("UPDATE");
     }
 }

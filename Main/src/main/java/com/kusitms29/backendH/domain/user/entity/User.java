@@ -70,6 +70,12 @@ public class User extends BaseEntity {
         this.setEmail(email);
         this.setSyncType(SyncType.valueOf(sycnType));
     }
+    public void updateProfile(String profile, String name, Gender gender, SyncType sycnType){
+        this.profile = profile;
+        this.userName = name;
+        this.gender = gender;
+        this.syncType = sycnType;
+    }
 
     public void updatePlatform(Platform platform) {
         this.platform = platform;
