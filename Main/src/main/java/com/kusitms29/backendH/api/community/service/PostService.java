@@ -100,7 +100,7 @@ public class PostService {
         );
     }
 
-    private PostCalculateDto calculatePostDetail(Post post, Long userId) {
+    public PostCalculateDto calculatePostDetail(Post post, Long userId) {
         int likeCount = postLikeManager.countByPostId(post.getId());
         boolean isLikedByUser = postLikeManager.existsByPostIdAndUserId(post.getId(), userId);
 

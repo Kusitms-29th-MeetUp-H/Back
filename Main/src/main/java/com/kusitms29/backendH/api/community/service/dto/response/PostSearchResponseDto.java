@@ -11,24 +11,33 @@ import java.time.LocalDateTime;
 public class PostSearchResponseDto {
     private Long postId;
     private String postType;
-    private String userImage;
-    private String userName;
+    private String writerImage;
+    private String writerName;
+    private String createdDate;
     private String title;
     private String content;
-    private String createdAt;
+    private String representativeImage;
+    private int likeCnt;
+    private boolean isLikedByUser;
+    private int commentCnt;
+    private boolean isPostedByUser;
 
-    public static PostSearchResponseDto of(Long postId, String postType,
-                                           String userImage, String userName,
-                                           String title, String content,
-                                           LocalDateTime createdAt) {
+    public static PostSearchResponseDto of(Long postId, String postType, String writerImage, String writerName, LocalDateTime createdDate,
+                                           String title, String content, String representativeImage,
+                                           int likeCnt, boolean isLikedByUser, int commentCnt, boolean isPostedByUser) {
         return PostSearchResponseDto.builder()
                 .postId(postId)
                 .postType(postType)
-                .userImage(userImage)
-                .userName(userName)
+                .writerImage(writerImage)
+                .writerName(writerName)
+                .createdDate(TimeCalculator.calculateTimeDifference(createdDate))
                 .title(title)
                 .content(content)
-                .createdAt(TimeCalculator.calculateTimeDifference(createdAt))
+                .representativeImage(representativeImage)
+                .likeCnt(likeCnt)
+                .isLikedByUser(isLikedByUser)
+                .commentCnt(commentCnt)
+                .isPostedByUser(isPostedByUser)
                 .build();
     }
 }
