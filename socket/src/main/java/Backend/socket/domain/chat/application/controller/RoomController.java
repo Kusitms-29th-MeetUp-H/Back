@@ -34,10 +34,5 @@ public class RoomController {
         final RoomMessageListResponseDto responseDto = roomService.sendRoomDetailMessage(roomName);
         template.convertAndSend("/sub/room/" + roomName, MessageSuccessResponse.of(MessageSuccessCode.MESSAGE, responseDto));
     }
-//    @MessageMapping("/room/all")
-//    public void sendUserChatListMessage(@DestinationVariable("roomName") final String roomName,
-//                                        @RequestBody final ChatListRequestDto chatListRequestDto) {
-//        final ChatListResponseDto responseDto = chatService.sendUserChatListMessage(sessionId, chatListRequestDto);
-//        template.convertAndSend("/sub/chat/" + sessionId, MessageSuccessResponse.of(MessageSuccessCode.CHATLIST, responseDto));
-//    }
+
 }

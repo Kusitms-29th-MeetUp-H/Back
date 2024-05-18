@@ -13,7 +13,7 @@ public class ChatUser {
     public static ChatUser createChatUser(User user) {
         return ChatUser.builder()
                 .sessionId(user.getSessionId())
-                .name(user.getName())
+                .name(user.getUserName())
                 .profile(user.getProfile())
                 .build();
     }
