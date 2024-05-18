@@ -42,7 +42,7 @@ public class ChatController {
     public void sendChatMessageInRoom(@DestinationVariable("roomName") final String roomName,
                                 @RequestBody final ChatMessageRoomRequestDto chatMessageRoomRequestDto) {
         final ChatMessageRoomResponseDto responseDto = chatService.createSendMessageContentInRoom(roomName, chatMessageRoomRequestDto);
-        redisTemplate.convertAndSend("/sub/room/" + roomName, responseDto);
+        redisTemplate.convertAndSend("meetingRoom", responseDto);
     }
 
     @MessageMapping("/chat/detail/{sessionId}")
