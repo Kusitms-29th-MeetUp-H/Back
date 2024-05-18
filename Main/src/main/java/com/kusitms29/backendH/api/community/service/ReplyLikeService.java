@@ -44,7 +44,7 @@ public class ReplyLikeService {
         User user = userReader.findByUserId(userId);
         Reply reply = replyReader.findById(replyId);
 
-        ReplyLike replyLike = replyLikeReader.findById(replyId);
+        ReplyLike replyLike = replyLikeReader.findByReplyIdAndUserId(replyId, userId);
         replyLikeModifier.delete(replyLike);
     }
 }

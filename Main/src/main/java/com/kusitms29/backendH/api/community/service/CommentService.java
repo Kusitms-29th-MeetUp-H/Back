@@ -2,7 +2,7 @@ package com.kusitms29.backendH.api.community.service;
 
 import com.kusitms29.backendH.api.community.service.dto.response.CommentCreateResponseDto;
 import com.kusitms29.backendH.api.community.service.dto.response.CommentResponseDto;
-import com.kusitms29.backendH.api.community.service.dto.response.ReplyCreateResponseDto;
+import com.kusitms29.backendH.api.community.service.dto.response.ReplyResponseDto;
 import com.kusitms29.backendH.domain.comment.entity.Comment;
 import com.kusitms29.backendH.domain.comment.entity.Reply;
 import com.kusitms29.backendH.domain.comment.service.*;
@@ -36,6 +36,8 @@ public class CommentService {
     private final UserReader userReader;
     private final CommentModifier commentModifier;
     private final ReplyReader replyReader;
+    private final ReplyLikeReader replyLikeReader;
+    private final ReplyLikeManager replyLikeManager;
 
     public List<CommentResponseDto> getCommentsInPost(Long userId, Long postId) {
         List<Comment> comments = commentReader.findByPostId(postId);
@@ -55,14 +57,19 @@ public class CommentService {
         boolean isCommentedByUser = comment.getUser().getId() == userId;
 
         List<Reply> replyList = replyReader.findByCommentId(comment.getId());
-        List<ReplyCreateResponseDto> replyResponseDto = replyList.stream()
-                .map(reply -> ReplyCreateResponseDto.builder()
+        List<ReplyResponseDto> replyResponseDto = replyList.stream()
+                .map(reply ->
+                        ReplyResponseDto.builder()
                         .replyId(reply.getId())
                         .writerImage(reply.getUser().getProfile())
                         .writerName(reply.getUser().getUserName())
                         .createdDate(TimeCalculator.calculateTimeDifference(reply.getCreatedAt()))
                         .content(reply.getContent())
+                        .likeCnt(replyLikeManager.countByReplyId(reply.getId()))
+                        .isLikedByUser(replyLikeReader.findByReplyId(reply.getId())
+                                .stream().anyMatch(replyLike -> replyLike.getUser().getId() == userId))
                         .isRepliedByUser(reply.getUser().getId() == userId)
+                        .reportedCnt(reply.getReported())
                         .build())
                 .collect(Collectors.toList());
 
