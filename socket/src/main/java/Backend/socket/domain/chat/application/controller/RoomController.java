@@ -37,7 +37,7 @@ public class RoomController {
         template.convertAndSend("/sub/room/" + roomName, MessageSuccessResponse.of(MessageSuccessCode.MESSAGE, responseDto));
     }
     @MessageMapping("/room/all/{sessionId}")
-    public void sendUserChatListMessage(@UserId final String sessionId) {
+    public void sendUserChatListMessage(@DestinationVariable("sessionId") final String sessionId) {
         final RoomListResponseDto responseDto = roomService.sendUserChatListMessage(sessionId);
         template.convertAndSend("/sub/room/" + sessionId, MessageSuccessResponse.of(MessageSuccessCode.CHATLIST, responseDto));
     }
