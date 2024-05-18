@@ -32,17 +32,17 @@ public class ChatController {
         this.template = template;
         this.redisTemplate = redisTemplate;
     }
-    @MessageMapping("/chat/{sessionId}")
-    public void sendChatMessage(@DestinationVariable("sessionId") final String sessionId,
-                                @RequestBody final ChatMessageRequestDto chatMessageRequestDto) {
-        final ChatMessageResponseDto responseDto = chatService.createSendMessageContent(sessionId, chatMessageRequestDto);
-        redisTemplate.convertAndSend("meetingRoom", responseDto);
-    }
+//    @MessageMapping("/chat/{sessionId}")
+//    public void sendChatMessage(@DestinationVariable("sessionId") final String sessionId,
+//                                @RequestBody final ChatMessageRequestDto chatMessageRequestDto) {
+//        final ChatMessageResponseDto responseDto = chatService.createSendMessageContent(sessionId, chatMessageRequestDto);
+//        redisTemplate.convertAndSend("meetingRoom", responseDto);
+//    }
     @MessageMapping("/room/{roomName}")
     public void sendChatMessageInRoom(@DestinationVariable("roomName") final String roomName,
                                 @RequestBody final ChatMessageRoomRequestDto chatMessageRoomRequestDto) {
         final ChatMessageRoomResponseDto responseDto = chatService.createSendMessageContentInRoom(roomName, chatMessageRoomRequestDto);
-        redisTemplate.convertAndSend("meetingRoom", responseDto);
+        redisTemplate.convertAndSend("/sub/room/" + roomName, responseDto);
     }
 
     @MessageMapping("/chat/detail/{sessionId}")
