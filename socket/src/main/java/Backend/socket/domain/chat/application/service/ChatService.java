@@ -56,20 +56,20 @@ public class ChatService {
         return ChatMessageRoomResponseDto.of(chatMessageRoomRequestDto.getToRoomName(), sessionIdList, chatMessage);
     }
 
-    public ChatMessageListResponseDto sendChatDetailMessage(String sessionId, ChatMessageListRequestDto chatMessageListRequestDto) {
-        Chat chat = getChatBySessions(sessionId, chatMessageListRequestDto.getChatSession());
-        ChatUserResponseDto chatUserResponseDto = getChatUserResponseDto(chat, chatMessageListRequestDto.getFromUserName());
-        List<ChatMessageElementResponseDto> chatMessageList = ChatMessageElementResponseDto.listOf(chat.getChatContentList(), chatMessageListRequestDto.getChatSession(), null);
-        saveChat(chat);
-        return ChatMessageListResponseDto.of(chatUserResponseDto, chatMessageList);
-    }
-
-    public ChatListResponseDto sendUserChatListMessage(String sessionId, ChatListRequestDto chatListRequestDto) {
-        List<Chat> chatList = findChatListBySession(sessionId);
-        List<UserChatResponseDto> userChatResponseDtoList = createUserChatResponseDto(chatList, chatListRequestDto.getUserName());
-        userChatResponseDtoList.sort(Comparator.comparing(UserChatResponseDto::getTime).reversed());
-        return ChatListResponseDto.of(userChatResponseDtoList);
-    }
+//    public ChatMessageListResponseDto sendChatDetailMessage(String sessionId, ChatMessageListRequestDto chatMessageListRequestDto) {
+//        Chat chat = getChatBySessions(sessionId, chatMessageListRequestDto.getChatSession());
+//        ChatUserResponseDto chatUserResponseDto = getChatUserResponseDto(chat, chatMessageListRequestDto.getFromUserName());
+//        List<ChatMessageElementResponseDto> chatMessageList = ChatMessageElementResponseDto.listOf(chat.getChatContentList(), chatMessageListRequestDto.getChatSession(), null);
+//        saveChat(chat);
+//        return ChatMessageListResponseDto.of(chatUserResponseDto, chatMessageList);
+//    }
+//
+//    public ChatListResponseDto sendUserChatListMessage(String sessionId, ChatListRequestDto chatListRequestDto) {
+//        List<Chat> chatList = findChatListBySession(sessionId);
+//        List<UserChatResponseDto> userChatResponseDtoList = createUserChatResponseDto(chatList, chatListRequestDto.getUserName());
+//        userChatResponseDtoList.sort(Comparator.comparing(UserChatResponseDto::getTime).reversed());
+//        return ChatListResponseDto.of(userChatResponseDtoList);
+//    }
 
     private List<String> getSessionIdList(String firstSessionId, String secondSessionId) {
         List<String> sessionList = new ArrayList<>();

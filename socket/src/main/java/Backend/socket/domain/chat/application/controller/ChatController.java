@@ -43,21 +43,27 @@ public class ChatController {
 @SendTo("/sub/room/{roomName}")
 public ChatMessageRoomResponseDto sendChatMessageInRoom(@DestinationVariable("roomName") final String roomName,
                                                         @RequestBody final ChatMessageRoomRequestDto chatMessageRoomRequestDto) {
-    return chatService.createSendMessageContentInRoom(roomName, chatMessageRoomRequestDto);
+    return MessageSuccessResponse.of(MessageSuccessCode.RECEIVED, chatService.createSendMessageContentInRoom(roomName, chatMessageRoomRequestDto)));
 }
+//    @MessageMapping("/room/{roomName}")
+//    public void sendChatMessageInRoom(@DestinationVariable("roomName") final String roomName,
+//                                      @RequestBody final ChatMessageRoomRequestDto chatMessageRoomRequestDto) {
+//        final ChatMessageRoomResponseDto responseDto = chatService.createSendMessageContentInRoom(roomName, chatMessageRoomRequestDto);
+//        redisTemplate.convertAndSend("meetingRoom", responseDto);
+//    }
 
-    @MessageMapping("/chat/detail/{sessionId}")
-    public void sendChatDetailMessage(@DestinationVariable("sessionId") final String sessionId,
-                                      @RequestBody final ChatMessageListRequestDto chatMessageListRequestDto) {
-        final ChatMessageListResponseDto responseDto = chatService.sendChatDetailMessage(sessionId, chatMessageListRequestDto);
-        template.convertAndSend("/sub/chat/" + sessionId, MessageSuccessResponse.of(MessageSuccessCode.MESSAGE, responseDto));
-    }
-
-    @MessageMapping("/chat/all")
-    public void sendUserChatListMessage(@Header("sessionId") final String sessionId,
-                                        @RequestBody final ChatListRequestDto chatListRequestDto) {
-        final ChatListResponseDto responseDto = chatService.sendUserChatListMessage(sessionId, chatListRequestDto);
-        template.convertAndSend("/sub/chat/" + sessionId, MessageSuccessResponse.of(MessageSuccessCode.CHATLIST, responseDto));
-    }
+//    @MessageMapping("/chat/detail/{sessionId}")
+//    public void sendChatDetailMessage(@DestinationVariable("sessionId") final String sessionId,
+//                                      @RequestBody final ChatMessageListRequestDto chatMessageListRequestDto) {
+//        final ChatMessageListResponseDto responseDto = chatService.sendChatDetailMessage(sessionId, chatMessageListRequestDto);
+//        template.convertAndSend("/sub/chat/" + sessionId, MessageSuccessResponse.of(MessageSuccessCode.MESSAGE, responseDto));
+//    }
+//
+//    @MessageMapping("/chat/all")
+//    public void sendUserChatListMessage(@Header("sessionId") final String sessionId,
+//                                        @RequestBody final ChatListRequestDto chatListRequestDto) {
+//        final ChatListResponseDto responseDto = chatService.sendUserChatListMessage(sessionId, chatListRequestDto);
+//        template.convertAndSend("/sub/chat/" + sessionId, MessageSuccessResponse.of(MessageSuccessCode.CHATLIST, responseDto));
+//    }
 
 }
