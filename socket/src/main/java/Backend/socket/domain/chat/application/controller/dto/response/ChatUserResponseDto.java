@@ -9,7 +9,6 @@ import lombok.Getter;
 public class ChatUserResponseDto {
     private String sessionId;
     private String name;
-    private String type;
     private String profile;
 
     public static ChatUserResponseDto of(ChatUser chatUser) {
@@ -17,6 +16,7 @@ public class ChatUserResponseDto {
             return ChatUserResponseDto.builder()
                     .sessionId(chatUser.getSessionId())
                     .name(chatUser.getName())
+                    .profile(chatUser.getProfile())
                     .build();
         } else {
             return ChatUserResponseDto.builder().build();
