@@ -1,9 +1,12 @@
 package com.kusitms29.backendH.infra.external.fcm.service;
 
 import com.google.firebase.messaging.*;
+import com.kusitms29.backendH.domain.comment.entity.Comment;
 import com.kusitms29.backendH.domain.notification.entity.NotificationHistory;
 import com.kusitms29.backendH.domain.notification.entity.NotificationType;
 import com.kusitms29.backendH.domain.notification.repository.NotificationHistoryRepository;
+import com.kusitms29.backendH.domain.post.entity.Post;
+import com.kusitms29.backendH.domain.post.service.PostReader;
 import com.kusitms29.backendH.domain.sync.entity.Sync;
 import com.kusitms29.backendH.domain.sync.service.SyncReader;
 import com.kusitms29.backendH.domain.user.entity.User;
@@ -35,12 +38,13 @@ public class PushNotificationService {
     private final NotificationHistoryRepository notificationHistoryRepository;
     private final UserReader userReader;
     private final SyncReader syncReader;
+    private final PostReader postReader;
 
     public void sendSyncReminder() {
         //오늘 자정
         LocalDateTime today = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
         List<Map<String, Object>> hurrySyncInfo = syncRepository.findHurrySyncInfo(today);
-        log.info("hurrySyncInfo.size() :: " + hurrySyncInfo.size());
+
         for (Map<String, Object> userInfo : hurrySyncInfo) {
             NotificationDto dto = new NotificationDto(
                     userInfo.get("user_id").toString(),
@@ -79,6 +83,34 @@ public class PushNotificationService {
             notificationHistoryRepository.save(history);
         }
         log.info("Sync reminders sent successfully.");
+    }
+
+    public void sendCommentNotification(Long postId, Comment newComment) {
+        //글 주인에게 댓글 알리기
+        Post post = postReader.findById(postId);
+
+        NotificationDto dto = new NotificationDto(
+                post.getUser().getId().toString(),
+                post.getTitle(),
+                newComment.getUser().getUserName(),
+                MessageTemplate.COMMENT
+        );
+        sendMessage(dto);
+
+        //알림 기록
+        LocalDateTime now = LocalDateTime.now();
+        User alarmedUser = userReader.findByUserId(Long.parseLong(dto.getId()));
+        NotificationHistory history = NotificationHistory.createHistory(
+                alarmedUser,
+                dto.getTemplate().getTitle(),
+                createMessageBody(dto),
+                getToken(dto.getId()),
+                now,
+                NotificationType.COMMENT
+        );
+        notificationHistoryRepository.save(history);
+
+        log.info("comment notification sent successfully.");
     }
 
     private void sendMessage(NotificationDto dto) {
