@@ -12,6 +12,7 @@ import Backend.socket.domain.chat.application.controller.dto.response.ChatMessag
 import Backend.socket.domain.chat.application.service.ChatService;
 import Backend.socket.global.common.MessageSuccessCode;
 import Backend.socket.global.common.MessageSuccessResponse;
+import Backend.socket.global.common.image;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -43,13 +44,13 @@ public class ChatController {
     @MessageMapping("/room/{roomName}")
     @SendTo("/sub/room/{roomName}")
     public MessageSuccessResponse sendChatMessageInRoom(@DestinationVariable("roomName") final String roomName,
-                                                         @ModelAttribute final ChatMessageRoomRequestDto chatMessageRoomRequestDto) {
+                                                         @RequestBody final ChatMessageRoomRequestDto chatMessageRoomRequestDto) {
         return MessageSuccessResponse.of(MessageSuccessCode.RECEIVED, chatService.createSendMessageContentInRoom(roomName, chatMessageRoomRequestDto).getMessage());
     }
     @MessageMapping("/room/image/{roomName}")
     @SendTo("/sub/room/{roomName}")
     public MessageSuccessResponse sendImageMessageInRoom(@DestinationVariable("roomName") final String roomName,
-                                                        @RequestBody final byte[] image) {
+                                                        @RequestBody final image image) {
         return MessageSuccessResponse.of(MessageSuccessCode.RECEIVED, chatService.createSendImageContentInRoom(roomName, image).getMessage());
     }
 //    @MessageMapping("/room/{roomName}")
