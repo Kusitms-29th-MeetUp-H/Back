@@ -11,6 +11,7 @@ import Backend.socket.domain.chat.repository.ChatRepository;
 import Backend.socket.domain.chat.repository.RoomRepository;
 import Backend.socket.domain.chat.repository.UserRepository;
 import Backend.socket.global.error.socketException.EntityNotFoundException;
+import Backend.socket.infra.external.AwsService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -36,21 +37,23 @@ public class ChatService {
     private final ChatRepository chatRepository;
     private final UserRepository userRepository;
     private final RoomRepository roomRepository;
+    private final AwsService awsService;
 
-    public ChatMessageResponseDto createSendMessageContent(String sessionId, ChatMessageRequestDto chatMessageRequestDto) {
-        Chat chat = getChatBySessions(sessionId, chatMessageRequestDto.getChatSession());
-        User user = userRepository.findBySessionId(chatMessageRequestDto.getChatSession()).orElseThrow();
-        ChatContent chatContent = createChatContent(chatMessageRequestDto.getFromUserName(), chatMessageRequestDto.getContent(), chat);
-        ChatMessageElementResponseDto chatMessage = ChatMessageElementResponseDto.of(chatContent, chatMessageRequestDto.getChatSession(), user.getProfile());
-        List<String> sessionIdList = getSessionIdList(sessionId, chatMessageRequestDto.getChatSession());
-        saveChat(chat);
-        return ChatMessageResponseDto.of(chatMessageRequestDto.getToUserName(), sessionIdList, chatMessage);
-    }
+//    public ChatMessageResponseDto createSendMessageContent(String sessionId, ChatMessageRequestDto chatMessageRequestDto) {
+//        Chat chat = getChatBySessions(sessionId, chatMessageRequestDto.getChatSession());
+//        User user = userRepository.findBySessionId(chatMessageRequestDto.getChatSession()).orElseThrow();
+//        ChatContent chatContent = createChatContent(chatMessageRequestDto.getFromUserName(), chatMessageRequestDto.getContent(), chat);
+//        ChatMessageElementResponseDto chatMessage = ChatMessageElementResponseDto.of(chatContent, chatMessageRequestDto.getChatSession(), user.getProfile());
+//        List<String> sessionIdList = getSessionIdList(sessionId, chatMessageRequestDto.getChatSession());
+//        saveChat(chat);
+//        return ChatMessageResponseDto.of(chatMessageRequestDto.getToUserName(), sessionIdList, chatMessage);
+//    }
     public ChatMessageRoomResponseDto createSendMessageContentInRoom(String roomName, ChatMessageRoomRequestDto chatMessageRoomRequestDto) {
         Room room = getChatBySessionsInRoom(roomName, chatMessageRoomRequestDto.getChatSession());
         User user = userRepository.findBySessionId(chatMessageRoomRequestDto.getChatSession()).orElseThrow();
+        List<String> images = awsService.uploadImages(chatMessageRoomRequestDto.getImages());
         ChatContent chatContent = createChatContent(chatMessageRoomRequestDto.getFromUserName(), chatMessageRoomRequestDto.getContent(), room);
-        ChatMessageElementResponseDto chatMessage = ChatMessageElementResponseDto.of(chatContent, chatMessageRoomRequestDto.getChatSession(), user.getProfile());
+        ChatMessageElementResponseDto chatMessage = ChatMessageElementResponseDto.of(chatContent, chatMessageRoomRequestDto.getChatSession(), user.getProfile(), images);
         List<String> sessionIdList = getSessionIdListInRoom(roomName, chatMessageRoomRequestDto.getChatSession());
         saveChatRoom(room);
         return ChatMessageRoomResponseDto.of(chatMessageRoomRequestDto.getToRoomName(), sessionIdList, chatMessage);
