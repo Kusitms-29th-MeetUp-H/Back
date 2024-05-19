@@ -11,9 +11,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 @RequiredArgsConstructor
 public class FCMScheduler {
     private final PushNotificationService pushNotificationService;
-
+    //@Scheduled(cron = "0 00 09 * * *") //오전 9시
     //@Scheduled(initialDelay = 0, fixedDelay = 7000)
-    @Scheduled(cron = "0 00 09 * * *") //오전 9시
     public void sendSyncReminder() {
         log.info("=== SYNREMINDER START ===");
         pushNotificationService.sendSyncReminder();

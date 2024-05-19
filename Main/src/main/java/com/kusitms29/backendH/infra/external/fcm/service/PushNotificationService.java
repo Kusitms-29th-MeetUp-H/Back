@@ -45,13 +45,16 @@ public class PushNotificationService {
         //오늘 자정
         LocalDateTime today = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
         List<Map<String, Object>> hurrySyncInfo = syncRepository.findHurrySyncInfo(today);
-
+        log.info("hurrySyncInfo.size() :: " +  hurrySyncInfo.size());
         for (Map<String, Object> userInfo : hurrySyncInfo) {
-            NotificationDto dto = new NotificationDto(
-                    userInfo.get("user_id").toString(),
+
+            NotificationDto dto = NotificationDto.getSyncReminderAlarm(
+                    (Long) userInfo.get("user_id"),
                     (String) userInfo.get("user_name"),
                     (String) userInfo.get("sync_name"),
-                    MessageTemplate.SYNC_REMINDER);
+                    MessageTemplate.SYNC_REMINDER,
+                    (Long) userInfo.get("sync_id")
+            );
             sendMessage(dto);
 
             //sync_type : 지속성일 때, 모임날짜가 지났다면 다음 요일 날짜로 업데이트
@@ -80,7 +83,9 @@ public class PushNotificationService {
                     getToken(dto.getId()),
                     now,
                     NotificationType.SYNC_REMINDER,
-                    TopCategory.MY_SYNC
+                    TopCategory.MY_SYNC,
+                    Long.parseLong(dto.getInfoId()),
+                    (dto.getInfoId2() == null) ? null : Long.parseLong(dto.getInfoId2())
             );
             notificationHistoryRepository.save(history);
         }
@@ -90,12 +95,17 @@ public class PushNotificationService {
     public void sendCommentNotification(Long postId, Comment newComment) {
         //글 주인에게 댓글 알리기
         Post post = postReader.findById(postId);
+        if(post.getUser().getId() == newComment.getUser().getId()) {
+            return;
+        }
 
-        NotificationDto dto = new NotificationDto(
-                post.getUser().getId().toString(),
+        NotificationDto dto = NotificationDto.getCommunityAlarm(
+                post.getUser().getId(),
                 post.getTitle(),
                 newComment.getUser().getUserName(),
-                MessageTemplate.COMMENT
+                MessageTemplate.COMMENT,
+                postId,
+                newComment.getId()
         );
         sendMessage(dto);
 
@@ -109,7 +119,9 @@ public class PushNotificationService {
                 getToken(dto.getId()),
                 now,
                 NotificationType.COMMENT,
-                TopCategory.ACTIVITY
+                TopCategory.ACTIVITY,
+                postId,
+                newComment.getId()
         );
         notificationHistoryRepository.save(history);
 
