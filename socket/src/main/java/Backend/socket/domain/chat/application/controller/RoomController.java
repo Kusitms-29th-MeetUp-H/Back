@@ -46,20 +46,10 @@ public class RoomController {
         template.convertAndSend("/sub/room/" + sessionId, MessageSuccessResponse.of(MessageSuccessCode.CHATLIST, responseDto));
     }
     @PostMapping("/room/{roomName}")
-    public ResponseEntity<Void> sendChatMessage(@PathVariable("roomName") String roomName,
-                                                @RequestBody ChatMessageRoomRequestDto requestDto) {
-        // ChatMessageRoomRequestDto를 사용하여 필요한 정보 추출
-        String chatSession = requestDto.getChatSession();
-        String fromUserName = requestDto.getFromUserName();
-        String toRoomName = requestDto.getToRoomName();
-        String content = requestDto.getContent();
+    public MessageSuccessResponse sendChatMessage(@PathVariable("roomName") String roomName,
+                                                @RequestBody final ChatMessageRoomRequestDto chatMessageRoomRequestDto) {
 
-        // 채팅 메시지 처리 로직 수행
-        ChatMessageRoomResponseDto responseDto = chatService.createSendMessageContentInRoom(toRoomName, requestDto);
 
-        // Redis를 통해 메시지 발행
-        redisTemplate.convertAndSend("/sub/room/" + toRoomName, responseDto);
-
-        return ResponseEntity.ok().build();
+        return MessageSuccessResponse.of(MessageSuccessCode.RECEIVED, chatService.createSendMessageContentInRoom(roomName, chatMessageRoomRequestDto).getMessage());
     }
 }

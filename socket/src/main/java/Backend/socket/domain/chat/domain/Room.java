@@ -45,4 +45,12 @@ public class Room {
     public void addChatRoom(ChatUser chatUser) {
         this.chatUserList.add(chatUser);
     }
+    public Room(String roomId, String roomName, String roomSession, String syncName, List<ChatUser> chatUserList, List<ChatContent> chatContentList) {
+        this.roomId = roomId;
+        this.roomName = roomName;
+        this.roomSession = roomSession;
+        this.syncName = syncName;
+        this.chatUserList = chatUserList != null ? chatUserList : new ArrayList<>();
+        this.chatContentList = chatContentList != null ? chatContentList : new ArrayList<>();
+    }
 }
