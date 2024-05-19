@@ -51,12 +51,22 @@ public class ChatService {
     public ChatMessageRoomResponseDto createSendMessageContentInRoom(String roomName, ChatMessageRoomRequestDto chatMessageRoomRequestDto) {
         Room room = getChatBySessionsInRoom(roomName, chatMessageRoomRequestDto.getChatSession());
         User user = userRepository.findBySessionId(chatMessageRoomRequestDto.getChatSession()).orElseThrow();
-        List<String> images = awsService.uploadImages(chatMessageRoomRequestDto.getImages());
+        String images = awsService.uploadImageToS3(chatMessageRoomRequestDto.getImage());
         ChatContent chatContent = createChatContent(chatMessageRoomRequestDto.getFromUserName(), chatMessageRoomRequestDto.getContent(), room);
         ChatMessageElementResponseDto chatMessage = ChatMessageElementResponseDto.of(chatContent, chatMessageRoomRequestDto.getChatSession(), user.getProfile(), images);
         List<String> sessionIdList = getSessionIdListInRoom(roomName, chatMessageRoomRequestDto.getChatSession());
         saveChatRoom(room);
         return ChatMessageRoomResponseDto.of(chatMessageRoomRequestDto.getToRoomName(), sessionIdList, chatMessage);
+    }
+    public ChatMessageRoomResponseDto createSendImageContentInRoom(String roomName, byte[] chatMessageRoomRequestDto) {
+        String images = awsService.uploadImageToS3(chatMessageRoomRequestDto);
+        Room room = getChatBySessionsInRoom(roomName, "113828093759900814627_ef4a27");
+        User user = userRepository.findBySessionId("113828093759900814627_ef4a27").orElseThrow();
+        ChatContent chatContent = createChatContent("양규리", "ㅎㅇ", room);
+        ChatMessageElementResponseDto chatMessage = ChatMessageElementResponseDto.of(chatContent, "113828093759900814627_ef4a27", user.getProfile(), images);
+        List<String> sessionIdList = getSessionIdListInRoom(roomName, "113828093759900814627_ef4a27");
+        saveChatRoom(room);
+        return ChatMessageRoomResponseDto.of("eksxhr", sessionIdList, chatMessage);
     }
 
 //    public ChatMessageListResponseDto sendChatDetailMessage(String sessionId, ChatMessageListRequestDto chatMessageListRequestDto) {
