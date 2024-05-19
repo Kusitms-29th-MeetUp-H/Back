@@ -17,7 +17,7 @@ public class ChatMessageElementResponseDto {
     private String time;
     private String sessionId;
     private String profile;
-    private List<String> images;
+    private String images;
 
 
 //    public static List<ChatMessageElementResponseDto> listOf(List<ChatContent> chatContentList,String sessionId,String profile) {
@@ -27,14 +27,14 @@ public class ChatMessageElementResponseDto {
 //    }
 
 
-    public static ChatMessageElementResponseDto of(ChatContent chatContent, String sessionId,String profile, List<String> images) {
+    public static ChatMessageElementResponseDto of(ChatContent chatContent, String sessionId,String profile, String image) {
         return ChatMessageElementResponseDto.builder()
                 .userName(chatContent.getUserName())
                 .content(chatContent.getContent())
                 .time(chatContent.getTime().toString())
                 .sessionId(sessionId)
                 .profile(profile)
-                .images(images)
+                .images(image)
                 .build();
     }
 

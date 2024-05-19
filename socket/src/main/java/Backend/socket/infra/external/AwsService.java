@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -37,43 +38,51 @@ public class AwsService {
 
     private final AmazonS3 amazonS3;
 
-    public String uploadImage(MultipartFile image) {
-        String fileName = createFileName(image.getOriginalFilename());
-        String fileUrl = amazonS3.getUrl(bucket, fileName).toString();
-        ObjectMetadata objectMetadata = new ObjectMetadata();
-        objectMetadata.setContentLength(image.getSize());
-        objectMetadata.setContentType(image.getContentType());
+    public String uploadImageToS3(byte[] imageData) {
+        String fileName = UUID.randomUUID().toString();
+        String fileUrl = "";
+
         try {
-            amazonS3.putObject(new PutObjectRequest(bucket, fileName, image.getInputStream(), objectMetadata)
+            ObjectMetadata objectMetadata = new ObjectMetadata();
+            objectMetadata.setContentType("image/jpeg");
+            objectMetadata.setContentLength(imageData.length);
+
+            InputStream inputStream = new ByteArrayInputStream(imageData);
+            amazonS3.putObject(new PutObjectRequest(bucket, fileName, inputStream, objectMetadata)
                     .withCannedAcl(CannedAccessControlList.PublicRead));
-        } catch(IOException e) {
-            throw new InternalServerException(S3_UPLOAD_ERROR);
+
+            fileUrl = amazonS3.getUrl(bucket, fileName).toString();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
         return fileUrl;
     }
 
-    public List<String> uploadImages(List<MultipartFile> images) {
-        if (images.isEmpty())
+    public List<String> uploadImages(List<byte[]> imageDataList) {
+        if (imageDataList.isEmpty())
             return null;
-        List<String> fileNameList = new ArrayList<>();
         List<String> fileUrlList = new ArrayList<>();
 
-        images.forEach(file -> {
-            String fileName = createFileName(file.getOriginalFilename());
-            String fileUrl = amazonS3.getUrl(bucket, fileName).toString();
+        imageDataList.forEach(imageData -> {
+            String fileName = UUID.randomUUID().toString();
+            String fileUrl = "";
 
-            ObjectMetadata objectMetadata = new ObjectMetadata();
-            objectMetadata.setContentType(String.valueOf(file.getSize()));
-            objectMetadata.setContentType(file.getContentType());
+            try {
+                ObjectMetadata objectMetadata = new ObjectMetadata();
+                objectMetadata.setContentType("image/jpeg");
+                objectMetadata.setContentLength(imageData.length);
 
-            try(InputStream inputStream = file.getInputStream()) {
+                InputStream inputStream = new ByteArrayInputStream(imageData);
                 amazonS3.putObject(new PutObjectRequest(bucket, fileName, inputStream, objectMetadata)
                         .withCannedAcl(CannedAccessControlList.PublicRead));
-            } catch(IOException e) {
+
+                fileUrl = amazonS3.getUrl(bucket, fileName).toString();
+            } catch (Exception e) {
                 log.error(e.getMessage());
                 throw new InternalServerException(S3_UPLOAD_ERROR);
             }
-            fileNameList.add(fileName);
+
             fileUrlList.add(fileUrl);
         });
 
