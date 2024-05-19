@@ -21,8 +21,8 @@ public class NotificationHistoryController {
     private final NotificationHistoryService notificationHistoryService;
 
     @GetMapping
-    public ResponseEntity<SuccessResponse<?>> getNotificationByTopCategory(/*@UserId Long userId,*/ @RequestParam String topCategory) {
-        List<NotificationHistoryResponseDto> responseDto = notificationHistoryService.getNotificationByTopCategory(Long.parseLong("2"), topCategory);
+    public ResponseEntity<SuccessResponse<?>> getNotificationByTopCategory(@UserId Long userId, @RequestParam String topCategory) {
+        List<NotificationHistoryResponseDto> responseDto = notificationHistoryService.getNotificationByTopCategory(userId, topCategory);
         return SuccessResponse.ok(responseDto);
     }
 

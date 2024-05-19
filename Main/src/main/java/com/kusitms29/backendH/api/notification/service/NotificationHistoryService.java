@@ -57,6 +57,7 @@ public class NotificationHistoryService {
         }
 
         return NotificationHistoryResponseDto.of(
+                notificationHistory.getInfoId(),
                 notificationHistory.getTitle(),
                 notificationHistory.getBody(),
                 detailContent,
