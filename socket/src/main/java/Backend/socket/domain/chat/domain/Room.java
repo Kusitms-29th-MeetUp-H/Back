@@ -16,6 +16,7 @@ public class Room {
     private String roomId;
     private String roomName;
     private String roomSession;
+    private String syncName;
 
     @Builder.Default
     private List<ChatUser> chatUserList = new ArrayList<>();

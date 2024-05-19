@@ -5,7 +5,6 @@ import com.kusitms29.backendH.api.community.service.dto.request.PostCreateReques
 import com.kusitms29.backendH.api.community.service.dto.response.PostCreateResponseDto;
 import com.kusitms29.backendH.api.community.service.dto.response.PostDetailResponseDto;
 import com.kusitms29.backendH.api.community.service.dto.response.PostResponseDto;
-import com.kusitms29.backendH.domain.comment.entity.Comment;
 import com.kusitms29.backendH.domain.comment.service.CommentManager;
 import com.kusitms29.backendH.domain.comment.service.CommentReader;
 import com.kusitms29.backendH.domain.comment.service.ReplyManager;
@@ -126,7 +125,7 @@ public class PostService {
         if(content.length() > 300) {
             throw new NotAllowedException(TOO_LONG_CONTENT_NOT_ALLOWED);
         }
-        if(images.size() > 5) {
+        if(images != null && !images.isEmpty() && images.size() > 5) {
             throw new NotAllowedException(TOO_MANY_IMAGES_NOT_ALLOWED);
         }
 
@@ -138,13 +137,16 @@ public class PostService {
                         .content(requestDto.getContent())
                         .build());
 
-        List<String> imageUrls = awsS3Service.uploadImages(images);
-        for(int i=0; i<images.size(); i++) {
-            postImageAppender.save(PostImage.builder()
-                    .post(newPost)
-                    .image_url(imageUrls.get(i))
-                    .isRepresentative(i == 0)
-                    .build());
+        List<String> imageUrls = null;
+        if(images != null && !images.isEmpty()) {
+            imageUrls = awsS3Service.uploadImages(images);
+            for(int i=0; i<images.size(); i++) {
+                postImageAppender.save(PostImage.builder()
+                        .post(newPost)
+                        .image_url(imageUrls.get(i))
+                        .isRepresentative(i == 0)
+                        .build());
+            }
         }
 
         return PostCreateResponseDto.of(

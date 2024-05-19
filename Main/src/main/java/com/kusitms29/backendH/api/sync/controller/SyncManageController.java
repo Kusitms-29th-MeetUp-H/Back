@@ -19,7 +19,7 @@ public class SyncManageController {
     private final SyncService syncService;
     @PostMapping
     public ResponseEntity<SuccessResponse<?>> createSync(@UserId Long userId,
-                                                         @RequestPart MultipartFile image,
+                                                         @RequestPart(required = false) MultipartFile image,
                                                          @RequestPart SyncCreateRequestDto requestDto) {
         SyncSaveResponseDto responseDto = syncService.createSync(userId, image, requestDto);
         return SuccessResponse.ok(responseDto);
