@@ -32,8 +32,11 @@ public class NotificationHistory {
 
     private NotificationType notificationType;
 
+    private TopCategory topCategory;
+
     public static NotificationHistory createHistory(User user, String title, String body,
-                                             String receiverToken, LocalDateTime sentAt, NotificationType notificationType) {
+                                                    String receiverToken, LocalDateTime sentAt,
+                                                    NotificationType notificationType, TopCategory topCategory) {
         return NotificationHistory.builder()
                 .user(user)
                 .title(title)
@@ -41,6 +44,7 @@ public class NotificationHistory {
                 .receiverToken(receiverToken)
                 .sentAt(sentAt)
                 .notificationType(notificationType)
+                .topCategory(topCategory)
                 .build();
     }
 }

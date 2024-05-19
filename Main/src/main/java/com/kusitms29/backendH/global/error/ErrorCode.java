@@ -21,10 +21,12 @@ public enum ErrorCode {
     INVALID_LANGUAGE_TYPE(HttpStatus.BAD_REQUEST, "유효하지 않은 언어타입입니다."),
     INVALID_PARENT_TYPE(HttpStatus.BAD_REQUEST, "유효하지 않은 카테고리부모타입입니다."),
     INVALID_GENDER_TYPE(HttpStatus.BAD_REQUEST, "유효하지 않은 성별타입입니다."),
+    INVALID_NOTIFICATION_TOP_CATEGORY(HttpStatus.BAD_REQUEST, "유효하지 않은 알림 탑카테고리입니다."),
     INVALID_UNIVERSITY_NAME(HttpStatus.BAD_REQUEST, "유효하지 않은 대학이름입니다."),
     INVALID_UNIVERSITY_DOMAIN(HttpStatus.BAD_REQUEST, "대학과 일치하지 않는 메일 도메인입니다."),
     INVALID_POST_TYPE(HttpStatus.BAD_REQUEST, "유효하지 않은 게시물타입입니다."),
     INVALID_PARENT_CHILD_CATEGORY(HttpStatus.BAD_REQUEST, "부모 카테고리가 불일치합니다."),
+
 
 
     /**

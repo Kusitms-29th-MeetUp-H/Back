@@ -4,6 +4,7 @@ import com.google.firebase.messaging.*;
 import com.kusitms29.backendH.domain.comment.entity.Comment;
 import com.kusitms29.backendH.domain.notification.entity.NotificationHistory;
 import com.kusitms29.backendH.domain.notification.entity.NotificationType;
+import com.kusitms29.backendH.domain.notification.entity.TopCategory;
 import com.kusitms29.backendH.domain.notification.repository.NotificationHistoryRepository;
 import com.kusitms29.backendH.domain.post.entity.Post;
 import com.kusitms29.backendH.domain.post.service.PostReader;
@@ -78,7 +79,8 @@ public class PushNotificationService {
                     createMessageBody(dto),
                     getToken(dto.getId()),
                     now,
-                    NotificationType.SYNC_REMINDER
+                    NotificationType.SYNC_REMINDER,
+                    TopCategory.MY_SYNC
             );
             notificationHistoryRepository.save(history);
         }
@@ -106,7 +108,8 @@ public class PushNotificationService {
                 createMessageBody(dto),
                 getToken(dto.getId()),
                 now,
-                NotificationType.COMMENT
+                NotificationType.COMMENT,
+                TopCategory.ACTIVITY
         );
         notificationHistoryRepository.save(history);
 

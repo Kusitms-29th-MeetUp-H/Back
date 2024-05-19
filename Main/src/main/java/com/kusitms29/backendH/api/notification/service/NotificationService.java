@@ -1,4 +1,4 @@
-package com.kusitms29.backendH.domain.notification.service;
+package com.kusitms29.backendH.api.notification.service;
 
 import com.kusitms29.backendH.domain.notification.entity.NotificationSetting;
 import com.kusitms29.backendH.domain.notification.entity.NotificationType;
