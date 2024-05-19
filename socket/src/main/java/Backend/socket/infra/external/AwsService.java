@@ -39,6 +39,7 @@ public class AwsService {
     private final AmazonS3 amazonS3;
 
     public String uploadImageToS3(byte[] imageData) {
+
         String fileName = UUID.randomUUID().toString();
         String fileUrl = "";
 

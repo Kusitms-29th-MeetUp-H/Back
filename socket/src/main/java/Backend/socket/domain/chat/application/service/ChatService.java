@@ -10,6 +10,7 @@ import Backend.socket.domain.chat.domain.*;
 import Backend.socket.domain.chat.repository.ChatRepository;
 import Backend.socket.domain.chat.repository.RoomRepository;
 import Backend.socket.domain.chat.repository.UserRepository;
+import Backend.socket.global.common.image;
 import Backend.socket.global.error.socketException.EntityNotFoundException;
 import Backend.socket.infra.external.AwsService;
 import jakarta.transaction.Transactional;
@@ -58,8 +59,8 @@ public class ChatService {
         saveChatRoom(room);
         return ChatMessageRoomResponseDto.of(chatMessageRoomRequestDto.getToRoomName(), sessionIdList, chatMessage);
     }
-    public ChatMessageRoomResponseDto createSendImageContentInRoom(String roomName, byte[] chatMessageRoomRequestDto) {
-        String images = awsService.uploadImageToS3(chatMessageRoomRequestDto);
+    public ChatMessageRoomResponseDto createSendImageContentInRoom(String roomName, image chatMessageRoomRequestDto) {
+        String images = awsService.uploadImageToS3(chatMessageRoomRequestDto.getImage());
         Room room = getChatBySessionsInRoom(roomName, "113828093759900814627_ef4a27");
         User user = userRepository.findBySessionId("113828093759900814627_ef4a27").orElseThrow();
         ChatContent chatContent = createChatContent("양규리", "ㅎㅇ", room);

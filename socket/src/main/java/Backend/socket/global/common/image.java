@@ -7,5 +7,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class image {
-    private String image;
+    private byte[] image;
 }
