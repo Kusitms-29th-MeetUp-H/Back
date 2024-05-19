@@ -1,6 +1,7 @@
 package com.kusitms29.backendH.domain.notification.service;
 
-import com.kusitms29.backendH.domain.notification.entity.Notification;
+import com.kusitms29.backendH.domain.notification.entity.NotificationSetting;
+import com.kusitms29.backendH.domain.notification.entity.NotificationType;
 import com.kusitms29.backendH.domain.notification.repository.NotificationRepository;
 import com.kusitms29.backendH.domain.user.entity.User;
 import com.kusitms29.backendH.global.error.exception.EntityNotFoundException;
@@ -16,20 +17,20 @@ public class NotificationService {
     private final NotificationRepository notificationRepository;
     @Transactional
     public void createNotificationSetting(User user) {
-        for(Notification.NotificationType type : Notification.NotificationType.values()) {
-            Notification notification = Notification.builder()
+        for(NotificationType type : NotificationType.values()) {
+            NotificationSetting notificationSetting = NotificationSetting.builder()
                     .user(user)
                     .notificationType(type)
                     .build();
-            notificationRepository.save(notification);
+            notificationRepository.save(notificationSetting);
         }
     }
 
-    public void updateSettingActive(User user, Notification.NotificationType type) {
-        Notification notification = notificationRepository.findByUserAndNotificationType(user, type)
+    public void updateSettingActive(User user, NotificationType type) {
+        NotificationSetting notificationSetting = notificationRepository.findByUserAndNotificationType(user, type)
                 .orElseThrow(() -> new EntityNotFoundException(NOTIFICATION_NOT_FOUND));
-        notification.setStatus(Notification.Status.ACTIVE);
-        notificationRepository.save(notification);
+        notificationSetting.setStatus(NotificationSetting.Status.ACTIVE);
+        notificationRepository.save(notificationSetting);
     }
 
 }

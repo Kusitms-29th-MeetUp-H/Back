@@ -11,7 +11,7 @@ import lombok.*;
 @Getter
 @Table(name = "notification")
 @Entity
-public class Notification extends BaseEntity {
+public class NotificationSetting extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "notification_id")
@@ -22,12 +22,7 @@ public class Notification extends BaseEntity {
     private User user;
 
     @Enumerated(EnumType.STRING)
-    private Notification.NotificationType notificationType;
-
-    public enum NotificationType {
-        COMMENT, CHAT,
-        CHAT_ROOM_NOTICE, SYNC_REMINDER, REVIEW
-    }
+    private NotificationType notificationType;
 
     @Enumerated(EnumType.STRING)
     private Status status = Status.ACTIVE;
