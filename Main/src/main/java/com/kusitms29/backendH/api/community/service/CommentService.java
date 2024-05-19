@@ -12,6 +12,7 @@ import com.kusitms29.backendH.domain.user.entity.User;
 import com.kusitms29.backendH.domain.user.service.UserReader;
 import com.kusitms29.backendH.global.common.TimeCalculator;
 import com.kusitms29.backendH.global.error.exception.NotAllowedException;
+import com.kusitms29.backendH.infra.external.fcm.service.PushNotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Hibernate;
@@ -39,6 +40,7 @@ public class CommentService {
     private final ReplyReader replyReader;
     private final ReplyLikeReader replyLikeReader;
     private final ReplyLikeManager replyLikeManager;
+    private final PushNotificationService pushNotificationService;
 
     public List<CommentResponseDto> getCommentsInPost(Long userId, Long postId) {
         List<Comment> comments = commentReader.findByPostId(postId);
@@ -102,6 +104,8 @@ public class CommentService {
                         .user(writer)
                         .content(content)
                         .build());
+
+        pushNotificationService.sendCommentNotification(postId, newComment);
 
         return CommentCreateResponseDto.of(
                 newComment.getId(),

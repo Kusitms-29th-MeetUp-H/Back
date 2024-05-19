@@ -2,7 +2,7 @@ package com.kusitms29.backendH.api.user.service;
 
 import com.kusitms29.backendH.api.user.service.dto.request.UserSignInRequestDto;
 import com.kusitms29.backendH.api.user.service.dto.response.UserAuthResponseDto;
-import com.kusitms29.backendH.infra.external.fcm.service.SyncReminderService;
+import com.kusitms29.backendH.infra.external.fcm.service.PushNotificationService;
 import com.kusitms29.backendH.domain.user.auth.PlatformUserInfo;
 import com.kusitms29.backendH.domain.user.auth.RestTemplateProvider;
 import com.kusitms29.backendH.domain.user.entity.Platform;
@@ -35,7 +35,7 @@ public class AuthService {
     private final JwtProvider jwtProvider;
     private final RestTemplateProvider restTemplateProvider;
     private final RefreshTokenRepository refreshTokenRepository;
-    private final SyncReminderService syncReminderService;
+    private final PushNotificationService pushNotificationService;
     private final UserReader userReader;
     private final UserModifier userModifier;
 
@@ -86,7 +86,7 @@ public class AuthService {
             return optionalUser.get();
         } else {
             User getUser = User.createUser(platformUserInfo, platform, generateRandomUuid(platformUserInfo));
-            syncReminderService.saveToken(String.valueOf(getUser.getId()), fcmToken);
+            pushNotificationService.saveToken(String.valueOf(getUser.getId()), fcmToken);
             return getUser;
         }
     }
