@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Base64;
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/")
+@RequestMapping
 public class HealthCheck {
     private final AwsService awsService;
     @GetMapping("/")
@@ -70,7 +70,7 @@ public class HealthCheck {
         return imageUrls;
     }
 
-    @PostMapping("/test")
+    @GetMapping("/test")
     public String uploadImagea(@RequestParam String image) throws IOException {
 
         // 대괄호 제거 및 공백으로 구분
