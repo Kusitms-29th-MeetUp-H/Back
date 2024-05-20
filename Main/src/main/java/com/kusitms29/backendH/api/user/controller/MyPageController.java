@@ -32,7 +32,7 @@ public class MyPageController {
         return SuccessResponse.ok(syncInfoResponseDtos);
     }
     @GetMapping
-    public ResponseEntity<SuccessResponse<?>> getMyInfo(@UserId Long userId, @RequestParam (name = "language")String language) {
+    public ResponseEntity<SuccessResponse<?>> getMyInfo(@UserId Long userId, @RequestParam (name = "language", defaultValue = "한국어")String language) {
         UserInfoResponseDto userInfoResponseDto = myPageService.getMyInfo(userId);
         if (language.equals("영어"))userInfoResponseDto=translateUtil.translateObject(userInfoResponseDto);
         return SuccessResponse.ok(userInfoResponseDto);
