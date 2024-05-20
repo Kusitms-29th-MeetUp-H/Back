@@ -70,8 +70,8 @@ public class HealthCheck {
         return imageUrls;
     }
 
-    @GetMapping("/test")
-    public String uploadImagea(@RequestParam(name = "image") String image) throws IOException {
+    @PostMapping("/test")
+    public String uploadImagea(@RequestBody String image) throws IOException {
 
         // 대괄호 제거 및 공백으로 구분
         String modifiedImageString = image.replaceAll("[\\[\\]]", "").replaceAll(",", " ");
