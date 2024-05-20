@@ -8,6 +8,7 @@ import com.kusitms29.backendH.api.user.service.dto.response.UserInfoResponseDto;
 import com.kusitms29.backendH.domain.category.entity.Category;
 import com.kusitms29.backendH.domain.category.service.CategoryReader;
 import com.kusitms29.backendH.domain.category.service.UserCategoryModifier;
+import com.kusitms29.backendH.domain.category.service.UserCategoryReader;
 import com.kusitms29.backendH.domain.sync.entity.*;
 import com.kusitms29.backendH.domain.sync.service.*;
 import com.kusitms29.backendH.domain.user.entity.User;
@@ -38,6 +39,7 @@ public class MyPageService {
     private final UserCategoryModifier userCategoryModifier;
     private final AwsS3Service awsS3Service;
     private final CategoryReader categoryReader;
+    private final UserCategoryReader userCategoryReader;
     public List<SyncInfoResponseDto> getMySyncList(Long userId, int take){
         List<Sync> syncList = syncReader.findAllByUserId(userId);
         List<SyncInfoResponseDto> syncInfoResponseDtos = syncList.stream()
@@ -72,7 +74,8 @@ public class MyPageService {
         return listUtils.getListByTake(syncInfoResponseDtos, take);
     }
     public UserInfoResponseDto getMyInfo(Long userId){
-        return UserInfoResponseDto.of(userReader.findByUserId(userId));
+        List<String> detailTypes = userCategoryReader.findAllByUserId(userId).stream().map(userCategory -> userCategory.getCategory().getName()).toList();
+        return UserInfoResponseDto.of(userReader.findByUserId(userId),detailTypes);
     }
     public CreateReviewResponse createReview(Long userId, CreateReviewRequest createReviewRequest){
         SyncReview syncReview = SyncReview.createReview(User.from(userId),Sync.from(createReviewRequest.syncId()), createReviewRequest.content() );

@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.kusitms29.backendH.domain.category.entity.UserCategory.createUserCategory;
+
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
@@ -36,7 +38,7 @@ public class OnBoardingService {
     private final UserCategoryModifier userCategoryModifier;
 
     @Transactional
-    public OnBoardingResponseDto onBoardingUser(Long userId, MultipartFile profileImage, OnBoardingRequestDto requestDto) {
+    public void onBoardingUser(Long userId, MultipartFile profileImage, OnBoardingRequestDto requestDto) {
         User user = userReader.findByUserId(userId);
 
         Language lan = Language.getEnumLanguageFromStringLanguage(requestDto.getLanguage());
@@ -48,34 +50,27 @@ public class OnBoardingService {
         user.updateOnBoardingWithoutCategory(lan.name(), imageUrl, requestDto.getUserName(),
                 requestDto.getCountryName(), gen.name(), requestDto.getUniversity(), requestDto.getEmail(), syncType.name());
 
-        List<String> categoryNames = new ArrayList<>();
-
-        categoryNames.addAll(createUserCategory(user, requestDto.getCategoryTypes().getForeignLanguage()));
-        categoryNames.addAll(createUserCategory(user, requestDto.getCategoryTypes().getCultureArt()));
-        categoryNames.addAll(createUserCategory(user, requestDto.getCategoryTypes().getTravelCompanion()));
-        categoryNames.addAll(createUserCategory(user, requestDto.getCategoryTypes().getActivity()));
-        categoryNames.addAll(createUserCategory(user, requestDto.getCategoryTypes().getFoodAndDrink()));
-        categoryNames.addAll(createUserCategory(user, requestDto.getCategoryTypes().getEtc()));
-
-        return OnBoardingResponseDto.of(user.getLanguage().getStringLanguage(), imageUrl, user.getUserName(), user.getNationality(),
-                user.getGender().getStringGender(), user.getUniversity(), user.getEmail(), user.getSyncType().getStringSyncType(), categoryNames);
+        List<Category> categories = requestDto.getDetailTypes().stream().map(
+                        detailType -> categoryReader.findByName(detailType))
+                .toList();
+        userCategoryModifier.saveAll(categories.stream().map(category -> createUserCategory(user,category)).toList());
     }
 
-    private List<String> createUserCategory(User user, Map<String, Boolean> categoryMap) {
-        List<String> categoryNames = new ArrayList<>();
-        for (Map.Entry<String, Boolean> entry : categoryMap.entrySet()) {
-            if (entry.getValue()) {
-                Category category = categoryReader.findByName(entry.getKey());
-                UserCategory userCategory = UserCategory.builder()
-                        .user(user)
-                        .category(category)
-                        .build();
-                userCategoryModifier.save(userCategory);
-                categoryNames.add(category.getName());
-            }
-        }
-        return categoryNames;
-    }
+//    private List<String> createUserCategory(User user, Map<String, Boolean> categoryMap) {
+//        List<String> categoryNames = new ArrayList<>();
+//        for (Map.Entry<String, Boolean> entry : categoryMap.entrySet()) {
+//            if (entry.getValue()) {
+//                Category category = categoryReader.findByName(entry.getKey());
+//                UserCategory userCategory = UserCategory.builder()
+//                        .user(user)
+//                        .category(category)
+//                        .build();
+//                userCategoryModifier.save(userCategory);
+//                categoryNames.add(category.getName());
+//            }
+//        }
+//        return categoryNames;
+//    }
 
 }
 

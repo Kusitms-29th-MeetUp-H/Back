@@ -16,10 +16,10 @@ public class OnBoardingResponseDto {
     private String university;
     private String email;
     private String syncType;
-    private List<String> categoryNames;
+    private List<String> detailTypes;
 
     public static OnBoardingResponseDto of(String language,  String profileImage, String userName, String countryName, String gender,
-                                           String university, String email, String syncType, List<String> categoryNames) {
+                                           String university, String email, String syncType, List<String> detailTypes) {
         return OnBoardingResponseDto.builder()
                 .language(language)
                 .profileImage(profileImage)
@@ -29,7 +29,7 @@ public class OnBoardingResponseDto {
                 .university(university)
                 .email(email)
                 .syncType(syncType)
-                .categoryNames(categoryNames)
+                .detailTypes(detailTypes)
                 .build();
     }
 }
