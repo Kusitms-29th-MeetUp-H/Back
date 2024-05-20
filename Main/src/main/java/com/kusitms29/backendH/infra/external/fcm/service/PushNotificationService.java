@@ -41,6 +41,7 @@ public class PushNotificationService {
     private final SyncReader syncReader;
     private final PostReader postReader;
 
+    @Transactional
     public void sendSyncReminder() {
         //오늘 자정
         LocalDateTime today = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
@@ -84,14 +85,15 @@ public class PushNotificationService {
                     now,
                     NotificationType.SYNC_REMINDER,
                     TopCategory.MY_SYNC,
-                    Long.parseLong(dto.getInfoId()),
-                    (dto.getInfoId2() == null) ? null : Long.parseLong(dto.getInfoId2())
+                    dto.getInfoId(),
+                    ""
             );
             notificationHistoryRepository.save(history);
         }
         log.info("Sync reminders sent successfully.");
     }
 
+    @Transactional
     public void sendCommentNotification(Long postId, Comment newComment) {
         //글 주인에게 댓글 알리기
         Post post = postReader.findById(postId);
@@ -120,12 +122,45 @@ public class PushNotificationService {
                 now,
                 NotificationType.COMMENT,
                 TopCategory.ACTIVITY,
-                postId,
-                newComment.getId()
+                postId.toString(),
+                newComment.getId().toString()
         );
         notificationHistoryRepository.save(history);
 
         log.info("comment notification sent successfully.");
+    }
+
+    @Transactional
+    public void sendChatRoomNotice(List<User> users, Long syncId, String roomName) {
+        Sync sync = syncReader.findById(syncId);
+
+        for(User user : users) {
+            NotificationDto dto = NotificationDto.getChatRoomNoticeAlarm(
+                    user.getId(),
+                    sync.getSyncName(),
+                    MessageTemplate.CHAT_ROOM_NOTICE,
+                    roomName
+            );
+            sendMessage(dto);
+
+            //알림 기록
+            LocalDateTime now = LocalDateTime.now();
+            User alarmedUser = userReader.findByUserId(Long.parseLong(dto.getId()));
+            NotificationHistory history = NotificationHistory.createHistory(
+                    alarmedUser,
+                    dto.getTemplate().getTitle(),
+                    createMessageBody(dto),
+                    getToken(dto.getId()),
+                    now,
+                    NotificationType.CHAT_ROOM_NOTICE,
+                    TopCategory.MY_SYNC,
+                    roomName,
+                    ""
+            );
+            notificationHistoryRepository.save(history);
+
+            log.info("chatRoomNotice notification sent to {} successfully. ", user.getUserName());
+        }
     }
 
     private void sendMessage(NotificationDto dto) {
