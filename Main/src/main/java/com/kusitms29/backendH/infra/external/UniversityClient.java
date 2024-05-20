@@ -34,7 +34,7 @@ public class UniversityClient {
         Map<String, String> requestBody = new HashMap<>();
         requestBody.put("univName", university);
         HttpEntity<Map<String, String>> entity = new HttpEntity<>(requestBody);
-        ResponseEntity<CalloutErrorResponse> response = restTemplate.exchange(
+            ResponseEntity<CalloutErrorResponse> response = restTemplate.exchange(
                 apiUrl + "/check", HttpMethod.POST, entity, CalloutErrorResponse.class
         );
         if(!response.getBody().isSuccess()) {
