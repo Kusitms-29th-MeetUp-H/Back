@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 import java.util.Base64;
@@ -36,7 +37,7 @@ public class HealthCheck {
 
 // ...
 
-        byte[] imageBytes = Base64.getDecoder().decode(base64Image); // 바이트 코드를
+        byte[] imageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(base64Image); // 바이트 코드를  // 바이트 코드를
 
         File tempFile = File.createTempFile("image", "." + extension); // createTempFile을 통해 임시 파일을 생성해준다. (임시파일은 지워줘야함)
         try (OutputStream outputStream = new FileOutputStream(tempFile)) {
@@ -48,23 +49,47 @@ public class HealthCheck {
         // byte 배열 생성
         byte[] imageData = new byte[byteStrings.length];
 
-        // 문자열 배열을 순회하면서 각 문자열을 byte로 변환하여 배열에 저장
         for (int i = 0; i < byteStrings.length; i++) {
-            if (byteStrings[i].matches("-?[0-9a-fA-F]+")) {
-                imageData[i] = (byte) Integer.parseInt(byteStrings[i], 16);
+            if (byteStrings[i].matches("-?[0-9]+")) {
+                imageData[i] = Byte.parseByte(byteStrings[i]);
+            } else if (byteStrings[i].matches("-?0x[0-9a-fA-F]+")) {
+                imageData[i] = (byte) Integer.parseInt(byteStrings[i].substring(2), 16);
             } else {
-                // 잘못된 형식의 16진수 문자열인 경우 처리할 작업
+                // 잘못된 형식의 문자열인 경우 처리할 작업
                 imageData[i] = 0;
             }
         }
 
         // 변환된 byte 배열을 사용하여 이미지 업로드
-        String imageUrl = awsService.uploadImageToS3(imageData);
-        return imageUrl;
+//        String imageUrl = awsService.uploadImageToS3(imageBytes);
+        return null;
     }
     @PostMapping("/images")
     public List<String> uploadImages(@RequestBody List<byte[]> imageDataList) {
         List<String> imageUrls = awsService.uploadImages(imageDataList);
         return imageUrls;
+    }
+
+    @PostMapping("/test")
+    public String uploadImagea(@RequestParam String image) throws IOException {
+
+        // 대괄호 제거 및 공백으로 구분
+        String modifiedImageString = image.replaceAll("[\\[\\]]", "").replaceAll(",", " ");
+//        System.out.println("Modified byte array: " + modifiedImageString);
+
+        String imageUrl = awsService.uploadImageToS3(modifiedImageString);
+        return imageUrl;
+    }
+    @GetMapping("/image/byte")
+    public String uploadImage(@RequestBody byte[] image) throws IOException {
+        String imageString = Arrays.toString(image);
+        System.out.println("Received byte array: " + imageString);
+
+        // 대괄호 제거 및 공백으로 구분
+        String modifiedImageString = imageString.replaceAll("[\\[\\]]", "").replaceAll(",", " ");
+        System.out.println("Modified byte array: " + modifiedImageString);
+
+        String imageUrl = awsService.uploadImageToS3(modifiedImageString);
+        return imageUrl;
     }
 }

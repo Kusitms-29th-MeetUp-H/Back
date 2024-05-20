@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+
 @RestController
 public class RoomController {
     private final SimpMessagingTemplate template;
@@ -47,7 +49,7 @@ public class RoomController {
     }
     @PostMapping("/room/{roomName}")
     public MessageSuccessResponse sendChatMessage(@PathVariable("roomName") String roomName,
-                                                @RequestBody final ChatMessageRoomRequestDto chatMessageRoomRequestDto) {
+                                                @RequestBody final ChatMessageRoomRequestDto chatMessageRoomRequestDto) throws IOException {
 
 
         return MessageSuccessResponse.of(MessageSuccessCode.RECEIVED, chatService.createSendMessageContentInRoom(roomName, chatMessageRoomRequestDto).getMessage());

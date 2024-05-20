@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+
 @RestController
 public class ChatController {
     private final ChatService chatService;
@@ -44,13 +46,13 @@ public class ChatController {
     @MessageMapping("/room/{roomName}")
     @SendTo("/sub/room/{roomName}")
     public MessageSuccessResponse sendChatMessageInRoom(@DestinationVariable("roomName") final String roomName,
-                                                         @RequestBody final ChatMessageRoomRequestDto chatMessageRoomRequestDto) {
+                                                         @RequestBody final ChatMessageRoomRequestDto chatMessageRoomRequestDto) throws IOException {
         return MessageSuccessResponse.of(MessageSuccessCode.RECEIVED, chatService.createSendMessageContentInRoom(roomName, chatMessageRoomRequestDto).getMessage());
     }
     @MessageMapping("/room/image/{roomName}")
     @SendTo("/sub/room/{roomName}")
     public MessageSuccessResponse sendImageMessageInRoom(@DestinationVariable("roomName") final String roomName,
-                                                        @RequestBody final image image) {
+                                                        @RequestBody final image image) throws IOException {
         return MessageSuccessResponse.of(MessageSuccessCode.RECEIVED, chatService.createSendImageContentInRoom(roomName, image).getMessage());
     }
 //    @MessageMapping("/room/{roomName}")
