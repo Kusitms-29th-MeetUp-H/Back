@@ -86,7 +86,7 @@ public class AuthService {
         return optionalUser.orElseGet(() -> User.createUser(platformUserInfo, platform, generateRandomUuid(platformUserInfo)));
     }
     private void saveFcmToken(User getUser, String fcmToken) {
-        pushNotificationService.saveToken("fcmToken("+getUser.getId()+")", fcmToken);
+        pushNotificationService.saveToken(String.valueOf(getUser.getId()), fcmToken);
     }
 
     private PlatformUserInfo getPlatformUserInfoFromRestTemplate(Platform platform, String authToken) {
