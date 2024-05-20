@@ -184,18 +184,31 @@ public class PushNotificationService {
     }
 
     private Message createMessage(NotificationDto dto) {
+        AndroidConfig androidConfig = AndroidConfig.builder()
+                .setNotification(AndroidNotification.builder()
+                        .setChannelId(dto.getChannelId())
+                        .setImage(dto.getImage())
+                        .setTitle(dto.getTemplate().getTitle())
+                        .setBody(createMessageBody(dto))
+                        .build())
+                .build();
+
         return Message.builder()
                 .setToken(getToken(dto.getId()))
-                .setNotification(createNotification(dto))
+                .setAndroidConfig(androidConfig)
                 .build();
+        /*return Message.builder()
+                .setToken(getToken(dto.getId()))
+                .setNotification(createNotification(dto))
+                .build();*/
     }
 
-    private Notification createNotification(NotificationDto dto) {
+    /*private Notification createNotification(NotificationDto dto) {
         return Notification.builder()
                 .setTitle(dto.getTemplate().getTitle())
                 .setBody(createMessageBody(dto))
                 .build();
-    }
+    }*/
 
     private String createMessageBody(NotificationDto dto) {
         if(!dto.getStr2().isEmpty()) {

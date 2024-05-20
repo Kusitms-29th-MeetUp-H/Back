@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 
 @Builder
 @Getter
@@ -17,15 +18,19 @@ public class NotificationDto {
     /**
      * 커뮤니티 : 글이름 + 댓글단이 -> 글 Id, 댓글 Id
      * 일정 : 유저이름 + 싱크이름 -> 싱크 Id
+     * 채팅방 개설 공지 : 싱크이름 -> 채팅방 Id
      *
      * TODO
      * 채팅 : 채팅내용 -> 채팅방 Id, 챗 Id
-     * 채팅방 개설 공지 : 싱크이름 (아예 없어도?) -> 싱크 Id
      * 후기 : 유저이름 -> 마이페이지?
      */
     private MessageTemplate template;
     private String infoId;
     private String infoId2;
+    private String channelId;
+
+    @Value("${cloud.logo.image}")
+    private String image;
 
     public static NotificationDto getSyncReminderAlarm(Long userId, String userName, String syncName,
                                                        MessageTemplate template,
@@ -36,6 +41,7 @@ public class NotificationDto {
                 .str2(syncName)
                 .template(template)
                 .infoId(syncId.toString())
+                .channelId("RemindChannel")
                 .build();
     }
 
@@ -49,6 +55,7 @@ public class NotificationDto {
                 .template(template)
                 .infoId(postId.toString())
                 .infoId2(commendId.toString())
+                .channelId("CommunityChannel")
                 .build();
     }
 
@@ -61,6 +68,7 @@ public class NotificationDto {
                 .str1(syncName)
                 .template(template)
                 .infoId(roomName)
+                .channelId("OpenChatChannel")
                 .build();
     }
 }
