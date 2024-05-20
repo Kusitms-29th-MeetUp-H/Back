@@ -92,4 +92,8 @@ public class Sync extends BaseEntity {
                 .build();
     }
 
+    public void updateNextDate(LocalDateTime routineDate) {
+        this.routineDate = routineDate;
+    }
+
 }

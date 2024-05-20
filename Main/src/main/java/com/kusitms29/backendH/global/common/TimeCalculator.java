@@ -2,8 +2,9 @@ package com.kusitms29.backendH.global.common;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
+import java.time.*;
+import java.time.temporal.TemporalAdjusters;
+
 @Slf4j
 public class TimeCalculator {
     public static String calculateTimeDifference(LocalDateTime date) {
@@ -43,6 +44,33 @@ public class TimeCalculator {
 
         long years = months / 12;
         return years + "년 전";
+    }
+
+    public static DayOfWeek convertStringToDayOfWeek(String day) {
+        switch (day) {
+            case "월":
+                return DayOfWeek.MONDAY;
+            case "화":
+                return DayOfWeek.TUESDAY;
+            case "수":
+                return DayOfWeek.WEDNESDAY;
+            case "목":
+                return DayOfWeek.THURSDAY;
+            case "금":
+                return DayOfWeek.FRIDAY;
+            case "토":
+                return DayOfWeek.SATURDAY;
+            case "일":
+                return DayOfWeek.SUNDAY;
+            default:
+                throw new IllegalArgumentException("Invalid day of the week: " + day);
+        }
+    }
+
+    public static LocalDateTime getNextWeekDate(DayOfWeek dayOfWeek) {
+        LocalDate today = LocalDate.now();
+        LocalDate nextWeekDate = today.with(TemporalAdjusters.next(dayOfWeek));
+        return LocalDateTime.of(nextWeekDate, LocalTime.MIDNIGHT);
     }
 
 }

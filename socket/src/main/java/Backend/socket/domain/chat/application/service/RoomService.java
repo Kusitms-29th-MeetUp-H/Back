@@ -3,6 +3,7 @@ package Backend.socket.domain.chat.application.service;
 import Backend.socket.domain.chat.application.controller.dto.request.ChatMessageListRequestDto;
 import Backend.socket.domain.chat.application.controller.dto.response.*;
 import Backend.socket.domain.chat.domain.Chat;
+import Backend.socket.domain.chat.domain.ChatContent;
 import Backend.socket.domain.chat.domain.ChatUser;
 import Backend.socket.domain.chat.domain.Room;
 import Backend.socket.domain.chat.repository.ChatRepository;
@@ -15,16 +16,16 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Transactional
 @Service
 public class RoomService {
     private final MongoTemplate mongoTemplate;
-    private final ChatRepository chatRepository;
-    private final UserRepository userRepository;
     private final RoomRepository roomRepository;
     private final Formatter formatter;
     public RoomMessageListResponseDto sendRoomDetailMessage(String roomName) {
@@ -61,5 +62,28 @@ public class RoomService {
 
     public void saveChatRoom(Room room) {
         roomRepository.save(room);
+    }
+    public RoomListResponseDto sendUserChatListMessage(String sessionId){
+        List<Room> rooms = findRoomListBySession(sessionId);
+        List<RoomChatResponseDto> roomChatResponseDtos = createRoomChatResponseDto(rooms);
+        roomChatResponseDtos.sort(Comparator.comparing(RoomChatResponseDto::getTime).reversed());
+        return RoomListResponseDto.of(sessionId, roomChatResponseDtos);
+    }
+    private List<RoomChatResponseDto> createRoomChatResponseDto(List<Room> rooms) {
+        return rooms.stream()
+                .map(room ->
+                        RoomChatResponseDto.of(
+                                room,
+                                getLastChatContent(room.getChatContentList()).getContent(),
+                                getLastChatContent(room.getChatContentList()).getTime()))
+                .collect(Collectors.toList());
+    }
+    private ChatContent getLastChatContent(List<ChatContent> chatContentList) {
+        return chatContentList.get(chatContentList.size() - 1);
+    }
+    private List<Room> findRoomListBySession(String sessionId) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("chatUserList.sessionId").all(sessionId));
+        return mongoTemplate.find(query, Room.class);
     }
 }

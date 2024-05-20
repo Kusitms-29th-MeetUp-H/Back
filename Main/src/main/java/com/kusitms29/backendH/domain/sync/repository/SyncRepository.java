@@ -15,7 +15,8 @@ import java.util.Map;
 
 public interface SyncRepository extends JpaRepository<Sync, Long> {
     //모임이 하루 안으로 임박한 Sync의 정보 가져오기
-    @Query(value = "SELECT u.user_id, u.user_name, s.sync_name " +
+    @Query(value = "SELECT u.user_id, u.user_name, s.sync_name, s.sync_id, s.sync_type, s.regular_day, s.regular_time, " +
+            "CASE WHEN s.sync_type = 'LONGTIME' THEN s.routine_date ELSE s.date END AS effective_date " +
             "FROM sync s " +
             "INNER JOIN participation p ON s.sync_id = p.sync_id " +
             "INNER JOIN user u ON p.user_id = u.user_id " +
@@ -23,8 +24,9 @@ public interface SyncRepository extends JpaRepository<Sync, Long> {
             "WHERE s.status != 'DELETED' " +
             "AND n.notification_type = 'SYNC_REMINDER' " +
             "AND n.status = 'ACTIVE' " +
-            "AND DATE_SUB(s.date, INTERVAL 1 DAY) <= :currentDate " +
-            "AND s.date >= :currentDate ",
+            "AND (CASE WHEN s.sync_type = 'LONGTIME' THEN s.routine_date ELSE s.date END) IS NOT NULL " +
+            "AND DATE_SUB((CASE WHEN s.sync_type = 'LONGTIME' THEN s.routine_date ELSE s.date END), INTERVAL 1 DAY) <= :currentDate " +
+            "AND (CASE WHEN s.sync_type = 'LONGTIME' THEN s.routine_date ELSE s.date END) >= :currentDate ",
             nativeQuery = true)
     List<Map<String, Object>> findHurrySyncInfo(LocalDateTime currentDate);
     @Query("SELECT s FROM Sync s WHERE s.syncType = :syncType AND s.type = :type AND s.location = :location ORDER BY s.date DESC")

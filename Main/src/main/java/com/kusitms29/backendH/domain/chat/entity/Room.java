@@ -1,4 +1,4 @@
-package Backend.socket.domain.chat.domain;
+package com.kusitms29.backendH.domain.chat.entity;
 
 import lombok.Builder;
 import lombok.Getter;
