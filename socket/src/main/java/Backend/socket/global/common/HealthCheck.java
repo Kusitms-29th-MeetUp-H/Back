@@ -71,7 +71,7 @@ public class HealthCheck {
     }
 
     @GetMapping("/test")
-    public String uploadImagea(@RequestParam String image) throws IOException {
+    public String uploadImagea(@RequestParam(name = "image") String image) throws IOException {
 
         // 대괄호 제거 및 공백으로 구분
         String modifiedImageString = image.replaceAll("[\\[\\]]", "").replaceAll(",", " ");
