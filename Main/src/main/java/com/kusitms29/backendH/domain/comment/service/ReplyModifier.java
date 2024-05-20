@@ -25,4 +25,8 @@ public class ReplyModifier {
     public void delete(Reply reply) {
         replyRepository.delete(reply);
     }
+
+    public void deleteAllByCommentId(Long commentId) {
+        replyRepository.deleteAllByCommentId(commentId);
+    }
 }
