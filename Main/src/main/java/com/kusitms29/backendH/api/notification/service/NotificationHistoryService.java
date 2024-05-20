@@ -35,7 +35,7 @@ public class NotificationHistoryService {
 
     private NotificationHistoryResponseDto mapToNotificationHistoryResponseDto(NotificationHistory notificationHistory) {
         String detailContent = "";
-        Long infoId2 = notificationHistory.getInfoId2();
+        Long infoId2 = ((notificationHistory.getInfoId2() != null)&&(!notificationHistory.getInfoId2().isEmpty()) ? Long.parseLong(notificationHistory.getInfoId2()) : null);
 
         switch (notificationHistory.getNotificationType().name()) {
             case "CHAT":

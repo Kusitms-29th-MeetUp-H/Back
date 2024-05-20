@@ -9,13 +9,13 @@ import java.time.LocalDateTime;
 @Builder
 @Getter
 public class NotificationHistoryResponseDto {
-    private Long infoId; //커뮤니티: 게시글, 일정: 싱크, 리뷰: 싱크, 채팅: 채팅방, 채팅개설공지: 싱크
+    private String infoId; //커뮤니티: 게시글, 일정: 싱크, 리뷰: 싱크, 채팅: 채팅방, 채팅개설공지: 싱크
     private String title;
     private String content;
     private String detailContent;
     private String createdDate;
 
-    public static NotificationHistoryResponseDto of(Long infoId, String title, String content,
+    public static NotificationHistoryResponseDto of(String infoId, String title, String content,
                                                     String detailContent, LocalDateTime createdDate) {
 
         return NotificationHistoryResponseDto.builder()
