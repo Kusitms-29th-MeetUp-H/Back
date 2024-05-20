@@ -34,13 +34,13 @@ public class NotificationHistory {
 
     private TopCategory topCategory;
 
-    private Long infoId;
-    private Long infoId2;
+    private String infoId;
+    private String infoId2;
 
     public static NotificationHistory createHistory(User user, String title, String body,
-                                                    String receiverToken, LocalDateTime sentAt,
-                                                    NotificationType notificationType, TopCategory topCategory,
-                                                    Long infoId, Long infoId2) {
+                                                                String receiverToken, LocalDateTime sentAt,
+                                                                NotificationType notificationType, TopCategory topCategory,
+                                                                String infoId, String infoId2) {
         return NotificationHistory.builder()
                 .user(user)
                 .title(title)

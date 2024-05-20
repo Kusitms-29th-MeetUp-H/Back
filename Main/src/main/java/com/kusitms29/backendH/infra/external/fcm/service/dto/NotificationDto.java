@@ -51,4 +51,16 @@ public class NotificationDto {
                 .infoId2(commendId.toString())
                 .build();
     }
+
+    public static NotificationDto getChatRoomNoticeAlarm(Long userId, String syncName,
+                                                         MessageTemplate template,
+                                                         String roomName) {
+
+        return NotificationDto.builder()
+                .id(userId.toString())
+                .str1(syncName)
+                .template(template)
+                .infoId(roomName)
+                .build();
+    }
 }
