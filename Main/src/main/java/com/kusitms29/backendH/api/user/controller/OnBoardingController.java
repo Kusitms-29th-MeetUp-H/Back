@@ -33,8 +33,8 @@ public class OnBoardingController {
     public ResponseEntity<SuccessResponse<?>> onboarding(@UserId Long userId,
                                                          @RequestPart("profileImage") MultipartFile profileImage,
                                                          @RequestPart("onBoardingRequest") OnBoardingRequestDto requestDto) {
-        OnBoardingResponseDto responseDto = onBoardingService.onBoardingUser(userId, profileImage, requestDto);
-        return SuccessResponse.ok(responseDto);
+        onBoardingService.onBoardingUser(userId, profileImage, requestDto);
+        return SuccessResponse.created("success");
     }
     @PostMapping("/valid-university")
     public ResponseEntity<SuccessResponse<?>> isItValidUniversity(@RequestBody UniversityRequestDto requestDto) {

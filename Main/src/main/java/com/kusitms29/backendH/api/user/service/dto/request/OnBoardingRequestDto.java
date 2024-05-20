@@ -4,6 +4,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class OnBoardingRequestDto {
@@ -14,5 +16,5 @@ public class OnBoardingRequestDto {
     private String university;
     private String email;
     private String syncType;
-    private CategoryRequestDto categoryTypes;
+    private List<String> detailTypes;
 }
