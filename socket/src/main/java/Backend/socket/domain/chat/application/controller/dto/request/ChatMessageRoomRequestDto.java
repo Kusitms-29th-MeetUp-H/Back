@@ -10,7 +10,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class ChatMessageRoomRequestDto {
-    private byte[] image;
+    private String image;
     private String chatSession;
     private String fromUserName;
     private String toRoomName;

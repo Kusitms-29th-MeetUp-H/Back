@@ -20,6 +20,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -49,21 +50,28 @@ public class ChatService {
 //        saveChat(chat);
 //        return ChatMessageResponseDto.of(chatMessageRequestDto.getToUserName(), sessionIdList, chatMessage);
 //    }
-    public ChatMessageRoomResponseDto createSendMessageContentInRoom(String roomName, ChatMessageRoomRequestDto chatMessageRoomRequestDto) {
+    public ChatMessageRoomResponseDto createSendMessageContentInRoom(String roomName, ChatMessageRoomRequestDto chatMessageRoomRequestDto) throws IOException {
+        String modifiedImageString = chatMessageRoomRequestDto.getImage().replaceAll("[\\[\\]]", "").replaceAll(",", " ");
+        System.out.println("Modified byte array: " + modifiedImageString);
         Room room = getChatBySessionsInRoom(roomName, chatMessageRoomRequestDto.getChatSession());
         User user = userRepository.findBySessionId(chatMessageRoomRequestDto.getChatSession()).orElseThrow();
-        String images = awsService.uploadImageToS3(chatMessageRoomRequestDto.getImage());
+        String images = awsService.uploadImageToS3(modifiedImageString);
         ChatContent chatContent = createChatContent(chatMessageRoomRequestDto.getFromUserName(), chatMessageRoomRequestDto.getContent(), room);
         ChatMessageElementResponseDto chatMessage = ChatMessageElementResponseDto.of(chatContent, chatMessageRoomRequestDto.getChatSession(), user.getProfile(), images);
         List<String> sessionIdList = getSessionIdListInRoom(roomName, chatMessageRoomRequestDto.getChatSession());
         saveChatRoom(room);
         return ChatMessageRoomResponseDto.of(chatMessageRoomRequestDto.getToRoomName(), sessionIdList, chatMessage);
     }
-    public ChatMessageRoomResponseDto createSendImageContentInRoom(String roomName, image chatMessageRoomRequestDto) {
-        String images = awsService.uploadImageToS3(chatMessageRoomRequestDto.getImage());
+    public ChatMessageRoomResponseDto createSendImageContentInRoom(String roomName, image chatMessageRoomRequestDto) throws IOException {
+        // 대괄호 제거 및 공백으로 구분
+        String modifiedImageString = chatMessageRoomRequestDto.getImage().replaceAll("[\\[\\]]", "").replaceAll(",", " ");
+        System.out.println("Modified byte array: " + modifiedImageString);
+
+        String imageUrl = awsService.uploadImageToS3(modifiedImageString);
+        String images = awsService.uploadImageToS3(imageUrl);
         Room room = getChatBySessionsInRoom(roomName, "113828093759900814627_ef4a27");
         User user = userRepository.findBySessionId("113828093759900814627_ef4a27").orElseThrow();
-        ChatContent chatContent = createChatContent("양규리", "ㅎㅇ", room);
+        ChatContent chatContent = createChatContent("양규리", images, room);
         ChatMessageElementResponseDto chatMessage = ChatMessageElementResponseDto.of(chatContent, "113828093759900814627_ef4a27", user.getProfile(), images);
         List<String> sessionIdList = getSessionIdListInRoom(roomName, "113828093759900814627_ef4a27");
         saveChatRoom(room);
