@@ -4,6 +4,7 @@ import com.kusitms29.backendH.api.sync.service.dto.response.GraphElement;
 import com.kusitms29.backendH.api.sync.service.dto.response.SyncGraphResponseDto;
 import com.kusitms29.backendH.domain.sync.entity.Participation;
 import com.kusitms29.backendH.domain.sync.entity.Gender;
+import com.kusitms29.backendH.domain.sync.entity.Sync;
 import com.kusitms29.backendH.domain.user.entity.User;
 import com.kusitms29.backendH.domain.user.service.UserReader;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,16 @@ import java.util.*;
 public class SyncManager {
     private final UserReader userReader;
     private final ParticipationReader participationReader;
+    public Boolean validateCreateRoom(Sync sync, int count){
+        if(sync.getMember_min()==count)
+            return true;
+        return false;
+    }
+    public Boolean validateJoinRoom(Sync sync, int count){
+        if(sync.getMember_max()==count)
+            return true;
+        return false;
+    }
     public SyncGraphResponseDto createGraphElementList(List<Participation> participationList, String graph){
         List<User> users = participationList.stream().map( participation -> userReader.findByUserId(participation.getUser().getId())).toList();
         if(graph.equals("participate"))

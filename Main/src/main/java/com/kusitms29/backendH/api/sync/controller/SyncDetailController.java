@@ -6,6 +6,7 @@ import com.kusitms29.backendH.api.sync.service.dto.response.SyncGraphResponseDto
 import com.kusitms29.backendH.api.sync.service.dto.response.SyncInfoResponseDto;
 import com.kusitms29.backendH.api.sync.service.dto.response.SyncReviewResponseDto;
 import com.kusitms29.backendH.global.common.SuccessResponse;
+import com.kusitms29.backendH.infra.config.auth.UserId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +38,11 @@ public class SyncDetailController {
     public ResponseEntity<SuccessResponse<?>> getSyncReviewList(@RequestParam(name = "syncId") Long syncId, @RequestParam(name = "take",defaultValue = "0") int take){
         List<SyncReviewResponseDto> syncReviewResponseDtos = syncDetailService.getSyncReviewList(syncId, take);
         return SuccessResponse.ok(syncReviewResponseDtos);
+    }
+    @GetMapping("/join")
+    public ResponseEntity<SuccessResponse<?>> joinSync(@UserId Long userId, @RequestParam(name = "syncId") Long syncId){
+        syncDetailService.joinSync(userId, syncId);
+        return SuccessResponse.ok("join");
     }
 }
 

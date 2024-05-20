@@ -5,6 +5,7 @@ import com.kusitms29.backendH.api.sync.service.dto.response.SyncDetailResponseDt
 import com.kusitms29.backendH.api.sync.service.dto.response.SyncGraphResponseDto;
 import com.kusitms29.backendH.api.sync.service.dto.response.SyncInfoResponseDto;
 import com.kusitms29.backendH.api.sync.service.dto.response.SyncReviewResponseDto;
+import com.kusitms29.backendH.domain.chat.service.RoomAppender;
 import com.kusitms29.backendH.domain.sync.entity.Participation;
 import com.kusitms29.backendH.domain.sync.service.ParticipationManager;
 import com.kusitms29.backendH.domain.sync.service.ParticipationReader;
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.kusitms29.backendH.domain.chat.entity.Room.createRoom;
 import static com.kusitms29.backendH.global.error.ErrorCode.INVALID_SYNC_TYPE;
 
 @Service
@@ -37,9 +39,12 @@ public class SyncDetailService {
     private final SyncManager syncManager;
     private final ParticipationReader participationReader;
     private final ListUtils listUtils;
+    private final RoomAppender roomAppender;
     public SyncDetailResponseDto getSyncDetail(Long syncId){
         Sync sync = syncReader.findById(syncId);
         User user = userReader.findByUserId(sync.getUser().getId());
+        int count = participationManager.countParticipationBySyncId(syncId);
+        Boolean isFull = syncManager.validateJoinRoom(sync,count);
         if (sync.getSyncType() == SyncType.ONETIME) {
             return SyncDetailResponseDto.oneTimeOf(
                     sync.getSyncName(),
@@ -54,7 +59,8 @@ public class SyncDetailService {
                     user.getProfile(),
                     user.getUserName(),
                     user.getUniversity(),
-                    sync.getUserIntro()
+                    sync.getUserIntro(),
+                    isFull
             );
         } else if (sync.getSyncType() == SyncType.LONGTIME) {
             return SyncDetailResponseDto.longTimeOf(
@@ -72,7 +78,8 @@ public class SyncDetailService {
                     user.getProfile(),
                     user.getUserName(),
                     user.getUniversity(),
-                    sync.getUserIntro()
+                    sync.getUserIntro(),
+                    isFull
             );
         } else {
             throw new InvalidValueException(INVALID_SYNC_TYPE);
@@ -113,6 +120,13 @@ public class SyncDetailService {
                         syncReview.getCreatedAt()
                 )).toList();
         return listUtils.getListByTake(syncReviewResponseDtos, take);
+    }
+    public void joinSync(Long userId, Long syncId){
+        Participation.createParticipation(User.from(userId), Sync.from(syncId));
+        int count = participationManager.countParticipationBySyncId(syncId);
+        Boolean isPossible = syncManager.validateCreateRoom(syncReader.findById(syncId),count);
+        List<User> userList = participationReader.findAllBySyncId(syncId).stream().map(participation -> participation.getUser()).toList();
+        roomAppender.createRoom(userList,isPossible,syncId);
     }
 }
 
