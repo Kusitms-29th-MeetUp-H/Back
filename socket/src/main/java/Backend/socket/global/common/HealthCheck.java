@@ -71,11 +71,16 @@ public class HealthCheck {
     }
 
     @PostMapping("/test")
-    public String uploadImagea(@RequestBody String image) throws IOException {
+    public String uploadImagea(@RequestBody List<String> imageList) throws IOException {
+        StringBuilder imageBuilder = new StringBuilder();
+        for (String imagePart : imageList) {
+            imageBuilder.append(imagePart);
+        }
+        String image = imageBuilder.toString();
 
         // 대괄호 제거 및 공백으로 구분
         String modifiedImageString = image.replaceAll("[\\[\\]]", "").replaceAll(",", " ");
-//        System.out.println("Modified byte array: " + modifiedImageString);
+        //        System.out.println("Modified byte array: " + modifiedImageString);
 
         String imageUrl = awsService.uploadImageToS3(modifiedImageString);
         return imageUrl;
