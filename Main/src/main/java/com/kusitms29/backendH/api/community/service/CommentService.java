@@ -37,8 +37,10 @@ public class CommentService {
     private final UserReader userReader;
     private final CommentModifier commentModifier;
     private final ReplyReader replyReader;
+    private final ReplyModifier replyModifier;
     private final ReplyLikeReader replyLikeReader;
     private final ReplyLikeManager replyLikeManager;
+    private final ReplyLikeModifier replyLikeModifier;
 
     public List<CommentResponseDto> getCommentsInPost(Long userId, Long postId) {
         List<Comment> comments = commentReader.findByPostId(postId);
@@ -118,6 +120,14 @@ public class CommentService {
         User user = userReader.findByUserId(userId);
 
         if(comment.getReported() >= 2) {
+            List<Reply> replyList = replyReader.findByCommentId(commentId);
+            for(Reply reply : replyList) {
+                //대댓글좋아요 삭제
+                replyLikeModifier.deleteAllByReplyId(reply.getId());
+            }
+            //대댓글 삭제
+            replyModifier.deleteAllByCommentId(commentId);
+            //댓글 좋아요 삭제
             commentLikeModifier.deleteAllByCommentId(commentId);
             commentModifier.delete(comment);
             return 3;

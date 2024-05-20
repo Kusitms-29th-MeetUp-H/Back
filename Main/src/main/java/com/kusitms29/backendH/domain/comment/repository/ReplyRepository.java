@@ -18,5 +18,6 @@ public interface ReplyRepository extends JpaRepository<Reply, Long> {
     @Query("UPDATE Reply r SET r.reported = r.reported + 1 WHERE r.id = :replyId")
     void increaseReportedCount(Long replyId);
 
+    void deleteAllByCommentId(Long commentId);
 
 }
