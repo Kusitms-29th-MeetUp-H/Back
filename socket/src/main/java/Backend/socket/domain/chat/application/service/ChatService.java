@@ -51,7 +51,12 @@ public class ChatService {
 //        return ChatMessageResponseDto.of(chatMessageRequestDto.getToUserName(), sessionIdList, chatMessage);
 //    }
     public ChatMessageRoomResponseDto createSendMessageContentInRoom(String roomName, ChatMessageRoomRequestDto chatMessageRoomRequestDto) throws IOException {
-        String modifiedImageString = chatMessageRoomRequestDto.getImage().replaceAll("[\\[\\]]", "").replaceAll(",", " ");
+        StringBuilder imageBuilder = new StringBuilder();
+        for (String imagePart : chatMessageRoomRequestDto.getImage()) {
+            imageBuilder.append(imagePart);
+        }
+        String image = imageBuilder.toString();
+        String modifiedImageString = image.replaceAll("[\\[\\]]", "").replaceAll(",", " ");
         System.out.println("Modified byte array: " + modifiedImageString);
         Room room = getChatBySessionsInRoom(roomName, chatMessageRoomRequestDto.getChatSession());
         User user = userRepository.findBySessionId(chatMessageRoomRequestDto.getChatSession()).orElseThrow();

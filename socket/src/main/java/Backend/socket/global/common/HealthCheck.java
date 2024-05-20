@@ -72,7 +72,7 @@ public class HealthCheck {
 
     @PostMapping("/test")
     public String uploadImagea(@RequestBody String image) throws IOException {
-
+        int size = image.length();
         // 대괄호 제거 및 공백으로 구분
         String modifiedImageString = image.replaceAll("[\\[\\]]", "").replaceAll(",", " ");
 //        System.out.println("Modified byte array: " + modifiedImageString);
@@ -83,6 +83,7 @@ public class HealthCheck {
     @GetMapping("/image/byte")
     public String uploadImage(@RequestBody byte[] image) throws IOException {
         String imageString = Arrays.toString(image);
+        int size = imageString.length();
         System.out.println("Received byte array: " + imageString);
 
         // 대괄호 제거 및 공백으로 구분
