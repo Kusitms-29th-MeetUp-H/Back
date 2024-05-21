@@ -17,7 +17,7 @@ public record SyncInfoResponseDto(
         String location,
         String date
 ) {
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("M월 d일 (EE) a h:mm");
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("M/d일 (EE) aa h시");
 
     public static SyncInfoResponseDto of(Long syncId,
                                          SyncType syncType,
