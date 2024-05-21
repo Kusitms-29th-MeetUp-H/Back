@@ -85,7 +85,6 @@ public class HealthCheck {
 
     @GetMapping("/image/byte")
     public ResponseEntity<String> uploadImage(@RequestBody byte[] image) throws IOException {
-        im
         // Base64 인코딩
         String base64EncodedString = Base64.getEncoder().encodeToString(image);
         int encodedSize = base64EncodedString.length();
