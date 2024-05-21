@@ -187,7 +187,6 @@ public class PushNotificationService {
         AndroidConfig androidConfig = AndroidConfig.builder()
                 .setNotification(AndroidNotification.builder()
                         .setChannelId(dto.getChannelId())
-                        .setImage(dto.getImage())
                         .setTitle(dto.getTemplate().getTitle())
                         .setBody(createMessageBody(dto))
                         .build())
@@ -211,10 +210,10 @@ public class PushNotificationService {
     }*/
 
     private String createMessageBody(NotificationDto dto) {
-        if(!dto.getStr2().isEmpty()) {
+        if(dto.getStr2() != null && !dto.getStr2().isEmpty()) {
             return String.format(dto.getTemplate().getContent(), dto.getStr1(), dto.getStr2());
         }
-        if(!dto.getStr1().isEmpty()) {
+        if(dto.getStr1() != null && !dto.getStr1().isEmpty()) {
             return String.format(dto.getTemplate().getContent(), dto.getStr1());
         }
         return dto.getTemplate().getContent();

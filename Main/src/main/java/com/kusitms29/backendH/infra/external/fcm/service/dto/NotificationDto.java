@@ -29,9 +29,6 @@ public class NotificationDto {
     private String infoId2;
     private String channelId;
 
-    @Value("${cloud.logo.image}")
-    private String image;
-
     public static NotificationDto getSyncReminderAlarm(Long userId, String userName, String syncName,
                                                        MessageTemplate template,
                                                        Long syncId) {
