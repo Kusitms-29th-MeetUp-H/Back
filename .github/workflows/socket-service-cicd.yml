@@ -1,0 +1,85 @@
+name: Socket Service CICD
+
+on:
+  push:
+    branches: [ "develop" ]
+
+jobs:
+  check-skip:
+    name: Check ot skip CI
+    runs-on: ubuntu-latest
+    if: ${{ contains(github.event.head_commit.message, 'Socket') || contains(github.event.head_commit.message, 'Global') }}
+    steps:
+      - run: echo "${{ github.event.head_commit.message }}"
+
+  build:
+    runs-on: ubuntu-latest
+    needs: check-skip
+    steps:
+      - uses: actions/checkout@v3
+      - name: 🍀 JDK 17 설정
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: 🍀 application.yml 설정
+        run: |
+          cd ./socket
+          cd ./src/main
+          mkdir resources
+          cd ./resources
+          touch ./application.yml
+          echo "$APPLICATION_SOCKET" > ./application.yml
+        env:
+          APPLICATION_SOCKET: ${{ secrets.APPLICATION_SOCKET }}
+
+      - name: 🍀 gradle build를 위한 권한 설정정
+        run: |
+          cd ./socket
+          chmod +x gradlew
+
+      - name: 🍀 gradle build
+        run: |
+          cd ./socket
+          ./gradlew build -x test
+
+      - name: 🍀 docker image build 후 docker hub에 push
+        run: |
+          cd ./socket
+          docker login -u ${{ secrets.SOCKET_DOCKER_USERNAME }} -p ${{ secrets.SOCKET_DOCKER_PASSWORD }}
+          docker build -t ${{ secrets.SOCKET_DOCKER_REPOSITORY }}/${{ secrets.SOCKET_DOCKER_IMAGE }} .
+          docker push ${{ secrets.SOCKET_DOCKER_REPOSITORY }}/${{ secrets.SOCKET_DOCKER_IMAGE }}
+
+      - name: 🍀 deploy.sh 파일을 EC2 development server로 전달
+        uses: appleboy/scp-action@master
+        with:
+          username: ubuntu
+          host: ${{ secrets.SOCKET_EC2_HOST }}
+          key: ${{ secrets.SOCKET_EC2_KEY }}
+          port: ${{ secrets.SOCKET_EC2_PORT }}
+          source: "./scripts/deploy.sh"
+          target: "/home/ubuntu/"
+
+      - name: 🍀 docker-compose.yml 파일을 EC2 development server로 전달
+        uses: appleboy/scp-action@master
+        with:
+          username: ubuntu
+          host: ${{ secrets.SOCKET_EC2_HOST }}
+          key: ${{ secrets.SOCKET_EC2_KEY }}
+          port: ${{ secrets.SOCKET_EC2_PORT }}
+          source: "./socket/docker-compose.yml"
+          target: "/home/ubuntu/"
+
+      - name: 🍀 docker hub 에서 pull 후 deploy
+        uses: appleboy/ssh-action@master
+        with:
+          username: ubuntu
+          host: ${{ secrets.SOCKET_EC2_HOST }}
+          key: ${{ secrets.SOCKET_EC2_KEY }}
+          script: |
+            sudo docker pull ${{ secrets.SOCKET_DOCKER_REPOSITORY }}/${{ secrets.SOCKET_DOCKER_IMAGE }}
+            chmod 777 ./scripts/deploy.sh
+            cp ./scripts/deploy.sh ./deploy.sh
+            ./deploy.sh
+            docker image prune -f
