@@ -19,10 +19,20 @@ public enum Gender {
     private final String stringGender;
 
     public static Gender getEnumFROMStringGender(String stringGender) {
-        return Arrays.stream(values())
-                .filter(gender -> gender.stringGender.equals(stringGender))
-                .findFirst()
-                .orElseThrow(() -> new InvalidValueException(INVALID_GENDER_TYPE));
+        if (stringGender == null) {
+            return null;
+        }
+
+        switch (stringGender) {
+            case "남성":
+                return MAN;
+            case "여성":
+                return WOMAN;
+            case "비공개":
+                return SECRET;
+            default:
+                throw new InvalidValueException(INVALID_GENDER_TYPE);
+        }
     }
 
 }
