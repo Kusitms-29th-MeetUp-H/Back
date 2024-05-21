@@ -32,7 +32,7 @@ jobs:
           mkdir resources
           cd ./resources
           touch ./application.yml
-          echo "$APPLICATION_DEV" > ./application.yml
+          echo "$APPLICATION_MAIN" > ./application.yml
         env:
           APPLICATION_MAIN: ${{ secrets.APPLICATION_DEV }}
 
@@ -58,7 +58,7 @@ jobs:
         with:
           username: ubuntu
           host: ${{ secrets.EC2_HOST }}
-          key: ${{ secrets.EC2_KEY }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
           port: ${{ secrets.EC2_PORT }}
           source: "./scripts/deploy.sh"
           target: "/home/ubuntu/"
@@ -83,6 +83,6 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_REPOSITORY }}/${{ secrets.DOCKER_IMAGE }}
             chmod 777 ./scripts/deploy.sh
             cp ./scripts/deploy.sh ./deploy.sh
-            ./deploy.sh
             cd ./Main
+            ./deploy.sh
             docker image prune -f
