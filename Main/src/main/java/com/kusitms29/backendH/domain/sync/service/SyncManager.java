@@ -123,11 +123,11 @@ public class SyncManager {
 
         for (User user : users) {
             Gender gender = user.getGender();
-            if (gender == Gender.MAN) {
+            if (gender == Gender.남성) {
                 manCount++;
-            } else if (gender == Gender.WOMAN) {
+            } else if (gender == Gender.여성) {
                 womanCount++;
-            } else if (gender == Gender.SECRET) {
+            } else if (gender == Gender.비공개) {
                 secretCount++;
             }
         }
