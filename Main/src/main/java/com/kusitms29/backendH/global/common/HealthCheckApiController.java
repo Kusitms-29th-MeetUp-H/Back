@@ -1,13 +1,14 @@
 package com.kusitms29.backendH.global.common;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kusitms29.backendH.infra.config.auth.UserId;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -118,7 +119,7 @@ public class HealthCheckApiController {
     }
 
     @GetMapping("/oauth/kakao/callback")
-    public ResponseEntity<String> kakaoOauthCallback(@RequestParam String code) {
+    public ResponseEntity<String> kakaoOauthCallback(@RequestParam(name = "code") String code) {
         RestTemplate restTemplate = new RestTemplate();
         String accessToken = restTemplate.postForObject(KAKAO_TOKEN_ENDPOINT +
                 "?grant_type=authorization_code" +
@@ -132,9 +133,9 @@ public class HealthCheckApiController {
 
         return new ResponseEntity<>(accessToken, HttpStatus.OK);
     }
-
     @RequestMapping("/")
     public Long MeetUpServer(@UserId Long userId) {
         return userId;
     }
+
 }
