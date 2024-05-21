@@ -15,6 +15,7 @@ import Backend.socket.global.common.MessageSuccessResponse;
 import Backend.socket.global.common.image;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
@@ -32,10 +33,12 @@ public class ChatController {
     private final ChatService chatService;
     private final SimpMessagingTemplate template;
     private final RedisTemplate redisTemplate;
-    public ChatController(ChatService chatService, SimpMessagingTemplate template, @Qualifier("redisTemplate") RedisTemplate redisTemplate) {
+    public ChatController(ChatService chatService, SimpMessagingTemplate template,
+                          @Qualifier("chatRedisConnectionFactory") RedisConnectionFactory connectionFactory) {
         this.chatService = chatService;
         this.template = template;
-        this.redisTemplate = redisTemplate;
+        this.redisTemplate = new RedisTemplate<>();
+        this.redisTemplate.setConnectionFactory(connectionFactory);
     }
 //    @MessageMapping("/chat/{sessionId}")
 //    public void sendChatMessage(@DestinationVariable("sessionId") final String sessionId,
