@@ -64,6 +64,10 @@ dependencies {
 	implementation 'com.sun.xml.bind:jaxb-core:4.0.1'
 	// javax.xml.bind
 	implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
+
+	//fcm
+	implementation 'com.google.firebase:firebase-admin:8.1.0'
+	implementation 'org.json:json:20210307'
 }
 
 tasks.named('test') {

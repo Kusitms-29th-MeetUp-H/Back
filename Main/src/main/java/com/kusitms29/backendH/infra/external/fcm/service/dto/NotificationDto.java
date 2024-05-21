@@ -19,9 +19,9 @@ public class NotificationDto {
      * 커뮤니티 : 글이름 + 댓글단이 -> 글 Id, 댓글 Id
      * 일정 : 유저이름 + 싱크이름 -> 싱크 Id
      * 채팅방 개설 공지 : 싱크이름 -> 채팅방 Id
+     * 채팅 : 채팅내용 -> 채팅방 Id
      *
      * TODO
-     * 채팅 : 채팅내용 -> 채팅방 Id, 챗 Id
      * 후기 : 유저이름 -> 마이페이지?
      */
     private MessageTemplate template;

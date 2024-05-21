@@ -38,3 +38,5 @@ out/
 
 ### Yml ###
 **/src/main/resources/application.yml
+### firebase ###
+/src/main/resources/firebase/

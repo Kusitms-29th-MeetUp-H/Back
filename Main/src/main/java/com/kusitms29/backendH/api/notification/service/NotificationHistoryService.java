@@ -35,15 +35,16 @@ public class NotificationHistoryService {
 
     private NotificationHistoryResponseDto mapToNotificationHistoryResponseDto(NotificationHistory notificationHistory) {
         String detailContent = "";
-        Long infoId2 = ((notificationHistory.getInfoId2() != null)&&(!notificationHistory.getInfoId2().isEmpty()) ? Long.parseLong(notificationHistory.getInfoId2()) : null);
 
         switch (notificationHistory.getNotificationType().name()) {
             case "CHAT":
+                detailContent = notificationHistory.getInfoId2();
                 break;
             case "CHAT_ROOM_NOTICE":
                 detailContent = "지금 바로 채팅방에 입장해서 멤버들과 대화를 나눠보세요!";
                 break;
             case "COMMENT":
+                Long infoId2 = ((notificationHistory.getInfoId2() != null)&&(!notificationHistory.getInfoId2().isEmpty()) ? Long.parseLong(notificationHistory.getInfoId2()) : null);
                 detailContent = commentReader.findById(infoId2).getContent();
                 break;
             case "SYNC_REMINDER":
