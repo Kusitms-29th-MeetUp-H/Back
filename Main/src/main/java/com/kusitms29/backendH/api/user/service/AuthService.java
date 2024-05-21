@@ -45,7 +45,8 @@ public class AuthService {
         }
         Platform platform = getEnumPlatformFromStringPlatform(userSignInRequestDto.getPlatform());
         PlatformUserInfo platformUser = getPlatformUserInfoFromRestTemplate(platform, authToken);
-        User getUser = saveUser(platformUser, platform, fcmToken);
+        User getUser = saveUser(platformUser, platform);
+        saveFcmToken(getUser, fcmToken);
         Boolean isFirstLogin = Objects.isNull(getUser.getPlatform()) ? Boolean.TRUE : Boolean.FALSE;
         TokenInfo tokenInfo = issueAccessTokenAndRefreshToken(getUser);
         updateRefreshToken(tokenInfo.getRefreshToken(), getUser);
@@ -62,8 +63,8 @@ public class AuthService {
         refreshTokenRepository.deleteById(user.getId());
     }
 
-    private User saveUser(PlatformUserInfo platformUserInfo, Platform platform, String fcmToken) {
-        User createdUser = getUserByPlatformUserInfo(platformUserInfo, platform, fcmToken);
+    private User saveUser(PlatformUserInfo platformUserInfo, Platform platform) {
+        User createdUser = getUserByPlatformUserInfo(platformUserInfo, platform);
         return userModifier.save(createdUser);
     }
 
@@ -80,15 +81,12 @@ public class AuthService {
         return userReader.findByUserId(userId);
     }
 
-    private User getUserByPlatformUserInfo(PlatformUserInfo platformUserInfo, Platform platform, String fcmToken) {
+    private User getUserByPlatformUserInfo(PlatformUserInfo platformUserInfo, Platform platform) {
         Optional<User> optionalUser = userReader.findByPlatformId(platformUserInfo.getId());
-        if(optionalUser.isPresent()) {
-            return optionalUser.get();
-        } else {
-            User getUser = User.createUser(platformUserInfo, platform, generateRandomUuid(platformUserInfo));
-            pushNotificationService.saveToken(String.valueOf(getUser.getId()), fcmToken);
-            return getUser;
-        }
+        return optionalUser.orElseGet(() -> User.createUser(platformUserInfo, platform, generateRandomUuid(platformUserInfo)));
+    }
+    private void saveFcmToken(User getUser, String fcmToken) {
+        pushNotificationService.saveToken(String.valueOf(getUser.getId()), fcmToken);
     }
 
     private PlatformUserInfo getPlatformUserInfoFromRestTemplate(Platform platform, String authToken) {

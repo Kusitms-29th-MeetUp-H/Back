@@ -184,24 +184,36 @@ public class PushNotificationService {
     }
 
     private Message createMessage(NotificationDto dto) {
+        AndroidConfig androidConfig = AndroidConfig.builder()
+                .setNotification(AndroidNotification.builder()
+                        .setChannelId(dto.getChannelId())
+                        .setTitle(dto.getTemplate().getTitle())
+                        .setBody(createMessageBody(dto))
+                        .build())
+                .build();
+
         return Message.builder()
                 .setToken(getToken(dto.getId()))
-                .setNotification(createNotification(dto))
+                .setAndroidConfig(androidConfig)
                 .build();
+        /*return Message.builder()
+                .setToken(getToken(dto.getId()))
+                .setNotification(createNotification(dto))
+                .build();*/
     }
 
-    private Notification createNotification(NotificationDto dto) {
+    /*private Notification createNotification(NotificationDto dto) {
         return Notification.builder()
                 .setTitle(dto.getTemplate().getTitle())
                 .setBody(createMessageBody(dto))
                 .build();
-    }
+    }*/
 
     private String createMessageBody(NotificationDto dto) {
-        if(!dto.getStr2().isEmpty()) {
+        if(dto.getStr2() != null && !dto.getStr2().isEmpty()) {
             return String.format(dto.getTemplate().getContent(), dto.getStr1(), dto.getStr2());
         }
-        if(!dto.getStr1().isEmpty()) {
+        if(dto.getStr1() != null && !dto.getStr1().isEmpty()) {
             return String.format(dto.getTemplate().getContent(), dto.getStr1());
         }
         return dto.getTemplate().getContent();

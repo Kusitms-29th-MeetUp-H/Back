@@ -20,10 +20,7 @@ public interface SyncRepository extends JpaRepository<Sync, Long> {
             "FROM sync s " +
             "INNER JOIN participation p ON s.sync_id = p.sync_id " +
             "INNER JOIN user u ON p.user_id = u.user_id " +
-            "INNER JOIN notification n ON u.user_id = n.user_id " +
             "WHERE s.status != 'DELETED' " +
-            "AND n.notification_type = 'SYNC_REMINDER' " +
-            "AND n.status = 'ACTIVE' " +
             "AND (CASE WHEN s.sync_type = 'LONGTIME' THEN s.routine_date ELSE s.date END) IS NOT NULL " +
             "AND DATE_SUB((CASE WHEN s.sync_type = 'LONGTIME' THEN s.routine_date ELSE s.date END), INTERVAL 1 DAY) <= :currentDate " +
             "AND (CASE WHEN s.sync_type = 'LONGTIME' THEN s.routine_date ELSE s.date END) >= :currentDate ",
