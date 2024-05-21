@@ -12,9 +12,9 @@ import static com.kusitms29.backendH.global.error.ErrorCode.INVALID_GENDER_TYPE;
 @Getter
 public enum Gender {
 
-    남성("남성"),
-    여성("여성"),
-    비공개("비공개");
+    MAN("남성"),
+    WOMAN("여성"),
+    SECRET("비공개");
 
     private final String stringGender;
 
