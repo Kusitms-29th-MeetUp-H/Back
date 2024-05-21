@@ -36,6 +36,15 @@ jobs:
         env:
           APPLICATION_MAIN: ${{ secrets.APPLICATION_DEV }}
 
+      - name: Create AccountKey.json
+        run: |
+          cd ./Main/src/main/resources
+          mkdir firebase
+          cd ./firebase
+          touch ./AccountKey.json
+          echo "$FIREBASE_KEY" > ./AccountKey.json
+        env:
+          FIREBASE_KEY: ${{ secrets.FIREBASE_ACCOUNTKEY }}
       - name: 🍀 gradle build를 위한 권한 설정
         run: |
           cd ./Main
