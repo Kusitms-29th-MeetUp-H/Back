@@ -33,7 +33,7 @@ public class UserInfoResponseDto {
     }
 
     public static UserInfoResponseDto of(User user, List<String> detailTypes) {
-        return new UserInfoResponseDto(user.getId(), user.getProfile(), user.getUserName(), user.getUniversity(), String.valueOf(user.getSyncType()), detailTypes, String.valueOf(user.getGender()));
+        return new UserInfoResponseDto(user.getId(), user.getProfile(), user.getUserName(), user.getUniversity(), String.valueOf(user.getSyncType()), detailTypes, user.getGender().getStringGender());
     }
 
 }
