@@ -6,6 +6,7 @@ import com.kusitms29.backendH.api.sync.service.dto.response.SyncAssociateInfoRes
 import com.kusitms29.backendH.api.sync.service.dto.response.SyncInfoResponseDto;
 import com.kusitms29.backendH.domain.user.ip.IpService;
 import com.kusitms29.backendH.global.common.SuccessResponse;
+import com.kusitms29.backendH.infra.config.auth.UserId;
 import com.kusitms29.backendH.infra.external.clova.map.GeoLocationService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,7 @@ public class SyncMainController {
     private final IpService ipService;
     private final GeoLocationService geoLocationService;
     @GetMapping("/recommend")
-    public ResponseEntity<SuccessResponse<?>> recommendSync(@RequestParam(name = "userId") Long userId, HttpServletRequest request) throws NoSuchAlgorithmException, InvalidKeyException, IOException {
+    public ResponseEntity<SuccessResponse<?>> recommendSync(@UserId Long userId, HttpServletRequest request) throws NoSuchAlgorithmException, InvalidKeyException, IOException {
         String clientIp = ipService.getClientIpAddress(request);
 //        GeoLocation geoLocation = geoLocationService.getGeoLocation(clientIp);
         List<SyncInfoResponseDto> syncInfoResponseDtos = syncManageService.recommendSync(userId, clientIp);

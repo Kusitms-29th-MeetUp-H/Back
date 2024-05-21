@@ -114,7 +114,7 @@ public class SyncReader {
             }
         }
 
-        return syncList;
+        return syncRepository.findAll();
     }
     public List<Sync> findAllBySyncTypeWithTypeWithLocation(SyncType syncType, Type type, String location){
         List<Sync> syncList = syncRepository.findAllBySyncTypeWithTypeWithLocation(syncType, type, location);
