@@ -32,7 +32,7 @@ jobs:
           mkdir resources
           cd ./resources
           touch ./application.yml
-          echo "$APPLICATION_DEV" > ./application.yml
+          echo "$APPLICATION_MAIN" > ./application.yml
         env:
           APPLICATION_MAIN: ${{ secrets.APPLICATION_DEV }}
 
