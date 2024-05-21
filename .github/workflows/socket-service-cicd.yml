@@ -82,4 +82,5 @@ jobs:
             chmod 777 ./scripts/deploy.sh
             cp ./scripts/deploy.sh ./deploy.sh
             ./deploy.sh
+            ./socket
             docker image prune -f

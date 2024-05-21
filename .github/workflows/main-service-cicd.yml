@@ -50,7 +50,7 @@ jobs:
         run: |
           cd ./Main
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build -t ${{ secrets.DOCKER_REPOSITORY }}/${{ secrets.MAIN_DOCKER_IMAGE }} .
+          docker build -t ${{ secrets.DOCKER_REPOSITORY }}/${{ secrets.DOCKER_IMAGE }} .
           docker push ${{ secrets.DOCKER_REPOSITORY }}/${{ secrets.DOCKER_IMAGE }}
 
       - name: 🍀 deploy.sh 파일을 EC2 development server로 전달
@@ -67,9 +67,9 @@ jobs:
         uses: appleboy/scp-action@master
         with:
           username: ubuntu
-          host: ${{ secrets.MAIN_EC2_HOST }}
-          key: ${{ secrets.MAIN_EC2_KEY }}
-          port: ${{ secrets.MAIN_EC2_PORT }}
+          host: ${{ secrets.EC2_HOST }}
+          key: ${{ secrets.EC2_KEY }}
+          port: ${{ secrets.EC2_PORT }}
           source: "./Main/docker-compose.yml"
           target: "/home/ubuntu/"
 
@@ -84,4 +84,5 @@ jobs:
             chmod 777 ./scripts/deploy.sh
             cp ./scripts/deploy.sh ./deploy.sh
             ./deploy.sh
+            cd ./Main
             docker image prune -f
