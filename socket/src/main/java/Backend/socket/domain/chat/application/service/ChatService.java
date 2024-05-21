@@ -13,6 +13,7 @@ import Backend.socket.domain.chat.repository.UserRepository;
 import Backend.socket.global.common.image;
 import Backend.socket.global.error.socketException.EntityNotFoundException;
 import Backend.socket.infra.external.AwsService;
+import Backend.socket.infra.external.fcm.service.PushNotificationService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -40,6 +41,7 @@ public class ChatService {
     private final UserRepository userRepository;
     private final RoomRepository roomRepository;
     private final AwsService awsService;
+    private final PushNotificationService pushNotificationService;
 
 //    public ChatMessageResponseDto createSendMessageContent(String sessionId, ChatMessageRequestDto chatMessageRequestDto) {
 //        Chat chat = getChatBySessions(sessionId, chatMessageRequestDto.getChatSession());
@@ -65,8 +67,10 @@ public class ChatService {
         ChatMessageElementResponseDto chatMessage = ChatMessageElementResponseDto.of(chatContent, chatMessageRoomRequestDto.getChatSession(), user.getProfile(), images);
         List<String> sessionIdList = getSessionIdListInRoom(roomName, chatMessageRoomRequestDto.getChatSession());
         saveChatRoom(room);
+        pushNotificationService.sendChatMessageNotification(room, chatMessage, sessionIdList); //채팅 알림
         return ChatMessageRoomResponseDto.of(chatMessageRoomRequestDto.getToRoomName(), sessionIdList, chatMessage);
     }
+
     public ChatMessageRoomResponseDto createSendImageContentInRoom(String roomName, image chatMessageRoomRequestDto) throws IOException {
         // 대괄호 제거 및 공백으로 구분
         String modifiedImageString = chatMessageRoomRequestDto.getImage().replaceAll("[\\[\\]]", "").replaceAll(",", " ");

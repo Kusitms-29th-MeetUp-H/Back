@@ -19,6 +19,7 @@ public enum ErrorCode {
     INVALID_ROADMAP_TYPE(HttpStatus.BAD_REQUEST, "유효하지 않은 로드맵 타입입니다."),
     INVALID_TEMPLATE_TYPE(HttpStatus.BAD_REQUEST, "유효하지 않은 회의록 타입입니다."),
     INVALID_USER_TYPE(HttpStatus.BAD_REQUEST, "유효하지 않은 유저 타입니다."),
+    INVALID_NOTIFICATION_TOP_CATEGORY(HttpStatus.BAD_REQUEST, "유효하지 않은 알림 탑카테고리입니다."),
 
     /**
      * 404 Not Found
