@@ -55,9 +55,15 @@ public class ChatController {
     @MessageMapping("/room/image/{roomName}")
     @SendTo("/sub/room/{roomName}")
     public MessageSuccessResponse sendImageMessageInRoom(@DestinationVariable("roomName") final String roomName,
-                                                        @RequestBody final image image) throws IOException {
-        return MessageSuccessResponse.of(MessageSuccessCode.RECEIVED, chatService.createSendImageContentInRoom(roomName, image).getMessage());
+                                                         @RequestBody final ChatMessageRoomRequestDto chatMessageRoomRequestDto) throws IOException {
+        return MessageSuccessResponse.of(MessageSuccessCode.RECEIVED, chatService.createSendMessageContentInRoom(roomName, chatMessageRoomRequestDto).getMessage());
     }
+//    @MessageMapping("/room/image/{roomName}")
+//    @SendTo("/sub/room/{roomName}")
+//    public MessageSuccessResponse sendImageMessageInRoom(@DestinationVariable("roomName") final String roomName,
+//                                                        @RequestBody final image image) throws IOException {
+//        return MessageSuccessResponse.of(MessageSuccessCode.RECEIVED, chatService.createSendImageContentInRoom(roomName, image).getMessage());
+//    }
 //    @MessageMapping("/room/{roomName}")
 //    public void sendChatMessageInRoom(@DestinationVariable("roomName") final String roomName,
 //                                      @RequestBody final ChatMessageRoomRequestDto chatMessageRoomRequestDto) {

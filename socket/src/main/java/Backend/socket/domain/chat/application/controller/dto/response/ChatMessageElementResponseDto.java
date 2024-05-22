@@ -17,7 +17,7 @@ public class ChatMessageElementResponseDto {
     private String time;
     private String sessionId;
     private String profile;
-    private String images;
+    private String image;
 
 
 //    public static List<ChatMessageElementResponseDto> listOf(List<ChatContent> chatContentList,String sessionId,String profile) {
@@ -34,7 +34,7 @@ public class ChatMessageElementResponseDto {
                 .time(chatContent.getTime().toString())
                 .sessionId(sessionId)
                 .profile(profile)
-                .images(image)
+                .image(image)
                 .build();
     }
 
