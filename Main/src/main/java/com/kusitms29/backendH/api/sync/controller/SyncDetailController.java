@@ -30,8 +30,8 @@ public class SyncDetailController {
         return SuccessResponse.ok(syncGraphResponseDto);
     }
     @GetMapping("/recommend")
-    public ResponseEntity<SuccessResponse<?>> getAnotherSync(@RequestParam(name = "syncId") Long syncId,@RequestParam(name = "take", defaultValue = "0") int take){
-        List<SyncInfoResponseDto> syncInfoResponseDtos = syncDetailService.getSyncListBySameDateAndSameLocation(syncId, take);
+    public ResponseEntity<SuccessResponse<?>> getAnotherSync(@UserId Long userId, @RequestParam(name = "syncId") Long syncId,@RequestParam(name = "take", defaultValue = "0") int take){
+        List<SyncInfoResponseDto> syncInfoResponseDtos = syncDetailService.getSyncListBySameDateAndSameLocation(userId, syncId, take);
         return SuccessResponse.ok(syncInfoResponseDtos);
     }
     @GetMapping("/review")

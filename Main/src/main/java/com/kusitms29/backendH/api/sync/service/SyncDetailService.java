@@ -93,7 +93,7 @@ public class SyncDetailService {
         SyncGraphResponseDto graphElements = syncManager.createGraphElementList(participations, graph);
         return graphElements;
     }
-    public List<SyncInfoResponseDto> getSyncListBySameDateAndSameLocation(Long syncId, int take){
+    public List<SyncInfoResponseDto> getSyncListBySameDateAndSameLocation(Long userId, Long syncId, int take){
         Sync csync = syncReader.findById(syncId);
         List<Sync> syncList= syncReader.findAllByLocationAndDate(csync.getLocation(), csync.getDate());
         List<SyncInfoResponseDto> syncInfoResponseDtos = listUtils.getListByTake(syncList.stream()
@@ -107,7 +107,8 @@ public class SyncDetailService {
                         sync.getMember_max(),
                         sync.getSyncName(),
                         sync.getLocation(),
-                        sync.getDate()
+                        sync.getDate(),
+                        favoriteSyncManager.existsByUserIdAndSyncId(userId, sync.getId())
                 )).toList(), take);
         return ListException.throwIfEmpty(syncInfoResponseDtos, () -> new EntityNotFoundException(ErrorCode.SYNC_NOT_FOUND));
     }

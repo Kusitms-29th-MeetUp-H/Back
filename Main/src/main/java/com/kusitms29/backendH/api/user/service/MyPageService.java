@@ -40,6 +40,7 @@ public class MyPageService {
     private final AwsS3Service awsS3Service;
     private final CategoryReader categoryReader;
     private final UserCategoryReader userCategoryReader;
+    private final FavoriteSyncManager favoriteSyncManager;
     public List<SyncInfoResponseDto> getMySyncList(Long userId, int take){
         List<Sync> syncList = syncReader.findAllByUserId(userId);
         List<SyncInfoResponseDto> syncInfoResponseDtos = syncList.stream()
@@ -52,7 +53,8 @@ public class MyPageService {
                         sync.getMember_max(),
                         sync.getSyncName(),
                         sync.getLocation(),
-                        sync.getDate()
+                        sync.getDate(),
+                        favoriteSyncManager.existsByUserIdAndSyncId(userId, sync.getId())
                 )).toList();
         return listUtils.getListByTake(syncInfoResponseDtos, take);
     }
@@ -69,7 +71,8 @@ public class MyPageService {
                         sync.getMember_max(),
                         sync.getSyncName(),
                         sync.getLocation(),
-                        sync.getDate()
+                        sync.getDate(),
+                        favoriteSyncManager.existsByUserIdAndSyncId(userId, sync.getId())
                 )).toList();
         return listUtils.getListByTake(syncInfoResponseDtos, take);
     }
@@ -95,7 +98,8 @@ public class MyPageService {
                         sync.getMember_max(),
                         sync.getSyncName(),
                         sync.getLocation(),
-                        sync.getDate()
+                        sync.getDate(),
+                        favoriteSyncManager.existsByUserIdAndSyncId(userId, sync.getId())
                 )).toList();
         return listUtils.getListByTake(syncInfoResponseDtos, take);
     }
