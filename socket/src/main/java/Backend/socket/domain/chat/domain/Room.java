@@ -17,6 +17,7 @@ public class Room {
     private String roomName;
     private String roomSession;
     private String syncName;
+    private String image;
 
     @Builder.Default
     private List<ChatUser> chatUserList = new ArrayList<>();
@@ -45,8 +46,9 @@ public class Room {
     public void addChatRoom(ChatUser chatUser) {
         this.chatUserList.add(chatUser);
     }
-    public Room(String roomId, String roomName, String roomSession, String syncName, List<ChatUser> chatUserList, List<ChatContent> chatContentList) {
+    public Room(String roomId, String roomName, String roomSession, String syncName, String image, List<ChatUser> chatUserList, List<ChatContent> chatContentList) {
         this.roomId = roomId;
+        this.image = image;
         this.roomName = roomName;
         this.roomSession = roomSession;
         this.syncName = syncName;
