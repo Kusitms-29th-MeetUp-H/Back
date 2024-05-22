@@ -36,7 +36,24 @@ public record SyncAssociateInfoResponseDto(
                                          LocalDateTime date,
                                                   String associate,
                                                   Boolean isMarked){
-        String formattedDate = date.format(DATE_TIME_FORMATTER);
-        return new SyncAssociateInfoResponseDto(syncId, syncType.getStringSyncType(), type.getStringType(), image, userCnt, totalCnt, syncName, location, formattedDate, associate, isMarked);
+
+        String formattedDate = null;
+
+        if(date != null) {
+            formattedDate = date.format(DATE_TIME_FORMATTER);
+        }
+
+        return new SyncAssociateInfoResponseDto(
+                syncId,
+                syncType.getStringSyncType(),
+                type.getStringType(),
+                image,
+                userCnt,
+                totalCnt,
+                syncName,
+                location,
+                formattedDate,
+                associate,
+                isMarked);
     }
 }

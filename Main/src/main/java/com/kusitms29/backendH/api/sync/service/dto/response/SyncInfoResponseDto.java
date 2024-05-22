@@ -34,7 +34,21 @@ public record SyncInfoResponseDto(
                                          String location,
                                          LocalDateTime date,
                                          Boolean isMarked){
-        String formattedDate = date.format(DATE_TIME_FORMATTER);
-        return new SyncInfoResponseDto(syncId, syncType.getStringSyncType(), type.getStringType(), image, userCnt, totalCnt, syncName, location, formattedDate, isMarked);
+
+        String formattedDate = null;
+        if(date != null) {
+            formattedDate = date.format(DATE_TIME_FORMATTER);
+        }
+        return new SyncInfoResponseDto(
+                syncId,
+                syncType.getStringSyncType(),
+                type.getStringType(),
+                image,
+                userCnt,
+                totalCnt,
+                syncName,
+                location,
+                formattedDate,
+                isMarked);
     }
 }
