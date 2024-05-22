@@ -35,7 +35,7 @@ jobs:
           APPLICATION_SOCKET: ${{ secrets.APPLICATION_SOCKET }}
       - name: Create AccountKey.json
         run: |
-          cd ./Main/src/main/resources
+          cd ./socket/src/main/resources
           mkdir firebase
           cd ./firebase
           touch ./AccountKey.json
