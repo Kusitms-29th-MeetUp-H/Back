@@ -34,11 +34,10 @@ public class ChatController {
     private final SimpMessagingTemplate template;
     private final RedisTemplate redisTemplate;
     public ChatController(ChatService chatService, SimpMessagingTemplate template,
-                          @Qualifier("chatRedisConnectionFactory") RedisConnectionFactory connectionFactory) {
+                          @Qualifier("redisTemplate") RedisTemplate redisTemplate) {
         this.chatService = chatService;
         this.template = template;
-        this.redisTemplate = new RedisTemplate<>();
-        this.redisTemplate.setConnectionFactory(connectionFactory);
+        this.redisTemplate = redisTemplate;
     }
 //    @MessageMapping("/chat/{sessionId}")
 //    public void sendChatMessage(@DestinationVariable("sessionId") final String sessionId,
