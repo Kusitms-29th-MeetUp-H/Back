@@ -19,10 +19,10 @@ public record SyncInfoResponseDto(
         String location,
         String date
 ) {
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("M/d(E) a h시");
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("M/d(EE) a h시");
 
     static {
-        DateTimeFormatter.ofPattern("M/d(E) a h시")
+        DateTimeFormatter.ofPattern("M/d(EE) a h시")
                 .withLocale(Locale.KOREAN)
                 .withDecimalStyle(DecimalStyle.of(Locale.KOREAN));
     }
