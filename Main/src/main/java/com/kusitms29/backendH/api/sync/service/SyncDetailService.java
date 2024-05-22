@@ -1,6 +1,7 @@
 package com.kusitms29.backendH.api.sync.service;
 
 
+import com.kusitms29.backendH.api.sync.service.dto.request.SyncBookmarkRequestDto;
 import com.kusitms29.backendH.api.sync.service.dto.response.SyncDetailResponseDto;
 import com.kusitms29.backendH.api.sync.service.dto.response.SyncGraphResponseDto;
 import com.kusitms29.backendH.api.sync.service.dto.response.SyncInfoResponseDto;
@@ -133,12 +134,12 @@ public class SyncDetailService {
         List<User> userList = participationReader.findAllBySyncId(syncId).stream().map(participation -> participation.getUser()).toList();
         roomAppender.createRoom(userList,isPossible,syncId);
     }
-    public Boolean bookmark(Long userId, Long syncId, Boolean isMarked){
-        if(isMarked){
-            favoriteSyncModifier.deleteFavoriteSync(favoriteSyncReader.findByUserIdAndSyncId(userId,syncId));
+    public Boolean bookmark(Long userId, SyncBookmarkRequestDto syncBookmarkRequestDto){
+        if(syncBookmarkRequestDto.isMarked()){
+            favoriteSyncModifier.deleteFavoriteSync(favoriteSyncReader.findByUserIdAndSyncId(userId,syncBookmarkRequestDto.syncId()));
             return false;
         }
-        FavoriteSync favoriteSync = createFavoriteSync(User.from(userId),Sync.from(syncId));
+        FavoriteSync favoriteSync = createFavoriteSync(User.from(userId),Sync.from(syncBookmarkRequestDto.syncId()));
         favoriteSyncAppender.saveFavoriteSync(favoriteSync);
         return true;
     }

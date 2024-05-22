@@ -104,16 +104,16 @@ public class MyPageService {
         return listUtils.getListByTake(syncInfoResponseDtos, take);
     }
     @Transactional
-    public void editProfile(Long userId, EditProfileRequest editProfileRequest){
+    public void editProfile(Long userId, MultipartFile profileImage, EditProfileRequest editProfileRequest){
         System.out.println("userId: " + userId);
-        System.out.println("editProfileRequest.image(): " + editProfileRequest.image());
+//        System.out.println("editProfileRequest.image(): " + editProfileRequest.image());
         System.out.println("editProfileRequest.name(): " + editProfileRequest.name());
         System.out.println("editProfileRequest.gender(): " + editProfileRequest.gender());
         System.out.println("editProfileRequest.syncType(): " + editProfileRequest.syncType());
         System.out.println("editProfileRequest.detailTypes(): " + editProfileRequest.detailTypes());
 
         User user = userReader.findByUserId(userId);
-        String image = awsS3Service.uploadImage(editProfileRequest.image());
+        String image = awsS3Service.uploadImage(profileImage);
         user.updateProfile(image,editProfileRequest.name(), Gender.getEnumFROMStringGender(editProfileRequest.gender()), SyncType.getEnumFROMStringSyncType(editProfileRequest.syncType()));
         userCategoryModifier.deleteAllByUserId(user.getId());
         List<Category> categories = editProfileRequest.detailTypes().stream().map(
