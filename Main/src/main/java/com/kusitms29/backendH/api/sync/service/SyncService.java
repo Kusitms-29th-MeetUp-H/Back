@@ -9,12 +9,10 @@ import com.kusitms29.backendH.domain.category.entity.Type;
 import com.kusitms29.backendH.domain.category.service.CategoryReader;
 import com.kusitms29.backendH.domain.category.service.UserCategoryManager;
 import com.kusitms29.backendH.domain.category.service.UserCategoryReader;
+import com.kusitms29.backendH.domain.sync.entity.Participation;
 import com.kusitms29.backendH.domain.sync.entity.SyncType;
-import com.kusitms29.backendH.domain.sync.service.FavoriteSyncManager;
-import com.kusitms29.backendH.domain.sync.service.ParticipationManager;
+import com.kusitms29.backendH.domain.sync.service.*;
 import com.kusitms29.backendH.domain.sync.entity.Sync;
-import com.kusitms29.backendH.domain.sync.service.SyncAppender;
-import com.kusitms29.backendH.domain.sync.service.SyncReader;
 import com.kusitms29.backendH.domain.user.entity.User;
 import com.kusitms29.backendH.domain.category.entity.UserCategory;
 import com.kusitms29.backendH.domain.user.service.UserReader;
@@ -26,6 +24,7 @@ import com.kusitms29.backendH.infra.utils.ListUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
@@ -55,6 +54,7 @@ public class SyncService {
     private final CategoryReader categoryReader;
     private final SeoulAddressClient seoulAddressClient;
     private final FavoriteSyncManager favoriteSyncManager;
+    private final ParticipationAppender participationAppender;
 
     public List<SyncInfoResponseDto> recommendSync(Long userId, String clientIp){
         User user = userReader.findByUserId(userId);
@@ -127,7 +127,7 @@ public class SyncService {
         )).toList();
         return listUtils.getListByTake(syncInfoResponseDtos, syncInfoRequestDto.take());
     }
-
+    @Transactional
     public SyncSaveResponseDto createSync(Long userId, MultipartFile file, SyncCreateRequestDto requestDto) {
         User user = userReader.findByUserId(userId);
 
@@ -201,6 +201,9 @@ public class SyncService {
                         detailCategory.getType(),
                         requestDto.getDetailType())
         );
+
+        Participation newParticipation = Participation.createParticipation(User.from(userId), Sync.from(newSync.getId()));
+        participationAppender.saveParticipation(newParticipation);
 
         return SyncSaveResponseDto.of(
                 newSync.getId(),
