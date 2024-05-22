@@ -47,7 +47,7 @@ public class AuthService {
         PlatformUserInfo platformUser = getPlatformUserInfoFromRestTemplate(platform, authToken);
         User getUser = saveUser(platformUser, platform);
         saveFcmToken(getUser, fcmToken);
-        Boolean isFirstLogin = Objects.isNull(getUser.getPlatform()) ? Boolean.TRUE : Boolean.FALSE;
+        Boolean isFirstLogin = Objects.isNull(getUser.getSyncType()) ? Boolean.TRUE : Boolean.FALSE;
         TokenInfo tokenInfo = issueAccessTokenAndRefreshToken(getUser);
         updateRefreshToken(tokenInfo.getRefreshToken(), getUser);
         return UserAuthResponseDto.of(getUser, tokenInfo, isFirstLogin);
