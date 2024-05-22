@@ -101,6 +101,13 @@ public class MyPageService {
     }
     @Transactional
     public void editProfile(Long userId, EditProfileRequest editProfileRequest){
+        System.out.println("userId: " + userId);
+        System.out.println("editProfileRequest.image(): " + editProfileRequest.image());
+        System.out.println("editProfileRequest.name(): " + editProfileRequest.name());
+        System.out.println("editProfileRequest.gender(): " + editProfileRequest.gender());
+        System.out.println("editProfileRequest.syncType(): " + editProfileRequest.syncType());
+        System.out.println("editProfileRequest.detailTypes(): " + editProfileRequest.detailTypes());
+
         User user = userReader.findByUserId(userId);
         String image = awsS3Service.uploadImage(editProfileRequest.image());
         user.updateProfile(image,editProfileRequest.name(), getEnumFROMStringGender(editProfileRequest.gender()), getEnumFROMStringSyncType(editProfileRequest.syncType()));

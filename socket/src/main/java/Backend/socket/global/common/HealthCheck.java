@@ -2,12 +2,14 @@ package Backend.socket.global.common;
 
 import Backend.socket.infra.external.AwsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
@@ -80,17 +82,19 @@ public class HealthCheck {
         String imageUrl = awsService.uploadImageToS3(modifiedImageString);
         return imageUrl;
     }
+
     @GetMapping("/image/byte")
-    public String uploadImage(@RequestBody byte[] image) throws IOException {
-        String imageString = Arrays.toString(image);
-        int size = imageString.length();
-        System.out.println("Received byte array: " + imageString);
+    public ResponseEntity<String> uploadImage(@RequestBody byte[] image) throws IOException {
 
-        // 대괄호 제거 및 공백으로 구분
-        String modifiedImageString = imageString.replaceAll("[\\[\\]]", "").replaceAll(",", " ");
-        System.out.println("Modified byte array: " + modifiedImageString);
+        // Base64 인코딩
+        String base64EncodedString = Base64.getEncoder().encodeToString(image);
+        int encodedSize = base64EncodedString.length();
+        System.out.println("Base64 Encoded String: " + base64EncodedString);
+        System.out.println("Encoded size: " + encodedSize + " bytes");
 
-        String imageUrl = awsService.uploadImageToS3(modifiedImageString);
-        return imageUrl;
+        // AWS S3 업로드
+        String imageUrl = awsService.uploadImageToS3(base64EncodedString);
+
+        return ResponseEntity.ok(imageUrl);
     }
 }

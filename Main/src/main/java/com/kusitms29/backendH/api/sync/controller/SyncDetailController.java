@@ -44,5 +44,10 @@ public class SyncDetailController {
         syncDetailService.joinSync(userId, syncId);
         return SuccessResponse.ok("join");
     }
+    @GetMapping("/bookmark")
+    public ResponseEntity<SuccessResponse<?>> bookmark(@UserId Long userId, @RequestParam(name = "syncId") Long syncId){
+        syncDetailService.bookmark(userId, syncId);
+        return SuccessResponse.ok("bookmark");
+    }
 }
 

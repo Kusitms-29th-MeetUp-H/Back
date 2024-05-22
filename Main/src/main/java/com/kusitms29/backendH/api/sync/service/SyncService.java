@@ -168,19 +168,7 @@ public class SyncService {
             throw new NotAllowedException(SYNC_MAX_NOT_ALLOWED);
         }
 
-        Type enumType = Type.getEnumTypeFromStringType(requestDto.getType());
-
-        log.info("requestDto.getType() :: {}", requestDto.getType());
-        log.info("enumType :: {}", enumType);
-        log.info("enumType.getStringSyncType() :: {}", enumType.getStringType());
-
         Category detailCategory = categoryReader.findByName(requestDto.getDetailType());
-
-        log.info("detailCategory :: {}", detailCategory);
-        log.info("detailCategory.getStringSyncType() :: {}", detailCategory.getName());
-
-        log.info("detailCategory.getType().getStringType() :: {}",detailCategory.getType().getStringType());
-        log.info("!detailCategory.getType().getStringType().equals(requestDto.getType()) :: {}", !detailCategory.getType().getStringType().equals(requestDto.getType()));
 
         if(!detailCategory.getType().getStringType().equals(requestDto.getType())) {
             throw new InvalidValueException(INVALID_PARENT_CHILD_CATEGORY);
@@ -201,7 +189,7 @@ public class SyncService {
                         regularLocalDateTime,
                         requestDto.getMember_min(),
                         requestDto.getMember_max(),
-                        enumType,
+                        getEnumTypeFromStringType(detailCategory.getName()),
                         requestDto.getDetailType())
         );
 

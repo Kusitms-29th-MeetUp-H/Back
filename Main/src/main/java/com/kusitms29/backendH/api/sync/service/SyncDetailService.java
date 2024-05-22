@@ -45,7 +45,7 @@ public class SyncDetailService {
         User user = userReader.findByUserId(sync.getUser().getId());
         int count = participationManager.countParticipationBySyncId(syncId);
         Boolean isFull = syncManager.validateJoinRoom(sync,count);
-        if (sync.getSyncType() == SyncType.ONETIME) {
+        if (sync.getSyncType() == SyncType.ONETIME||sync.getSyncType() == SyncType.FROM_FRIEND) {
             return SyncDetailResponseDto.oneTimeOf(
                     sync.getSyncName(),
                     sync.getImage(),
@@ -127,6 +127,9 @@ public class SyncDetailService {
         Boolean isPossible = syncManager.validateCreateRoom(syncReader.findById(syncId),count);
         List<User> userList = participationReader.findAllBySyncId(syncId).stream().map(participation -> participation.getUser()).toList();
         roomAppender.createRoom(userList,isPossible,syncId);
+    }
+    public void bookmark(Long userId, Long syncId){
+
     }
 }
 
