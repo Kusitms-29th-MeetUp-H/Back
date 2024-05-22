@@ -24,4 +24,10 @@ public class FavoriteSync extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sync_id")
     private Sync sync;
+    public static FavoriteSync createFavoriteSync(User user, Sync sync) {
+        return FavoriteSync.builder()
+                .user(user)
+                .sync(sync)
+                .build();
+    }
 }

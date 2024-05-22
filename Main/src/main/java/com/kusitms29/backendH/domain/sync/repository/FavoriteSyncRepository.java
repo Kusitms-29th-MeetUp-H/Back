@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface FavoriteSyncRepository extends JpaRepository<FavoriteSync, Long> {
     List<FavoriteSync> findAllByUserId(Long userId);
+    Boolean existsByUserIdAndSyncId(Long userId, Long syncId);
+    FavoriteSync findByUserIdAndSyncId(Long userId, Long syncId);
 }

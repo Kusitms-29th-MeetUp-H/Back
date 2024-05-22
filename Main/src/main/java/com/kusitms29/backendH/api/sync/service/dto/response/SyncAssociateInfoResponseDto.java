@@ -18,7 +18,8 @@ public record SyncAssociateInfoResponseDto(
         String syncName,
         String location,
         String date,
-        String associate
+        String associate,
+        Boolean isMarked
 ) {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("M/d(EE) a h시");
 
@@ -36,8 +37,9 @@ public record SyncAssociateInfoResponseDto(
                                          String syncName,
                                          String location,
                                          LocalDateTime date,
-                                                  String associate){
+                                                  String associate,
+                                                  Boolean isMarked){
         String formattedDate = date.format(DATE_TIME_FORMATTER);
-        return new SyncAssociateInfoResponseDto(syncId, String.valueOf(syncType), String.valueOf(type), image, userCnt, totalCnt, syncName, location, formattedDate, associate);
+        return new SyncAssociateInfoResponseDto(syncId, String.valueOf(syncType), String.valueOf(type), image, userCnt, totalCnt, syncName, location, formattedDate, associate, isMarked);
     }
 }

@@ -33,18 +33,18 @@ public class SyncMainController {
         return SuccessResponse.ok(syncInfoResponseDtos);
     }
     @PostMapping("/friend")
-    public ResponseEntity<SuccessResponse<?>> friendSync(@RequestBody SyncInfoRequestDto syncInfoRequestDto) {
-        List<SyncInfoResponseDto> syncInfoResponseDtos = syncManageService.friendSync(syncInfoRequestDto);
+    public ResponseEntity<SuccessResponse<?>> friendSync(@UserId Long userId, @RequestBody SyncInfoRequestDto syncInfoRequestDto) {
+        List<SyncInfoResponseDto> syncInfoResponseDtos = syncManageService.friendSync(userId, syncInfoRequestDto);
         return SuccessResponse.ok(syncInfoResponseDtos);
     }
     @PostMapping("/search")
-    public ResponseEntity<SuccessResponse<?>> searchSync(@RequestBody SyncInfoRequestDto syncInfoRequestDto) {
-        List<SyncInfoResponseDto> syncInfoResponseDtos = syncManageService.searchSync(syncInfoRequestDto);
+    public ResponseEntity<SuccessResponse<?>> searchSync(@UserId Long userId, @RequestBody SyncInfoRequestDto syncInfoRequestDto) {
+        List<SyncInfoResponseDto> syncInfoResponseDtos = syncManageService.searchSync(userId, syncInfoRequestDto);
         return SuccessResponse.ok(syncInfoResponseDtos);
     }
     @PostMapping("/associate")
-    public ResponseEntity<SuccessResponse<?>> associateSync(@RequestBody SyncInfoRequestDto syncInfoRequestDto) {
-        List<SyncAssociateInfoResponseDto> syncInfoResponseDtos = syncManageService.associateSync(syncInfoRequestDto);
+    public ResponseEntity<SuccessResponse<?>> associateSync(@UserId Long userId, @RequestBody SyncInfoRequestDto syncInfoRequestDto) {
+        List<SyncAssociateInfoResponseDto> syncInfoResponseDtos = syncManageService.associateSync(userId, syncInfoRequestDto);
         return SuccessResponse.ok(syncInfoResponseDtos);
     }
 }

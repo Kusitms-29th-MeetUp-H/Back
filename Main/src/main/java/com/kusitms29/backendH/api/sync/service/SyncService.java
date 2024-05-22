@@ -10,6 +10,7 @@ import com.kusitms29.backendH.domain.category.service.CategoryReader;
 import com.kusitms29.backendH.domain.category.service.UserCategoryManager;
 import com.kusitms29.backendH.domain.category.service.UserCategoryReader;
 import com.kusitms29.backendH.domain.sync.entity.SyncType;
+import com.kusitms29.backendH.domain.sync.service.FavoriteSyncManager;
 import com.kusitms29.backendH.domain.sync.service.ParticipationManager;
 import com.kusitms29.backendH.domain.sync.entity.Sync;
 import com.kusitms29.backendH.domain.sync.service.SyncAppender;
@@ -53,6 +54,7 @@ public class SyncService {
     private final AwsS3Service awsS3Service;
     private final CategoryReader categoryReader;
     private final SeoulAddressClient seoulAddressClient;
+    private final FavoriteSyncManager favoriteSyncManager;
 
     public List<SyncInfoResponseDto> recommendSync(Long userId, String clientIp){
         User user = userReader.findByUserId(userId);
@@ -68,10 +70,11 @@ public class SyncService {
                 sync.getMember_max(),
                 sync.getSyncName(),
                 sync.getLocation(),
-                sync.getDate()
+                sync.getDate(),
+                favoriteSyncManager.existsByUserIdAndSyncId(userId, sync.getId())
         )).toList();
     }
-    public List<SyncInfoResponseDto> friendSync(SyncInfoRequestDto syncInfoRequestDto){
+    public List<SyncInfoResponseDto> friendSync(Long userId, SyncInfoRequestDto syncInfoRequestDto){
         List<Sync> syncList = syncReader.findAllBySyncTypeAndType(FROM_FRIEND, getEnumTypeFromStringType(syncInfoRequestDto.type()));
         List<SyncInfoResponseDto> syncInfoResponseDtos = syncList.stream()
                 //음 이거보다 위에서 if문써서 하는게 더 가독성 있는듯
@@ -85,11 +88,12 @@ public class SyncService {
                         sync.getMember_max(),
                         sync.getSyncName(),
                         sync.getLocation(),
-                        sync.getDate()
+                        sync.getDate(),
+                        favoriteSyncManager.existsByUserIdAndSyncId(userId, sync.getId())
                 )).toList();
         return listUtils.getListByTake(syncInfoResponseDtos, syncInfoRequestDto.take());
     }
-    public List<SyncAssociateInfoResponseDto> associateSync(SyncInfoRequestDto syncInfoRequestDto){
+    public List<SyncAssociateInfoResponseDto> associateSync(Long userId, SyncInfoRequestDto syncInfoRequestDto){
         List<Sync> syncList = syncReader.findAllByAssociateIsExist(getEnumFROMStringSyncType(syncInfoRequestDto.syncType()), getEnumTypeFromStringType(syncInfoRequestDto.type()));
         List<SyncAssociateInfoResponseDto> syncAssociateInfoResponseDtos = syncList.stream().map( sync -> SyncAssociateInfoResponseDto.of(
                 sync.getId(),
@@ -101,11 +105,12 @@ public class SyncService {
                 sync.getSyncName(),
                 sync.getLocation(),
                 sync.getDate(),
-                sync.getAssociate()
+                sync.getAssociate(),
+                favoriteSyncManager.existsByUserIdAndSyncId(userId, sync.getId())
         )).toList();
         return listUtils.getListByTake(syncAssociateInfoResponseDtos, syncInfoRequestDto.take());
     }
-    public List<SyncInfoResponseDto> searchSync(SyncInfoRequestDto syncInfoRequestDto){
+    public List<SyncInfoResponseDto> searchSync(Long userId, SyncInfoRequestDto syncInfoRequestDto){
         List<Sync> syncList = syncReader.findAllBySyncTypeAndType(getEnumFROMStringSyncType(syncInfoRequestDto.syncType()), getEnumTypeFromStringType(syncInfoRequestDto.type()));
 
         List<SyncInfoResponseDto> syncInfoResponseDtos = syncList.stream().map( sync -> SyncInfoResponseDto.of(
@@ -117,7 +122,8 @@ public class SyncService {
                 sync.getMember_max(),
                 sync.getSyncName(),
                 sync.getLocation(),
-                sync.getDate()
+                sync.getDate(),
+                favoriteSyncManager.existsByUserIdAndSyncId(userId, sync.getId())
         )).toList();
         return listUtils.getListByTake(syncInfoResponseDtos, syncInfoRequestDto.take());
     }
