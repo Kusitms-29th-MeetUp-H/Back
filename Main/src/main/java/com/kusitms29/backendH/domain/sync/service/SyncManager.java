@@ -93,7 +93,7 @@ public class SyncManager {
         int foreignerCount = 0;
 
         for (User user : users) {
-            if (user.getNationality().equals("한국")) {
+            if (user.getNationality().equals("대한민국")) {
                 koreanCount++;
             } else {
                 foreignerCount++;
