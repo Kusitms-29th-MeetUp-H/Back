@@ -2,10 +2,12 @@ package com.kusitms29.backendH.api.user.service;
 
 import com.kusitms29.backendH.api.sync.service.dto.response.SyncInfoResponseDto;
 import com.kusitms29.backendH.api.user.service.dto.request.CreateReviewRequest;
+import com.kusitms29.backendH.api.user.service.dto.request.EditProfileReq;
 import com.kusitms29.backendH.api.user.service.dto.request.EditProfileRequest;
 import com.kusitms29.backendH.api.user.service.dto.response.CreateReviewResponse;
 import com.kusitms29.backendH.api.user.service.dto.response.UserInfoResponseDto;
 import com.kusitms29.backendH.domain.category.entity.Category;
+import com.kusitms29.backendH.domain.category.entity.UserCategory;
 import com.kusitms29.backendH.domain.category.service.CategoryReader;
 import com.kusitms29.backendH.domain.category.service.UserCategoryModifier;
 import com.kusitms29.backendH.domain.category.service.UserCategoryReader;
@@ -19,12 +21,10 @@ import com.kusitms29.backendH.infra.utils.ListUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-import static com.kusitms29.backendH.domain.category.entity.UserCategory.createUserCategory;
-import static com.kusitms29.backendH.domain.sync.entity.Gender.getEnumFROMStringGender;
-import static com.kusitms29.backendH.domain.sync.entity.SyncType.getEnumFROMStringSyncType;
 
 @Service
 @RequiredArgsConstructor
@@ -110,11 +110,25 @@ public class MyPageService {
 
         User user = userReader.findByUserId(userId);
         String image = awsS3Service.uploadImage(editProfileRequest.image());
-        user.updateProfile(image,editProfileRequest.name(), getEnumFROMStringGender(editProfileRequest.gender()), getEnumFROMStringSyncType(editProfileRequest.syncType()));
+        user.updateProfile(image,editProfileRequest.name(), Gender.getEnumFROMStringGender(editProfileRequest.gender()), SyncType.getEnumFROMStringSyncType(editProfileRequest.syncType()));
         userCategoryModifier.deleteAllByUserId(user.getId());
         List<Category> categories = editProfileRequest.detailTypes().stream().map(
                 detailType -> categoryReader.findByName(detailType))
                 .toList();
-        userCategoryModifier.saveAll(categories.stream().map(category -> createUserCategory(user,category)).toList());
+        userCategoryModifier.saveAll(categories.stream().map(category -> UserCategory.createUserCategory(user,category)).toList());
+    }
+    @Transactional
+    public void editProfiles(Long userId, EditProfileReq editProfileReq){
+
+        User user = userReader.findByUserId(userId);
+        user.updateProfile(editProfileReq.image(),editProfileReq.name(), Gender.getEnumFROMStringGender(editProfileReq.gender()), SyncType.getEnumFROMStringSyncType(editProfileReq.syncType()));
+        userCategoryModifier.deleteAllByUserId(user.getId());
+        List<Category> categories = editProfileReq.detailTypes().stream().map(
+                        detailType -> categoryReader.findByName(detailType))
+                .toList();
+        userCategoryModifier.saveAll(categories.stream().map(category -> UserCategory.createUserCategory(user,category)).toList());
+    }
+    public String imageUpload(MultipartFile file){
+        return awsS3Service.uploadImage(file);
     }
 }

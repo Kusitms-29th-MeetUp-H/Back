@@ -11,4 +11,7 @@ public class ParticipationManager {
     public int countParticipationBySyncId(Long syncId){
         return participationRepository.countBySyncId(syncId);
     }
+    public Boolean existParticipation(Long userId, Long syncId){
+        return participationRepository.existsByUserIdAndSyncId(userId, syncId);
+    }
 }

@@ -22,7 +22,8 @@ public record SyncDetailResponseDto(
         String userName,
         String university,
         String userIntro,
-        Boolean isFull
+        Boolean isFull,
+        Boolean isJoin
 ) {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("M월 d일 (EE) a h:mm");
     public static SyncDetailResponseDto oneTimeOf(String syncName,
@@ -38,9 +39,10 @@ public record SyncDetailResponseDto(
                                            String userName,
                                            String university,
                                            String userIntro,
-                                                  Boolean isFull){
+                                                  Boolean isFull,
+                                                  Boolean isJoin){
         String formattedDate = date.format(DATE_TIME_FORMATTER);
-        return new SyncDetailResponseDto(syncName, syncImage, String.valueOf(syncType), String.valueOf(type), syncIntro, null, formattedDate, location, userCnt, totalCnt, userImage, userName, university, userIntro, isFull);
+        return new SyncDetailResponseDto(syncName, syncImage, String.valueOf(syncType), String.valueOf(type), syncIntro, null, formattedDate, location, userCnt, totalCnt, userImage, userName, university, userIntro, isFull, isJoin);
     }
     public static SyncDetailResponseDto longTimeOf(String syncName,
                                                   String syncImage,
@@ -57,10 +59,11 @@ public record SyncDetailResponseDto(
                                                   String userName,
                                                   String university,
                                                   String userIntro,
-                                                   Boolean isFull){
+                                                   Boolean isFull,
+                                                   Boolean isJoin){
         String formattedDate = date.format(DATE_TIME_FORMATTER);
         String formattedRegularTime = regularTime.format(DateTimeFormatter.ofPattern("a h:mm"));
         String regularDate = "매주 " + regularDay + " " + formattedRegularTime;
-        return new SyncDetailResponseDto(syncName, syncImage, String.valueOf(syncType), String.valueOf(type), syncIntro, regularDate, formattedDate, location, userCnt, totalCnt, userImage, userName, university, userIntro, isFull);
+        return new SyncDetailResponseDto(syncName, syncImage, String.valueOf(syncType), String.valueOf(type), syncIntro, regularDate, formattedDate, location, userCnt, totalCnt, userImage, userName, university, userIntro, isFull, isJoin);
     }
 }

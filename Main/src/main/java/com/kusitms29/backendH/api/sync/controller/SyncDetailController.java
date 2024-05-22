@@ -20,8 +20,8 @@ import java.util.List;
 public class SyncDetailController {
     private final SyncDetailService syncDetailService;
     @GetMapping
-    public ResponseEntity<SuccessResponse<?>> syncDetail(@RequestParam(name = "syncId") Long syncId){
-        SyncDetailResponseDto syncDetailResponseDto = syncDetailService.getSyncDetail(syncId);
+    public ResponseEntity<SuccessResponse<?>> syncDetail(@UserId Long userId, @RequestParam(name = "syncId") Long syncId){
+        SyncDetailResponseDto syncDetailResponseDto = syncDetailService.getSyncDetail(userId, syncId);
         return SuccessResponse.ok(syncDetailResponseDto);
     }
     @GetMapping("/{graph}")

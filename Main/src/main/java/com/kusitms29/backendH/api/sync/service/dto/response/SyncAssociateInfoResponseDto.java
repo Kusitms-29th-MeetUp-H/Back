@@ -5,6 +5,8 @@ import com.kusitms29.backendH.domain.sync.entity.SyncType;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DecimalStyle;
+import java.util.Locale;
 
 public record SyncAssociateInfoResponseDto(
         Long syncId,
@@ -18,8 +20,13 @@ public record SyncAssociateInfoResponseDto(
         String date,
         String associate
 ) {
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("M월 d일 (E) a h:mm");
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("M/d(EE) a h시");
 
+    static {
+        DateTimeFormatter.ofPattern("M/d(EE) a h시")
+                .withLocale(Locale.KOREAN)
+                .withDecimalStyle(DecimalStyle.of(Locale.KOREAN));
+    }
     public static SyncAssociateInfoResponseDto of(Long syncId,
                                          SyncType syncType,
                                          Type type,

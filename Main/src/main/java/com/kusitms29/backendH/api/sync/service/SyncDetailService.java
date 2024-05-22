@@ -7,14 +7,10 @@ import com.kusitms29.backendH.api.sync.service.dto.response.SyncInfoResponseDto;
 import com.kusitms29.backendH.api.sync.service.dto.response.SyncReviewResponseDto;
 import com.kusitms29.backendH.domain.chat.service.RoomAppender;
 import com.kusitms29.backendH.domain.sync.entity.Participation;
-import com.kusitms29.backendH.domain.sync.service.ParticipationManager;
-import com.kusitms29.backendH.domain.sync.service.ParticipationReader;
+import com.kusitms29.backendH.domain.sync.service.*;
 import com.kusitms29.backendH.domain.sync.entity.Sync;
 import com.kusitms29.backendH.domain.sync.entity.SyncType;
-import com.kusitms29.backendH.domain.sync.service.SyncManager;
-import com.kusitms29.backendH.domain.sync.service.SyncReader;
 import com.kusitms29.backendH.domain.sync.entity.SyncReview;
-import com.kusitms29.backendH.domain.sync.service.SyncReviewReader;
 import com.kusitms29.backendH.domain.user.entity.User;
 import com.kusitms29.backendH.domain.user.service.UserReader;
 import com.kusitms29.backendH.global.error.ErrorCode;
@@ -40,7 +36,8 @@ public class SyncDetailService {
     private final ParticipationReader participationReader;
     private final ListUtils listUtils;
     private final RoomAppender roomAppender;
-    public SyncDetailResponseDto getSyncDetail(Long syncId){
+    private final ParticipationAppender participationAppender;
+    public SyncDetailResponseDto getSyncDetail(Long userId, Long syncId){
         Sync sync = syncReader.findById(syncId);
         User user = userReader.findByUserId(sync.getUser().getId());
         int count = participationManager.countParticipationBySyncId(syncId);
@@ -60,7 +57,8 @@ public class SyncDetailService {
                     user.getUserName(),
                     user.getUniversity(),
                     sync.getUserIntro(),
-                    isFull
+                    isFull,
+                    participationManager.existParticipation(userId, syncId)
             );
         } else if (sync.getSyncType() == SyncType.LONGTIME) {
             return SyncDetailResponseDto.longTimeOf(
@@ -79,7 +77,8 @@ public class SyncDetailService {
                     user.getUserName(),
                     user.getUniversity(),
                     sync.getUserIntro(),
-                    isFull
+                    isFull,
+                    participationManager.existParticipation(userId, syncId)
             );
         } else {
             throw new InvalidValueException(INVALID_SYNC_TYPE);
@@ -122,7 +121,8 @@ public class SyncDetailService {
         return listUtils.getListByTake(syncReviewResponseDtos, take);
     }
     public void joinSync(Long userId, Long syncId){
-        Participation.createParticipation(User.from(userId), Sync.from(syncId));
+        Participation newParticipation =Participation.createParticipation(User.from(userId), Sync.from(syncId));
+        participationAppender.saveParticipation(newParticipation);
         int count = participationManager.countParticipationBySyncId(syncId);
         Boolean isPossible = syncManager.validateCreateRoom(syncReader.findById(syncId),count);
         List<User> userList = participationReader.findAllBySyncId(syncId).stream().map(participation -> participation.getUser()).toList();
