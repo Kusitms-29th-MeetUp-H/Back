@@ -17,7 +17,8 @@ public record SyncInfoResponseDto(
         int totalCnt,
         String syncName,
         String location,
-        String date
+        String date,
+        Boolean isMarked
 ) {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("M/d(EE) a h시");
 
@@ -34,8 +35,9 @@ public record SyncInfoResponseDto(
                                          int totalCnt,
                                          String syncName,
                                          String location,
-                                         LocalDateTime date){
+                                         LocalDateTime date,
+                                         Boolean isMarked){
         String formattedDate = date.format(DATE_TIME_FORMATTER);
-        return new SyncInfoResponseDto(syncId, String.valueOf(syncType), String.valueOf(type), image, userCnt, totalCnt, syncName, location, formattedDate);
+        return new SyncInfoResponseDto(syncId, String.valueOf(syncType), String.valueOf(type), image, userCnt, totalCnt, syncName, location, formattedDate, isMarked);
     }
 }
