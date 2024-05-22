@@ -67,7 +67,10 @@ public record SyncDetailResponseDto(
                                                    Boolean isJoin,
                                                    Boolean isMarked,
                                                    Boolean isOwner){
-        String formattedDate = date.format(DATE_TIME_FORMATTER);
+        String formattedDate = null;
+        if(date != null) {
+            formattedDate = date.format(DATE_TIME_FORMATTER);
+        }
         String formattedRegularTime = regularTime.format(DateTimeFormatter.ofPattern("a h:mm"));
         String regularDate = "매주 " + regularDay + " " + formattedRegularTime;
         return new SyncDetailResponseDto(syncName, syncImage, syncType.getStringSyncType(), type.getStringType(), syncIntro, regularDate, formattedDate, location, userCnt, totalCnt, userImage, userName, university, userIntro, isFull, isJoin, isMarked, isOwner);
