@@ -27,7 +27,7 @@ public record SyncDetailResponseDto(
         Boolean isMarked,
         Boolean isOwner
 ) {
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("M월 d일 (EE) a h:mm");
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("M월 d일 (EEE) a h:mm");
     public static SyncDetailResponseDto oneTimeOf(String syncName,
                                            String syncImage,
                                            SyncType syncType,
@@ -46,7 +46,7 @@ public record SyncDetailResponseDto(
                                                   Boolean isMarked,
                                                   Boolean isOwner){
         String formattedDate = date.format(DATE_TIME_FORMATTER);
-        return new SyncDetailResponseDto(syncName, syncImage, String.valueOf(syncType), String.valueOf(type), syncIntro, null, formattedDate, location, userCnt, totalCnt, userImage, userName, university, userIntro, isFull, isJoin,isMarked,isOwner);
+        return new SyncDetailResponseDto(syncName, syncImage, syncType.getStringSyncType(), type.getStringType(), syncIntro, null, formattedDate, location, userCnt, totalCnt, userImage, userName, university, userIntro, isFull, isJoin,isMarked,isOwner);
     }
     public static SyncDetailResponseDto longTimeOf(String syncName,
                                                   String syncImage,
@@ -70,6 +70,6 @@ public record SyncDetailResponseDto(
         String formattedDate = date.format(DATE_TIME_FORMATTER);
         String formattedRegularTime = regularTime.format(DateTimeFormatter.ofPattern("a h:mm"));
         String regularDate = "매주 " + regularDay + " " + formattedRegularTime;
-        return new SyncDetailResponseDto(syncName, syncImage, String.valueOf(syncType), String.valueOf(type), syncIntro, regularDate, formattedDate, location, userCnt, totalCnt, userImage, userName, university, userIntro, isFull, isJoin, isMarked, isOwner);
+        return new SyncDetailResponseDto(syncName, syncImage, syncType.getStringSyncType(), type.getStringType(), syncIntro, regularDate, formattedDate, location, userCnt, totalCnt, userImage, userName, university, userIntro, isFull, isJoin, isMarked, isOwner);
     }
 }
