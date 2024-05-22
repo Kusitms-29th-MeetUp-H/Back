@@ -2,6 +2,7 @@ package com.kusitms29.backendH.api.user.service;
 
 import com.kusitms29.backendH.api.sync.service.dto.response.SyncInfoResponseDto;
 import com.kusitms29.backendH.api.user.service.dto.request.CreateReviewRequest;
+import com.kusitms29.backendH.api.user.service.dto.request.EditProfileReq;
 import com.kusitms29.backendH.api.user.service.dto.request.EditProfileRequest;
 import com.kusitms29.backendH.api.user.service.dto.response.CreateReviewResponse;
 import com.kusitms29.backendH.api.user.service.dto.response.UserInfoResponseDto;
@@ -20,6 +21,7 @@ import com.kusitms29.backendH.infra.utils.ListUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -114,5 +116,19 @@ public class MyPageService {
                 detailType -> categoryReader.findByName(detailType))
                 .toList();
         userCategoryModifier.saveAll(categories.stream().map(category -> UserCategory.createUserCategory(user,category)).toList());
+    }
+    @Transactional
+    public void editProfiles(Long userId, EditProfileReq editProfileReq){
+
+        User user = userReader.findByUserId(userId);
+        user.updateProfile(editProfileReq.image(),editProfileReq.name(), Gender.getEnumFROMStringGender(editProfileReq.gender()), SyncType.getEnumFROMStringSyncType(editProfileReq.syncType()));
+        userCategoryModifier.deleteAllByUserId(user.getId());
+        List<Category> categories = editProfileReq.detailTypes().stream().map(
+                        detailType -> categoryReader.findByName(detailType))
+                .toList();
+        userCategoryModifier.saveAll(categories.stream().map(category -> UserCategory.createUserCategory(user,category)).toList());
+    }
+    public String imageUpload(MultipartFile file){
+        return awsS3Service.uploadImage(file);
     }
 }

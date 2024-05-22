@@ -3,6 +3,7 @@ package com.kusitms29.backendH.api.user.controller;
 import com.kusitms29.backendH.api.sync.service.dto.response.SyncInfoResponseDto;
 import com.kusitms29.backendH.api.user.service.MyPageService;
 import com.kusitms29.backendH.api.user.service.dto.request.CreateReviewRequest;
+import com.kusitms29.backendH.api.user.service.dto.request.EditProfileReq;
 import com.kusitms29.backendH.api.user.service.dto.request.EditProfileRequest;
 import com.kusitms29.backendH.api.user.service.dto.response.CreateReviewResponse;
 import com.kusitms29.backendH.api.user.service.dto.response.UserInfoResponseDto;
@@ -12,6 +13,7 @@ import com.kusitms29.backendH.infra.utils.TranslateUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -48,8 +50,18 @@ public class MyPageController {
         return SuccessResponse.ok(userInfoResponseDto);
     }
     @PatchMapping
-    public ResponseEntity<SuccessResponse<?>> editBoard(@UserId Long userId, @ModelAttribute EditProfileRequest editProfileRequest) {
+    public ResponseEntity<SuccessResponse<?>> editProfile(@UserId Long userId, @ModelAttribute EditProfileRequest editProfileRequest) {
         myPageService.editProfile(userId, editProfileRequest);
+        return SuccessResponse.ok("UPDATE");
+    }
+    @PostMapping("/image")
+    public ResponseEntity<SuccessResponse<?>> imageUpload(@RequestPart("file") MultipartFile file) {
+        String imageUrl = myPageService.imageUpload(file);
+        return SuccessResponse.ok(imageUrl);
+    }
+    @PatchMapping("/profile")
+    public ResponseEntity<SuccessResponse<?>> editProfiles(@UserId Long userId, @RequestBody EditProfileReq editProfileReq) {
+        myPageService.editProfiles(userId, editProfileReq);
         return SuccessResponse.ok("UPDATE");
     }
 }
