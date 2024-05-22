@@ -1,5 +1,6 @@
 package com.kusitms29.backendH.domain.chat.entity;
 
+import com.kusitms29.backendH.domain.sync.entity.Sync;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
@@ -17,18 +18,24 @@ public class Room {
     private String roomName;
     private String roomSession;
     private String syncName;
+    private String image;
 
     @Builder.Default
     private List<ChatUser> chatUserList = new ArrayList<>();
     @Builder.Default
     private List<ChatContent> chatContentList = new ArrayList<>();
 
-    public static Room createRoom(List<ChatUser> users,String roomName) {
+    public static Room createRoom(List<ChatUser> users, List<ChatContent> contents, String roomName, Sync sync) {
         Room room = Room.builder().
+                syncName(sync.getSyncName()).
+                image(sync.getImage()).
                 roomName(roomName).
                 build();
         for(ChatUser chatUser : users){
             room.addChatRoom(chatUser);
+        }
+        for(ChatContent chatContent : contents){
+            room.addChatContent(chatContent);
         }
         return room;
     }

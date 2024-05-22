@@ -12,6 +12,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,27 +25,33 @@ public class RoomAppender {
     @Transactional
     public void createRoom(List<User> userList, Boolean isPossible, Long syncId) {
         Room room = null;
+
         if (isPossible) {
+            // 채팅 내용 추가
+            Sync sync = syncReader.findById(syncId);
+
+            List<ChatContent> contents = new ArrayList<>();
+
+
             room = roomRepository.save(
                     Room.createRoom(userList.stream().map(
                                             user -> ChatUser.createChatUser(user))
                                     .toList(),
-                            generateRandomUuid(syncId)
+                            contents,
+                            generateRandomUuid(syncId),
+                            sync
                     )
             );
-
-            // 채팅방 개설 알림
-            pushNotificationService.sendChatRoomNotice(userList, syncId, room.getRoomSession());
-
-            // 채팅 내용 추가
-            Sync sync = syncReader.findById(syncId);
-
             for (User user : userList) {
                 if (sync.getUser().getId().equals(user.getId())) {
                     ChatContent chatContent = ChatContent.createChatContent(user.getUserName(), "환영합니다", room);
-                    room.addChatContent(chatContent);
+                    contents.add(chatContent);
                 }
             }
+            roomRepository.save(room);
+            // 채팅방 개설 알림
+            pushNotificationService.sendChatRoomNotice(userList, syncId, room.getRoomSession());
+
         } else {
             List<ChatUser> chatUsers = userList.stream()
                     .map(ChatUser::createChatUser)

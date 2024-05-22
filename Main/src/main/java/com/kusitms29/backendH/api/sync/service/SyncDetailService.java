@@ -135,7 +135,7 @@ public class SyncDetailService {
         participationAppender.saveParticipation(newParticipation);
         int count = participationManager.countParticipationBySyncId(syncId);
         Boolean isPossible = syncManager.validateCreateRoom(syncReader.findById(syncId),count);
-        List<User> userList = participationReader.findAllBySyncId(syncId).stream().map(participation -> participation.getUser()).toList();
+        List<User> userList = participationReader.findAllBySyncId(syncId).stream().map(participation -> userReader.findByUserId(participation.getUser().getId())).toList();
         roomAppender.createRoom(userList,isPossible,syncId);
     }
     public Boolean bookmark(Long userId, SyncBookmarkRequestDto syncBookmarkRequestDto){
