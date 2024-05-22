@@ -57,16 +57,11 @@ public class SyncReader {
         for (Type type : types) {
             try {
                 List<Sync> sync3 = findAllBySyncTypeWithTypeWithLocation(syncType, type, location);
-                for (Sync sync : sync3) {
-                    if (!syncList.contains(sync)) {
-                        syncList.add(sync);
-                        if (syncList.size() >= 7) {
-                            return syncList.subList(0, 7);
-                        }
-                    }
-                }
                 if (!sync3.isEmpty()) {
-                    break;
+                    syncList.addAll(sync3);
+                    if (syncList.size() >= 7) {
+                        return syncList.subList(0, 7);
+                    }
                 }
             } catch (RuntimeException e) {
                 // 예외 처리 로직 추가 (예: 로깅)
@@ -77,16 +72,11 @@ public class SyncReader {
         for (Type type : types) {
             try {
                 List<Sync> sync2 = findAllByTwoCondition(syncType, type, location);
-                for (Sync sync : sync2) {
-                    if (!syncList.contains(sync)) {
-                        syncList.add(sync);
-                        if (syncList.size() >= 7) {
-                            return syncList.subList(0, 7);
-                        }
-                    }
-                }
                 if (!sync2.isEmpty()) {
-                    break;
+                    syncList.addAll(sync2);
+                    if (syncList.size() >= 7) {
+                        return syncList.subList(0, 7);
+                    }
                 }
             } catch (RuntimeException e) {
                 // 예외 처리 로직 추가 (예: 로깅)
@@ -97,16 +87,11 @@ public class SyncReader {
         for (Type type : types) {
             try {
                 List<Sync> sync1 = findAllByOneCondition(syncType, type, location);
-                for (Sync sync : sync1) {
-                    if (!syncList.contains(sync)) {
-                        syncList.add(sync);
-                        if (syncList.size() >= 7) {
-                            return syncList.subList(0, 7);
-                        }
-                    }
-                }
                 if (!sync1.isEmpty()) {
-                    break;
+                    syncList.addAll(sync1);
+                    if (syncList.size() >= 7) {
+                        return syncList.subList(0, 7);
+                    }
                 }
             } catch (RuntimeException e) {
                 // 예외 처리 로직 추가 (예: 로깅)
@@ -114,7 +99,7 @@ public class SyncReader {
             }
         }
 
-        return syncRepository.findAll().subList(0,7);
+        return syncRepository.findAll().subList(0, Math.min(7, syncRepository.findAll().size()));
     }
     public List<Sync> findAllBySyncTypeWithTypeWithLocation(SyncType syncType, Type type, String location){
         List<Sync> syncList = syncRepository.findAllBySyncTypeWithTypeWithLocation(syncType, type, location);
