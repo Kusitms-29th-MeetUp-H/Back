@@ -19,8 +19,9 @@ public class RoomAppender {
     private final PushNotificationService pushNotificationService;
     @Transactional
     public void createRoom(List<User> userList, Boolean isPossible, Long syncId){
+        Room room = null;
         if (isPossible) {
-            Room room = roomRepository.save(
+            room = roomRepository.save(
                     Room.createRoom(userList.stream().map(
                                             user -> ChatUser.createChatUser(user)   )
                                     .toList(),
@@ -30,6 +31,19 @@ public class RoomAppender {
 
             //채팅방 개설 알림
             pushNotificationService.sendChatRoomNotice(userList, syncId, room.getRoomSession());
+        }
+        else {
+            List<ChatUser> chatUsers = userList.stream()
+                    .map(ChatUser::createChatUser)
+                    .toList();
+
+            // 기존 채팅방에 사용자 추가
+            for (ChatUser chatUser : chatUsers) {
+                if (!room.getChatUserList().contains(chatUser)) {
+                    room.addChatRoom(chatUser);
+                }
+            }
+            roomRepository.save(room);
         }
     }
     private String generateRandomUuid(Long syncId) {
