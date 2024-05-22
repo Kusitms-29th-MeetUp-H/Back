@@ -173,24 +173,15 @@ public class SyncService {
         if(requestDto.getMember_max() > 30) {
             throw new NotAllowedException(SYNC_MAX_NOT_ALLOWED);
         }
-        Category category = categoryReader.findByName(requestDto.getDetailType());
-        Type enumType = category.getType();
 
-        log.info("requestDto.getType() :: {}", category.getType());
-        log.info("enumType :: {}", enumType);
-        log.info("enumType.getStringSyncType() :: {}", enumType.getStringType());
+
 
         Category detailCategory = categoryReader.findByName(requestDto.getDetailType());
 
         log.info("detailCategory :: {}", detailCategory);
         log.info("detailCategory.getStringSyncType() :: {}", detailCategory.getName());
 
-        log.info("detailCategory.getType().getStringType() :: {}",detailCategory.getType().getStringType());
-        log.info("!detailCategory.getType().getStringType().equals(requestDto.getType()) :: {}", !detailCategory.getType().getStringType().equals(requestDto.getDetailType()));
 
-        if(!detailCategory.getType().getStringType().equals(requestDto.getDetailType())) {
-            throw new InvalidValueException(INVALID_PARENT_CHILD_CATEGORY);
-        }
 
         Sync newSync = syncAppender.save(
                 Sync.createSync(
@@ -207,7 +198,7 @@ public class SyncService {
                         regularLocalDateTime,
                         requestDto.getMember_min(),
                         requestDto.getMember_max(),
-                        enumType,
+                        detailCategory.getType(),
                         requestDto.getDetailType())
         );
 
