@@ -12,6 +12,7 @@ import java.time.format.DateTimeFormatter;
 @Getter
 public class RoomChatResponseDto {
     private String syncName;
+    private String image;
     private String roomName;
     private int total;
     private String content;
@@ -21,6 +22,7 @@ public class RoomChatResponseDto {
     public static RoomChatResponseDto of(Room room, String content, LocalDateTime time){
         return RoomChatResponseDto.builder()
                 .syncName(room.getSyncName())
+                .image(room.getImage())
                 .roomName(room.getRoomName())
                 .total(room.getChatUserList().size())
                 .content(content)
