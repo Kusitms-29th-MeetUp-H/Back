@@ -13,7 +13,7 @@ import Backend.socket.domain.chat.repository.UserRepository;
 import Backend.socket.global.common.image;
 import Backend.socket.global.error.socketException.EntityNotFoundException;
 import Backend.socket.infra.external.AwsService;
-import Backend.socket.infra.external.fcm.service.PushNotificationService;
+//import Backend.socket.infra.external.fcm.service.PushNotificationService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -41,7 +41,7 @@ public class ChatService {
     private final UserRepository userRepository;
     private final RoomRepository roomRepository;
     private final AwsService awsService;
-    private final PushNotificationService pushNotificationService;
+//    private final PushNotificationService pushNotificationService;
 
 //    public ChatMessageResponseDto createSendMessageContent(String sessionId, ChatMessageRequestDto chatMessageRequestDto) {
 //        Chat chat = getChatBySessions(sessionId, chatMessageRequestDto.getChatSession());
