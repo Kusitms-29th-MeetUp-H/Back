@@ -168,8 +168,11 @@ public class SyncService {
             throw new NotAllowedException(SYNC_MAX_NOT_ALLOWED);
         }
 
-
         Category detailCategory = categoryReader.findByName(requestDto.getDetailType());
+
+        if(!detailCategory.getType().getStringType().equals(requestDto.getType())) {
+            throw new InvalidValueException(INVALID_PARENT_CHILD_CATEGORY);
+        }
 
         Sync newSync = syncAppender.save(
                 Sync.createSync(
