@@ -67,7 +67,7 @@ public class ChatService {
         ChatMessageElementResponseDto chatMessage = ChatMessageElementResponseDto.of(chatContent, chatMessageRoomRequestDto.getChatSession(), user.getProfile(), chatMessageRoomRequestDto.getImage());
         List<String> sessionIdList = getSessionIdListInRoom(roomName, chatMessageRoomRequestDto.getChatSession());
         saveChatRoom(room);
-        pushNotificationService.sendChatMessageNotification(room, chatMessage, sessionIdList); //채팅 알림
+//        pushNotificationService.sendChatMessageNotification(room, chatMessage, sessionIdList); //채팅 알림
         return ChatMessageRoomResponseDto.of(chatMessageRoomRequestDto.getToRoomName(), sessionIdList, chatMessage);
     }
 
