@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class ParticipationAppender {
-    private ParticipationRepository participationRepository;
+    private final ParticipationRepository participationRepository;
     @Transactional
     public void saveParticipation(Participation participation){
         participationRepository.save(participation);

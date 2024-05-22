@@ -21,13 +21,10 @@ public record SyncAssociateInfoResponseDto(
         String associate,
         Boolean isMarked
 ) {
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("M/d(EE) a h시");
-
-    static {
-        DateTimeFormatter.ofPattern("M/d(EE) a h시")
-                .withLocale(Locale.KOREAN)
-                .withDecimalStyle(DecimalStyle.of(Locale.KOREAN));
-    }
+    private static final DateTimeFormatter DATE_TIME_FORMATTER =
+            DateTimeFormatter.ofPattern("M/d(EEE) a h시")
+                    .withLocale(Locale.KOREAN)
+                    .withDecimalStyle(DecimalStyle.of(Locale.KOREAN));
     public static SyncAssociateInfoResponseDto of(Long syncId,
                                          SyncType syncType,
                                          Type type,
@@ -40,6 +37,6 @@ public record SyncAssociateInfoResponseDto(
                                                   String associate,
                                                   Boolean isMarked){
         String formattedDate = date.format(DATE_TIME_FORMATTER);
-        return new SyncAssociateInfoResponseDto(syncId, String.valueOf(syncType), String.valueOf(type), image, userCnt, totalCnt, syncName, location, formattedDate, associate, isMarked);
+        return new SyncAssociateInfoResponseDto(syncId, syncType.getStringSyncType(), type.getStringType(), image, userCnt, totalCnt, syncName, location, formattedDate, associate, isMarked);
     }
 }
