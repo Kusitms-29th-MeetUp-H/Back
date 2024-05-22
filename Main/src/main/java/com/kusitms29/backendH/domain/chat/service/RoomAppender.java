@@ -49,9 +49,6 @@ public class RoomAppender {
                 }
             }
             roomRepository.save(room);
-            // 채팅방 개설 알림
-            pushNotificationService.sendChatRoomNotice(userList, syncId, room.getRoomSession());
-
         } else {
             List<ChatUser> chatUsers = userList.stream()
                     .map(ChatUser::createChatUser)
@@ -65,6 +62,8 @@ public class RoomAppender {
             }
             roomRepository.save(room);
         }
+        // 채팅방 개설 알림
+        pushNotificationService.sendChatRoomNotice(userList, syncId, room.getRoomSession());
     }
     private String generateRandomUuid(Long syncId) {
         UUID randomUuid = UUID.randomUUID();
