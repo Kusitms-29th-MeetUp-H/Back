@@ -188,7 +188,7 @@ public class SyncService {
         log.info("detailCategory.getType().getStringType() :: {}",detailCategory.getType().getStringType());
         log.info("!detailCategory.getType().getStringType().equals(requestDto.getType()) :: {}", !detailCategory.getType().getStringType().equals(category.getType()));
 
-        if(!detailCategory.getType().getStringType().equals(category.getType())) {
+        if(!detailCategory.getType().equals(category.getType())) {
             throw new InvalidValueException(INVALID_PARENT_CHILD_CATEGORY);
         }
 

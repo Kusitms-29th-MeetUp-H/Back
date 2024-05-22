@@ -45,6 +45,8 @@ public class SyncDetailService {
         User user = userReader.findByUserId(sync.getUser().getId());
         int count = participationManager.countParticipationBySyncId(syncId);
         Boolean isFull = syncManager.validateJoinRoom(sync,count);
+        List<Sync> mySync = syncReader.findAllByUserId(userId);
+        Boolean isOwner = syncManager.validateSync(mySync, sync);
         if (sync.getSyncType() == SyncType.ONETIME||sync.getSyncType() == SyncType.FROM_FRIEND) {
             return SyncDetailResponseDto.oneTimeOf(
                     sync.getSyncName(),
@@ -62,7 +64,8 @@ public class SyncDetailService {
                     sync.getUserIntro(),
                     isFull,
                     participationManager.existParticipation(userId, syncId),
-                    favoriteSyncManager.existsByUserIdAndSyncId(userId,syncId)
+                    favoriteSyncManager.existsByUserIdAndSyncId(userId,syncId),
+                    isOwner
             );
         } else if (sync.getSyncType() == SyncType.LONGTIME) {
             return SyncDetailResponseDto.longTimeOf(
@@ -83,7 +86,8 @@ public class SyncDetailService {
                     sync.getUserIntro(),
                     isFull,
                     participationManager.existParticipation(userId, syncId),
-                    favoriteSyncManager.existsByUserIdAndSyncId(userId,syncId)
+                    favoriteSyncManager.existsByUserIdAndSyncId(userId,syncId),
+                    isOwner
             );
         } else {
             throw new InvalidValueException(INVALID_SYNC_TYPE);
