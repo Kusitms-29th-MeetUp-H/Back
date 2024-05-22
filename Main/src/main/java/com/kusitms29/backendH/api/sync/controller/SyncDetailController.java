@@ -1,6 +1,7 @@
 package com.kusitms29.backendH.api.sync.controller;
 
 import com.kusitms29.backendH.api.sync.service.SyncDetailService;
+import com.kusitms29.backendH.api.sync.service.dto.request.SyncBookmarkRequestDto;
 import com.kusitms29.backendH.api.sync.service.dto.response.SyncDetailResponseDto;
 import com.kusitms29.backendH.api.sync.service.dto.response.SyncGraphResponseDto;
 import com.kusitms29.backendH.api.sync.service.dto.response.SyncInfoResponseDto;
@@ -44,9 +45,9 @@ public class SyncDetailController {
         syncDetailService.joinSync(userId, syncId);
         return SuccessResponse.ok("join");
     }
-    @GetMapping("/bookmark")
-    public ResponseEntity<SuccessResponse<?>> bookmark(@UserId Long userId, @RequestParam(name = "syncId") Long syncId,@RequestParam(name = "isMarked") Boolean isMarked){
-        Boolean status = syncDetailService.bookmark(userId, syncId,isMarked);
+    @PostMapping("/bookmark")
+    public ResponseEntity<SuccessResponse<?>> bookmark(@UserId Long userId, @RequestBody SyncBookmarkRequestDto syncBookmarkRequestDto){
+        Boolean status = syncDetailService.bookmark(userId, syncBookmarkRequestDto);
         return SuccessResponse.ok(status);
     }
 }
