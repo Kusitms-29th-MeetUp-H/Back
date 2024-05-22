@@ -6,11 +6,8 @@ import com.kusitms29.backendH.api.sync.service.dto.response.SyncGraphResponseDto
 import com.kusitms29.backendH.api.sync.service.dto.response.SyncInfoResponseDto;
 import com.kusitms29.backendH.api.sync.service.dto.response.SyncReviewResponseDto;
 import com.kusitms29.backendH.domain.chat.service.RoomAppender;
-import com.kusitms29.backendH.domain.sync.entity.Participation;
+import com.kusitms29.backendH.domain.sync.entity.*;
 import com.kusitms29.backendH.domain.sync.service.*;
-import com.kusitms29.backendH.domain.sync.entity.Sync;
-import com.kusitms29.backendH.domain.sync.entity.SyncType;
-import com.kusitms29.backendH.domain.sync.entity.SyncReview;
 import com.kusitms29.backendH.domain.user.entity.User;
 import com.kusitms29.backendH.domain.user.service.UserReader;
 import com.kusitms29.backendH.global.error.ErrorCode;
@@ -24,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static com.kusitms29.backendH.domain.chat.entity.Room.createRoom;
+import static com.kusitms29.backendH.domain.sync.entity.FavoriteSync.createFavoriteSync;
 import static com.kusitms29.backendH.global.error.ErrorCode.INVALID_SYNC_TYPE;
 
 @Service
@@ -37,6 +35,10 @@ public class SyncDetailService {
     private final ListUtils listUtils;
     private final RoomAppender roomAppender;
     private final ParticipationAppender participationAppender;
+    private final FavoriteSyncAppender favoriteSyncAppender;
+    private final FavoriteSyncReader favoriteSyncReader;
+    private final FavoriteSyncModifier favoriteSyncModifier;
+    private final FavoriteSyncManager favoriteSyncManager;
     public SyncDetailResponseDto getSyncDetail(Long userId, Long syncId){
         Sync sync = syncReader.findById(syncId);
         User user = userReader.findByUserId(sync.getUser().getId());
@@ -58,7 +60,8 @@ public class SyncDetailService {
                     user.getUniversity(),
                     sync.getUserIntro(),
                     isFull,
-                    participationManager.existParticipation(userId, syncId)
+                    participationManager.existParticipation(userId, syncId),
+                    favoriteSyncManager.existsByUserIdAndSyncId(userId,syncId)
             );
         } else if (sync.getSyncType() == SyncType.LONGTIME) {
             return SyncDetailResponseDto.longTimeOf(
@@ -78,7 +81,8 @@ public class SyncDetailService {
                     user.getUniversity(),
                     sync.getUserIntro(),
                     isFull,
-                    participationManager.existParticipation(userId, syncId)
+                    participationManager.existParticipation(userId, syncId),
+                    favoriteSyncManager.existsByUserIdAndSyncId(userId,syncId)
             );
         } else {
             throw new InvalidValueException(INVALID_SYNC_TYPE);
@@ -128,8 +132,14 @@ public class SyncDetailService {
         List<User> userList = participationReader.findAllBySyncId(syncId).stream().map(participation -> participation.getUser()).toList();
         roomAppender.createRoom(userList,isPossible,syncId);
     }
-    public void bookmark(Long userId, Long syncId){
-
+    public Boolean bookmark(Long userId, Long syncId, Boolean isMarked){
+        if(isMarked){
+            favoriteSyncModifier.deleteFavoriteSync(favoriteSyncReader.findByUserIdAndSyncId(userId,syncId));
+            return false;
+        }
+        FavoriteSync favoriteSync = createFavoriteSync(User.from(userId),Sync.from(syncId));
+        favoriteSyncAppender.saveFavoriteSync(favoriteSync);
+        return true;
     }
 }
 

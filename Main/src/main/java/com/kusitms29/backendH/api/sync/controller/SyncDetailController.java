@@ -45,9 +45,9 @@ public class SyncDetailController {
         return SuccessResponse.ok("join");
     }
     @GetMapping("/bookmark")
-    public ResponseEntity<SuccessResponse<?>> bookmark(@UserId Long userId, @RequestParam(name = "syncId") Long syncId){
-        syncDetailService.bookmark(userId, syncId);
-        return SuccessResponse.ok("bookmark");
+    public ResponseEntity<SuccessResponse<?>> bookmark(@UserId Long userId, @RequestParam(name = "syncId") Long syncId,@RequestParam(name = "isMarked") Boolean isMarked){
+        Boolean status = syncDetailService.bookmark(userId, syncId,isMarked);
+        return SuccessResponse.ok(status);
     }
 }
 
