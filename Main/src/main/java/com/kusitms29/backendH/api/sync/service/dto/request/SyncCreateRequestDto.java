@@ -23,6 +23,5 @@ public class SyncCreateRequestDto {
 
     private int member_max;
 
-    private String type;
     private String detailType;
 }

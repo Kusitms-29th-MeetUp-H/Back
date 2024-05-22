@@ -22,6 +22,9 @@ public class SyncManager {
             return true;
         return false;
     }
+    public Boolean validateSync(List<Sync> syncList, Sync sync){
+        return syncList.contains(sync);
+    }
     public Boolean validateJoinRoom(Sync sync, int count){
         if(sync.getMember_max()==count)
             return true;
