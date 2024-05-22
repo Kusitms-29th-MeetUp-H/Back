@@ -5,6 +5,7 @@ import com.kusitms29.backendH.api.user.service.MyPageService;
 import com.kusitms29.backendH.api.user.service.dto.request.CreateReviewRequest;
 import com.kusitms29.backendH.api.user.service.dto.request.EditProfileReq;
 import com.kusitms29.backendH.api.user.service.dto.request.EditProfileRequest;
+import com.kusitms29.backendH.api.user.service.dto.request.OnBoardingRequestDto;
 import com.kusitms29.backendH.api.user.service.dto.response.CreateReviewResponse;
 import com.kusitms29.backendH.api.user.service.dto.response.UserInfoResponseDto;
 import com.kusitms29.backendH.global.common.SuccessResponse;
@@ -50,8 +51,9 @@ public class MyPageController {
         return SuccessResponse.ok(userInfoResponseDto);
     }
     @PatchMapping
-    public ResponseEntity<SuccessResponse<?>> editProfile(@UserId Long userId, @ModelAttribute EditProfileRequest editProfileRequest) {
-        myPageService.editProfile(userId, editProfileRequest);
+    public ResponseEntity<SuccessResponse<?>> editProfile(@UserId Long userId, @RequestPart("profileImage") MultipartFile profileImage,
+                                                          @RequestPart("editProfileRequest") EditProfileRequest editProfileRequest) {
+        myPageService.editProfile(userId, profileImage, editProfileRequest);
         return SuccessResponse.ok("UPDATE");
     }
     @PostMapping("/image")
