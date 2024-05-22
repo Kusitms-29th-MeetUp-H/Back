@@ -37,7 +37,7 @@ public class SyncDetailService {
     private final ListUtils listUtils;
     private final RoomAppender roomAppender;
     private final ParticipationAppender participationAppender;
-    public SyncDetailResponseDto getSyncDetail(Long syncId){
+    public SyncDetailResponseDto getSyncDetail(Long userId, Long syncId){
         Sync sync = syncReader.findById(syncId);
         User user = userReader.findByUserId(sync.getUser().getId());
         int count = participationManager.countParticipationBySyncId(syncId);
@@ -57,7 +57,8 @@ public class SyncDetailService {
                     user.getUserName(),
                     user.getUniversity(),
                     sync.getUserIntro(),
-                    isFull
+                    isFull,
+                    participationManager.existParticipation(userId, syncId)
             );
         } else if (sync.getSyncType() == SyncType.LONGTIME) {
             return SyncDetailResponseDto.longTimeOf(
@@ -76,7 +77,8 @@ public class SyncDetailService {
                     user.getUserName(),
                     user.getUniversity(),
                     sync.getUserIntro(),
-                    isFull
+                    isFull,
+                    participationManager.existParticipation(userId, syncId)
             );
         } else {
             throw new InvalidValueException(INVALID_SYNC_TYPE);
