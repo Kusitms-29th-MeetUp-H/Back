@@ -131,12 +131,14 @@ public class SyncDetailService {
         return listUtils.getListByTake(syncReviewResponseDtos, take);
     }
     public void joinSync(Long userId, Long syncId){
+        Sync sync = syncReader.findById(syncId);
+        User owner = userReader.findByUserId(sync.getUser().getId());
         Participation newParticipation =Participation.createParticipation(User.from(userId), Sync.from(syncId));
         participationAppender.saveParticipation(newParticipation);
         int count = participationManager.countParticipationBySyncId(syncId);
-        Boolean isPossible = syncManager.validateCreateRoom(syncReader.findById(syncId),count);
+        Boolean isPossible = syncManager.validateCreateRoom(sync,count);
         List<User> userList = participationReader.findAllBySyncId(syncId).stream().map(participation -> userReader.findByUserId(participation.getUser().getId())).toList();
-        roomAppender.createRoom(userList,isPossible,syncId);
+        roomAppender.createRoom(userList,isPossible,syncId,owner);
     }
     public Boolean bookmark(Long userId, SyncBookmarkRequestDto syncBookmarkRequestDto){
         if(syncBookmarkRequestDto.isMarked()){
