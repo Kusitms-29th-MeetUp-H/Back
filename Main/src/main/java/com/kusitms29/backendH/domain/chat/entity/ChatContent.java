@@ -11,12 +11,14 @@ public class ChatContent {
     private String userName;
     private String content;
     private LocalDateTime time;
+    private String image;
 
-    public static ChatContent createChatContent(String userName, String content, Room room) {
+    public static ChatContent createChatContent(String userName, String content, Room room,String image) {
         ChatContent chatContent = ChatContent.builder()
                 .userName(userName)
                 .content(content)
                 .time(LocalDateTime.now())
+                .image(image)
                 .build();
         if(room==null)
             return chatContent;

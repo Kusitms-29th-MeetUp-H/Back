@@ -22,13 +22,13 @@ public class RoomAppender {
     private final RoomRepository roomRepository;
     private final PushNotificationService pushNotificationService;
     private final SyncReader syncReader;
+    private final RoomReader roomReader;
     @Transactional
-    public void createRoom(List<User> userList, Boolean isPossible, Long syncId, User owner) {
+    public void createRoom(List<User> userList, Boolean isPossible, Long syncId, User owner,User joinUser) {
         Room room = null;
-
+        Sync sync = syncReader.findById(syncId);
         if (isPossible) {
             // 채팅 내용 추가
-            Sync sync = syncReader.findById(syncId);
 
             List<ChatContent> contents = new ArrayList<>();
 
@@ -45,22 +45,14 @@ public class RoomAppender {
             );
             for (User user : userList) {
                 if (sync.getUser().getId().equals(user.getId())) {
-                    ChatContent chatContent = ChatContent.createChatContent(user.getUserName(), "환영합니다", room);
+                    ChatContent chatContent = ChatContent.createChatContent(user.getUserName(), "모두 반가워요~", room,"https://sync-content-bucket-01.s3.ap-northeast-2.amazonaws.com/be965e97-e87d-45e9-9720-4d360323bebc.png");
                     contents.add(chatContent);
                 }
             }
             roomRepository.save(room);
         } else {
-            List<ChatUser> chatUsers = userList.stream()
-                    .map(ChatUser::createChatUser)
-                    .toList();
-
-            // 기존 채팅방에 사용자 추가
-            for (ChatUser chatUser : chatUsers) {
-                if (!room.getChatUserList().contains(chatUser)) {
-                    room.addChatRoom(chatUser);
-                }
-            }
+            room = roomReader.getRoomBySyncName(sync.getSyncName());
+            room.addChatRoom(ChatUser.createChatUser(joinUser));
             roomRepository.save(room);
         }
         // 채팅방 개설 알림

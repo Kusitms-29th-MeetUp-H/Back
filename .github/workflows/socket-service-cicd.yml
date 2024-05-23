@@ -89,6 +89,6 @@ jobs:
             sudo docker pull ${{ secrets.SOCKET_DOCKER_REPOSITORY }}/${{ secrets.SOCKET_DOCKER_IMAGE }}
             chmod 777 ./scripts/deploy.sh
             cp ./scripts/deploy.sh ./deploy.sh
-            ./socket
+            cd ./socket
             ./deploy.sh
             docker image prune -f

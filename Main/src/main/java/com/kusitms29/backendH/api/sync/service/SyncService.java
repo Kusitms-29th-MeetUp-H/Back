@@ -60,15 +60,8 @@ public class SyncService {
         List<Type> types = userCategoryManager.getTypesByUserCategories(userCategories);
         List<Sync> syncList = syncReader.getSyncsBySyncTypeAndTypesAndLocation(user.getSyncType(), types, user.getLocation());
         return syncList.stream().map( sync -> SyncInfoResponse.of(
-                sync.getId(),
-                sync.getSyncType(),
-                sync.getType(),
-                sync.getImage(),
+                sync,
                 participationManager.countParticipationBySyncId(sync.getId()),
-                sync.getMember_max(),
-                sync.getSyncName(),
-                sync.getLocation(),
-                sync.getDate(),
                 favoriteSyncManager.existsByUserIdAndSyncId(userId, sync.getId())
         )).toList();
     }
@@ -78,15 +71,8 @@ public class SyncService {
                 //음 이거보다 위에서 if문써서 하는게 더 가독성 있는듯
 //                .filter(sync -> type == null || sync.getType().name().equals(type))
                 .map( sync -> SyncInfoResponse.of(
-                        sync.getId(),
-                        sync.getSyncType(),
-                        sync.getType(),
-                        sync.getImage(),
+                        sync,
                         participationManager.countParticipationBySyncId(sync.getId()),
-                        sync.getMember_max(),
-                        sync.getSyncName(),
-                        sync.getLocation(),
-                        sync.getDate(),
                         favoriteSyncManager.existsByUserIdAndSyncId(userId, sync.getId())
                 )).toList();
         return listUtils.getListByTake(syncInfoResponseDtos, syncInfoRequestDto.take());
@@ -112,15 +98,8 @@ public class SyncService {
         List<Sync> syncList = syncReader.findAllBySyncTypeAndType(getEnumFROMStringSyncType(syncInfoRequestDto.syncType()), getEnumTypeFromStringType(syncInfoRequestDto.type()));
 
         List<SyncInfoResponse> syncInfoResponseDtos = syncList.stream().map( sync -> SyncInfoResponse.of(
-                sync.getId(),
-                sync.getSyncType(),
-                sync.getType(),
-                sync.getImage(),
+                sync,
                 participationManager.countParticipationBySyncId(sync.getId()),
-                sync.getMember_max(),
-                sync.getSyncName(),
-                sync.getLocation(),
-                sync.getDate(),
                 favoriteSyncManager.existsByUserIdAndSyncId(userId, sync.getId())
         )).toList();
         return listUtils.getListByTake(syncInfoResponseDtos, syncInfoRequestDto.take());

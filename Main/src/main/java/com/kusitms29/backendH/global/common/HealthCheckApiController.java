@@ -52,10 +52,11 @@ public class HealthCheckApiController {
     private String KAKAO_REDIRECT_URI;
     private Properties promptMap = new Properties();
     private final TranslateConfig translateConfig;
-    public HealthCheckApiController(MongoTemplate mongoTemplate, RoomRepository roomRepository, TranslateConfig translateConfig) {
+    public HealthCheckApiController(UserReader userReader, MongoTemplate mongoTemplate, RoomRepository roomRepository, TranslateConfig translateConfig) {
         this.mongoTemplate = mongoTemplate;
         this.roomRepository = roomRepository;
         this.translateConfig = translateConfig;
+        this.userReader = userReader;
     }
     @GetMapping("google")
     public ResponseEntity<String> googleOauth(HttpServletRequest request) throws IOException {
@@ -158,7 +159,7 @@ public class HealthCheckApiController {
         query.addCriteria(Criteria.where("roomName").is(chatReq.roomName()));
         Room room =  mongoTemplate.findOne(query, Room.class);
 
-            ChatContent chatContent = ChatContent.createChatContent(user.getUserName(), chatReq.content(), room);
+            ChatContent chatContent = ChatContent.createChatContent(user.getUserName(), chatReq.content(), room, "https://sync-content-bucket-01.s3.ap-northeast-2.amazonaws.com/94f1a566-0072-45e9-944f-707a6e21bbbf.png");
 //            room.addChatContent(chatContent);
             roomRepository.save(room);
 

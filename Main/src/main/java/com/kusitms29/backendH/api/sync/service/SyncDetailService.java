@@ -48,19 +48,9 @@ public class SyncDetailService {
         Boolean isOwner = syncManager.validateSync(mySync, sync);
         if (sync.getSyncType() == SyncType.ONETIME||sync.getSyncType() == SyncType.FROM_FRIEND) {
             return SyncDetailResponseDto.oneTimeOf(
-                    sync.getSyncName(),
-                    sync.getImage(),
-                    sync.getSyncType(),
-                    sync.getType(),
-                    sync.getSyncIntro(),
-                    sync.getDate(),
-                    sync.getLocation(),
+                    sync,
+                    user,
                     participationManager.countParticipationBySyncId(sync.getId()),
-                    sync.getMember_max(),
-                    user.getProfile(),
-                    user.getUserName(),
-                    user.getUniversity(),
-                    sync.getUserIntro(),
                     isFull,
                     participationManager.existParticipation(userId, syncId),
                     favoriteSyncManager.existsByUserIdAndSyncId(userId,syncId),
@@ -68,21 +58,9 @@ public class SyncDetailService {
             );
         } else if (sync.getSyncType() == SyncType.LONGTIME) {
             return SyncDetailResponseDto.longTimeOf(
-                    sync.getSyncName(),
-                    sync.getImage(),
-                    sync.getSyncType(),
-                    sync.getType(),
-                    sync.getSyncIntro(),
-                    sync.getRegularDay(),
-                    sync.getRegularTime(),
-                    sync.getDate(),
-                    sync.getLocation(),
+                    sync,
+                    user,
                     participationManager.countParticipationBySyncId(sync.getId()),
-                    sync.getMember_max(),
-                    user.getProfile(),
-                    user.getUserName(),
-                    user.getUniversity(),
-                    sync.getUserIntro(),
                     isFull,
                     participationManager.existParticipation(userId, syncId),
                     favoriteSyncManager.existsByUserIdAndSyncId(userId,syncId),
@@ -132,12 +110,13 @@ public class SyncDetailService {
     public void joinSync(Long userId, Long syncId){
         Sync sync = syncReader.findById(syncId);
         User owner = userReader.getByUserId(sync.getUser().getId());
+        User joinUser = userReader.getByUserId(userId);
         Participation newParticipation =Participation.createParticipation(User.from(userId), Sync.from(syncId));
         participationAppender.saveParticipation(newParticipation);
         int count = participationManager.countParticipationBySyncId(syncId);
         Boolean isPossible = syncManager.validateCreateRoom(sync,count);
         List<User> userList = participationReader.findAllBySyncId(syncId).stream().map(participation -> userReader.getByUserId(participation.getUser().getId())).toList();
-        roomAppender.createRoom(userList,isPossible,syncId,owner);
+        roomAppender.createRoom(userList,isPossible,syncId,owner,joinUser);
     }
     public Boolean bookmark(Long userId, SyncBookmarkRequestDto syncBookmarkRequestDto){
         if(syncBookmarkRequestDto.isMarked()){
