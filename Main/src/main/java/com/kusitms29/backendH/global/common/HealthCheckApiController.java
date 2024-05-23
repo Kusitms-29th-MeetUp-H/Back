@@ -3,24 +3,37 @@ package com.kusitms29.backendH.global.common;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kusitms29.backendH.domain.chat.entity.ChatContent;
+import com.kusitms29.backendH.domain.chat.entity.ChatUser;
+import com.kusitms29.backendH.domain.chat.entity.Room;
+import com.kusitms29.backendH.domain.chat.repository.RoomRepository;
+import com.kusitms29.backendH.domain.user.entity.User;
+import com.kusitms29.backendH.domain.user.service.UserReader;
 import com.kusitms29.backendH.infra.config.auth.UserId;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.*;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class HealthCheckApiController {
+    private final MongoTemplate mongoTemplate;
+    private final RoomRepository roomRepository;
+    private final UserReader userReader;
     private static final String GOOGLE_AUTH_ENDPOINT = "https://accounts.google.com/o/oauth2/v2/auth";
     private static final String GOOGLE_TOKEN_ENDPOINT = "https://oauth2.googleapis.com/token";
     private static final String KAKAO_AUTH_ENDPOINT = "https://kauth.kakao.com/oauth/authorize";
@@ -137,5 +150,16 @@ public class HealthCheckApiController {
     public Long MeetUpServer(@UserId Long userId) {
         return userId;
     }
+    @PostMapping("/chat")
+    public void chat(@UserId Long userId, @RequestBody ChatReq chatReq){
+        User user = userReader.findByUserId(userId);
+        Query query = new Query();
+        query.addCriteria(Criteria.where("roomName").is(chatReq.roomName()));
+        Room room =  mongoTemplate.findOne(query, Room.class);
 
+            ChatContent chatContent = ChatContent.createChatContent(user.getUserName(), chatReq.content(), room);
+//            room.addChatContent(chatContent);
+            roomRepository.save(room);
+
+    }
 }
