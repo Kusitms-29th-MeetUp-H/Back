@@ -158,7 +158,7 @@ public class HealthCheckApiController {
         query.addCriteria(Criteria.where("roomName").is(chatReq.roomName()));
         Room room =  mongoTemplate.findOne(query, Room.class);
 
-            ChatContent chatContent = ChatContent.createChatContent(user.getUserName(), chatReq.content(), room);
+            ChatContent chatContent = ChatContent.createChatContent(user.getUserName(), chatReq.content(), room, "https://sync-content-bucket-01.s3.ap-northeast-2.amazonaws.com/94f1a566-0072-45e9-944f-707a6e21bbbf.png");
 //            room.addChatContent(chatContent);
             roomRepository.save(room);
 
