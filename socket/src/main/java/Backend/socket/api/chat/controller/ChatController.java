@@ -27,49 +27,13 @@ public class ChatController {
         this.template = template;
         this.redisTemplate = redisTemplate;
     }
-//    @MessageMapping("/chat/{sessionId}")
-//    public void sendChatMessage(@DestinationVariable("sessionId") final String sessionId,
-//                                @RequestBody final ChatMessageRequestDto chatMessageRequestDto) {
-//        final ChatMessageResponseDto responseDto = chatService.createSendMessageContent(sessionId, chatMessageRequestDto);
-//        redisTemplate.convertAndSend("meetingRoom", responseDto);
-//    }
+
     @MessageMapping("/room/{roomName}")
     @SendTo("/sub/room/{roomName}")
     public MessageSuccessResponse sendChatMessageInRoom(@DestinationVariable("roomName") final String roomName,
                                                          @RequestBody final ChatMessageRoomRequestDto chatMessageRoomRequestDto) throws IOException {
         return MessageSuccessResponse.of(MessageSuccessCode.RECEIVED, chatService.createSendMessageContentInRoom(roomName, chatMessageRoomRequestDto).getMessage());
     }
-//    @MessageMapping("/room/image/{roomName}")
-//    @SendTo("/sub/room/{roomName}")
-//    public MessageSuccessResponse sendImageMessageInRoom(@DestinationVariable("roomName") final String roomName,
-//                                                         @RequestBody final ChatMessageRoomRequestDto chatMessageRoomRequestDto) throws IOException {
-//        return MessageSuccessResponse.of(MessageSuccessCode.RECEIVED, chatService.createSendMessageContentInRoom(roomName, chatMessageRoomRequestDto).getMessage());
-//    }
-//    @MessageMapping("/room/image/{roomName}")
-//    @SendTo("/sub/room/{roomName}")
-//    public MessageSuccessResponse sendImageMessageInRoom(@DestinationVariable("roomName") final String roomName,
-//                                                        @RequestBody final image image) throws IOException {
-//        return MessageSuccessResponse.of(MessageSuccessCode.RECEIVED, chatService.createSendImageContentInRoom(roomName, image).getMessage());
-//    }
-//    @MessageMapping("/room/{roomName}")
-//    public void sendChatMessageInRoom(@DestinationVariable("roomName") final String roomName,
-//                                      @RequestBody final ChatMessageRoomRequestDto chatMessageRoomRequestDto) {
-//        final ChatMessageRoomResponseDto responseDto = chatService.createSendMessageContentInRoom(roomName, chatMessageRoomRequestDto);
-//        redisTemplate.convertAndSend("meetingRoom", responseDto);
-//    }
 
-//    @MessageMapping("/chat/detail/{sessionId}")
-//    public void sendChatDetailMessage(@DestinationVariable("sessionId") final String sessionId,
-//                                      @RequestBody final ChatMessageListRequestDto chatMessageListRequestDto) {
-//        final ChatMessageListResponseDto responseDto = chatService.sendChatDetailMessage(sessionId, chatMessageListRequestDto);
-//        template.convertAndSend("/sub/chat/" + sessionId, MessageSuccessResponse.of(MessageSuccessCode.MESSAGE, responseDto));
-//    }
-//
-//    @MessageMapping("/chat/all")
-//    public void sendUserChatListMessage(@Header("sessionId") final String sessionId,
-//                                        @RequestBody final ChatListRequestDto chatListRequestDto) {
-//        final ChatListResponseDto responseDto = chatService.sendUserChatListMessage(sessionId, chatListRequestDto);
-//        template.convertAndSend("/sub/chat/" + sessionId, MessageSuccessResponse.of(MessageSuccessCode.CHATLIST, responseDto));
-//    }
 
 }
