@@ -56,12 +56,12 @@ public class SyncService {
     private final FavoriteSyncManager favoriteSyncManager;
     private final ParticipationAppender participationAppender;
 
-    public List<SyncInfoResponseDto> recommendSync(Long userId, String clientIp){
+    public List<SyncInfoResponse> recommendSync(Long userId, String clientIp){
         User user = userReader.findByUserId(userId);
         List<UserCategory> userCategories = userCategoryReader.findAllByUserId(userId);
         List<Type> types = userCategoryManager.getTypeByUserCategories(userCategories);
         List<Sync> syncList = syncReader.findBySyncTypeWithTypesWithLocation(user.getSyncType(), types, user.getLocation());
-        return syncList.stream().map( sync -> SyncInfoResponseDto.of(
+        return syncList.stream().map( sync -> SyncInfoResponse.of(
                 sync.getId(),
                 sync.getSyncType(),
                 sync.getType(),

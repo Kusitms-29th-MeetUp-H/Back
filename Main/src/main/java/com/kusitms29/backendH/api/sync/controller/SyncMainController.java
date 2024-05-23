@@ -33,7 +33,7 @@ public class SyncMainController {
     public ResponseEntity<SuccessResponse<?>> recommendSync(@UserId Long userId,@RequestParam(name = "language", defaultValue = "한국어") String language, HttpServletRequest request) throws NoSuchAlgorithmException, InvalidKeyException, IOException {
         String clientIp = ipService.getClientIpAddress(request);
 //        GeoLocation geoLocation = geoLocationService.getGeoLocation(clientIp);
-        List<SyncInfoResponseDto> syncInfoResponseDtos = syncManageService.recommendSync(userId, clientIp);
+        List<SyncInfoResponse> syncInfoResponseDtos = syncManageService.recommendSync(userId, clientIp);
         if (language.equals("영어"))syncInfoResponseDtos=syncInfoResponseDtos.stream().map(syncInfoResponseDto -> translateUtil.translateObject(syncInfoResponseDto)).toList();
         return SuccessResponse.ok(syncInfoResponseDtos);
     }

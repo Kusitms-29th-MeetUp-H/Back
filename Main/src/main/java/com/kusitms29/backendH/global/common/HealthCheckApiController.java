@@ -1,14 +1,11 @@
 package com.kusitms29.backendH.global.common;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kusitms29.backendH.domain.chat.entity.ChatContent;
-import com.kusitms29.backendH.domain.chat.entity.ChatUser;
 import com.kusitms29.backendH.domain.chat.entity.Room;
 import com.kusitms29.backendH.domain.chat.repository.RoomRepository;
 import com.kusitms29.backendH.domain.user.entity.User;
 import com.kusitms29.backendH.domain.user.service.UserReader;
+import com.kusitms29.backendH.infra.config.TranslateConfig;
 import com.kusitms29.backendH.infra.config.auth.UserId;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,22 +15,22 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.*;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.Properties;
 
 @RestController
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 @RequestMapping("/api")
 public class HealthCheckApiController {
-    private final MongoTemplate mongoTemplate;
-    private final RoomRepository roomRepository;
-    private final UserReader userReader;
+    private MongoTemplate mongoTemplate;
+    private RoomRepository roomRepository;
+    private UserReader userReader;
     private static final String GOOGLE_AUTH_ENDPOINT = "https://accounts.google.com/o/oauth2/v2/auth";
     private static final String GOOGLE_TOKEN_ENDPOINT = "https://oauth2.googleapis.com/token";
     private static final String KAKAO_AUTH_ENDPOINT = "https://kauth.kakao.com/oauth/authorize";
@@ -56,6 +53,13 @@ public class HealthCheckApiController {
 
     @Value("${app.kakao.callback.url}")
     private String KAKAO_REDIRECT_URI;
+    private Properties promptMap = new Properties();
+    private final TranslateConfig translateConfig;
+    public HealthCheckApiController(MongoTemplate mongoTemplate, RoomRepository roomRepository, TranslateConfig translateConfig) {
+        this.mongoTemplate = mongoTemplate;
+        this.roomRepository = roomRepository;
+        this.translateConfig = translateConfig;
+    }
     @GetMapping("google")
     public ResponseEntity<String> googleOauth(HttpServletRequest request) throws IOException {
         String code = extractCode(request);
@@ -161,5 +165,20 @@ public class HealthCheckApiController {
 //            room.addChatContent(chatContent);
             roomRepository.save(room);
 
+    }
+    @GetMapping("/prompt")
+    public ResponseEntity<String> prompt(@RequestParam(name = "string") String string) {
+        String translationPrompt = translateConfig.getPromptValue(string);
+//        System.out.println("Prompt Map: " + );
+        return new ResponseEntity<>(translationPrompt, HttpStatus.OK);
+    }
+
+    private void loadPromptMap() {
+        try (InputStream inputStream = getClass().getResourceAsStream("/prompt.properties")) {
+            promptMap.load(inputStream);
+            System.out.println("Prompt Map: " + promptMap);
+        } catch (IOException e) {
+            // log.error("Error loading prompt map", e);
+        }
     }
 }
