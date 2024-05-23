@@ -52,10 +52,11 @@ public class HealthCheckApiController {
     private String KAKAO_REDIRECT_URI;
     private Properties promptMap = new Properties();
     private final TranslateConfig translateConfig;
-    public HealthCheckApiController(MongoTemplate mongoTemplate, RoomRepository roomRepository, TranslateConfig translateConfig) {
+    public HealthCheckApiController(UserReader userReader, MongoTemplate mongoTemplate, RoomRepository roomRepository, TranslateConfig translateConfig) {
         this.mongoTemplate = mongoTemplate;
         this.roomRepository = roomRepository;
         this.translateConfig = translateConfig;
+        this.userReader = userReader;
     }
     @GetMapping("google")
     public ResponseEntity<String> googleOauth(HttpServletRequest request) throws IOException {
