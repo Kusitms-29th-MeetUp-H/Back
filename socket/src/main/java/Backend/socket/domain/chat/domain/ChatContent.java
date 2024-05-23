@@ -26,6 +26,7 @@ public class ChatContent {
         ChatContent chatContent = ChatContent.builder()
                 .userName(userName)
                 .content(content)
+                .image(image)
                 .time(LocalDateTime.now())
                 .build();
         room.addChatContent(chatContent);
