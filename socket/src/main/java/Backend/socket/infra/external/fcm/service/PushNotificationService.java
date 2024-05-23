@@ -1,14 +1,14 @@
 //package Backend.socket.infra.external.fcm.service;
 //
-//import Backend.socket.domain.chat.application.controller.dto.response.ChatMessageElementResponseDto;
+//import Backend.socket.api.chat.service.dto.response.ChatMessageElementResponseDto;
 //import Backend.socket.domain.chat.domain.Room;
-//import Backend.socket.domain.chat.domain.User;
+//import Backend.socket.domain.user.entity.User;
 //import Backend.socket.domain.chat.domain.notification.entity.NotificationHistory;
 //import Backend.socket.domain.chat.domain.notification.entity.NotificationType;
 //import Backend.socket.domain.chat.domain.notification.entity.TopCategory;
 //import Backend.socket.domain.chat.domain.notification.repository.NotificationHistoryRepository;
 //import Backend.socket.domain.chat.repository.RoomRepository;
-//import Backend.socket.domain.chat.repository.UserRepository;
+//import Backend.socket.domain.user.repository.UserRepository;
 //import Backend.socket.infra.external.fcm.MessageTemplate;
 //import Backend.socket.infra.external.fcm.repository.FCMTokenRepository;
 //import Backend.socket.infra.external.fcm.service.dto.NotificationDto;

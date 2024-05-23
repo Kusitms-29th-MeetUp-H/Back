@@ -1,0 +1,52 @@
+package Backend.socket.api.room.controller;
+
+import Backend.socket.api.chat.service.dto.request.ChatMessageRoomRequestDto;
+import Backend.socket.api.room.service.response.RoomListResponseDto;
+import Backend.socket.api.room.service.response.RoomMessageListResponseDto;
+import Backend.socket.api.chat.service.ChatService;
+import Backend.socket.api.room.service.RoomService;
+import Backend.socket.global.common.MessageSuccessCode;
+import Backend.socket.global.common.MessageSuccessResponse;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.io.IOException;
+
+@RestController
+public class RoomController {
+    private final SimpMessagingTemplate template;
+    private final RedisTemplate redisTemplate;
+    private final RoomService roomService;
+    private final ChatService chatService;
+    public RoomController(RoomService roomService, SimpMessagingTemplate template, @Qualifier("redisTemplate") RedisTemplate redisTemplate, ChatService chatService) {
+        this.roomService = roomService;
+        this.template = template;
+        this.redisTemplate = redisTemplate;
+        this.chatService = chatService;
+    }
+    @MessageMapping("/room/detail/{roomName}")
+    public void sendChatDetailMessage(@DestinationVariable("roomName") final String roomName
+                                      ) {
+        final RoomMessageListResponseDto responseDto = roomService.sendRoomDetailMessage(roomName);
+        template.convertAndSend("/sub/room/" + roomName, MessageSuccessResponse.of(MessageSuccessCode.MESSAGE, responseDto));
+    }
+    @MessageMapping("/room/all/{sessionId}")
+    public void sendUserChatListMessage(@DestinationVariable("sessionId") final String sessionId) {
+        final RoomListResponseDto responseDto = roomService.sendUserChatListMessage(sessionId);
+        template.convertAndSend("/sub/room/" + sessionId, MessageSuccessResponse.of(MessageSuccessCode.CHATLIST, responseDto));
+    }
+    @PostMapping("/room/{roomName}")
+    public MessageSuccessResponse sendChatMessage(@PathVariable("roomName") String roomName,
+                                                @RequestBody final ChatMessageRoomRequestDto chatMessageRoomRequestDto) throws IOException {
+
+
+        return MessageSuccessResponse.of(MessageSuccessCode.RECEIVED, chatService.createSendMessageContentInRoom(roomName, chatMessageRoomRequestDto).getMessage());
+    }
+}
