@@ -34,10 +34,10 @@ public class PostLikeService {
         }
 
         postLikeAppender.save(
-                PostLike.builder()
-                        .user(user)
-                        .post(post)
-                        .build()
+                PostLike.createPostLike(
+                        user,
+                        post
+                )
         );
     }
 

@@ -25,4 +25,13 @@ public class Post extends BaseEntity {
     private String content;
     @Enumerated(EnumType.STRING)
     private PostType postType;
+
+    public static Post createPost(User user, PostType postType, String title, String content) {
+        return Post.builder()
+                .user(user)
+                .postType(postType)
+                .title(title)
+                .content(content)
+                .build();
+    }
 }

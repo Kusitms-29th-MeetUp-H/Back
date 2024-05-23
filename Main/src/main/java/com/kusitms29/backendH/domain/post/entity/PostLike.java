@@ -24,5 +24,12 @@ public class PostLike extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
+
+    public static PostLike createPostLike(User user, Post post) {
+        return PostLike.builder()
+                .user(user)
+                .post(post)
+                .build();
+    }
 }
 

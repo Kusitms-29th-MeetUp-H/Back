@@ -32,4 +32,12 @@ public class Comment extends BaseEntity {
     @ColumnDefault("0")
     @Builder.Default()
     private int reported = 0;
+
+    public static Comment createComment(User user, Post post, String content) {
+        return Comment.builder()
+                .user(user)
+                .post(post)
+                .content(content)
+                .build();
+    }
 }

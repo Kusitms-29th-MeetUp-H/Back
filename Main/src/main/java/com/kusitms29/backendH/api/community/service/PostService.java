@@ -129,23 +129,19 @@ public class PostService {
             throw new NotAllowedException(TOO_MANY_IMAGES_NOT_ALLOWED);
         }
 
-        Post newPost = postAppender.save
-                (Post.builder()
-                        .user(writer)
-                        .postType(postType)
-                        .title(requestDto.getTitle())
-                        .content(requestDto.getContent())
-                        .build());
+        Post newPost = postAppender.save(Post.createPost(writer, postType, requestDto.getTitle(), requestDto.getContent()));
 
         List<String> imageUrls = null;
         if(images != null && !images.isEmpty()) {
             imageUrls = awsS3Service.uploadImages(images);
             for(int i=0; i<images.size(); i++) {
-                postImageAppender.save(PostImage.builder()
-                        .post(newPost)
-                        .image_url(imageUrls.get(i))
-                        .isRepresentative(i == 0)
-                        .build());
+                postImageAppender.save(
+                        PostImage.createPostImage(
+                                newPost,
+                                imageUrls.get(i),
+                                i == 0
+                        )
+                );
             }
         }
 

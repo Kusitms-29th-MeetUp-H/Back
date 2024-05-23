@@ -31,4 +31,12 @@ public class Reply extends BaseEntity {
     @ColumnDefault("0")
     @Builder.Default()
     private int reported = 0;
+
+    public static Reply createReply(User user, Comment comment, String content) {
+        return Reply.builder()
+                .user(user)
+                .comment(comment)
+                .content(content)
+                .build();
+    }
 }

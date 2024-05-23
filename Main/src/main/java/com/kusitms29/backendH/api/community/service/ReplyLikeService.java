@@ -33,10 +33,10 @@ public class ReplyLikeService {
             throw new ConflictException(DUPLICATE_REPLY_LIKE);
         }
         replyLikeModifier.save(
-                ReplyLike.builder()
-                        .user(user)
-                        .reply(reply)
-                        .build()
+                ReplyLike.createReplyLike(
+                        user,
+                        reply
+                )
         );
     }
 
