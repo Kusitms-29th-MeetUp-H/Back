@@ -1,4 +1,4 @@
-package Backend.socket.domain.chat.repository;
+package Backend.socket.domain.user.repository;
 
 import Backend.socket.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;

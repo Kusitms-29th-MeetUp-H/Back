@@ -8,7 +8,7 @@
 //import Backend.socket.domain.chat.domain.notification.entity.TopCategory;
 //import Backend.socket.domain.chat.domain.notification.repository.NotificationHistoryRepository;
 //import Backend.socket.domain.chat.repository.RoomRepository;
-//import Backend.socket.domain.chat.repository.UserRepository;
+//import Backend.socket.domain.user.repository.UserRepository;
 //import Backend.socket.infra.external.fcm.MessageTemplate;
 //import Backend.socket.infra.external.fcm.repository.FCMTokenRepository;
 //import Backend.socket.infra.external.fcm.service.dto.NotificationDto;

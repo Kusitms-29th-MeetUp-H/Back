@@ -5,7 +5,7 @@ import Backend.socket.api.chat.service.dto.response.ChatMessageElementResponseDt
 import Backend.socket.api.chat.service.dto.response.ChatMessageRoomResponseDto;
 import Backend.socket.domain.chat.domain.*;
 import Backend.socket.domain.chat.repository.RoomRepository;
-import Backend.socket.domain.chat.repository.UserRepository;
+import Backend.socket.domain.user.repository.UserRepository;
 import Backend.socket.domain.user.entity.User;
 import Backend.socket.global.error.socketException.EntityNotFoundException;
 import jakarta.transaction.Transactional;

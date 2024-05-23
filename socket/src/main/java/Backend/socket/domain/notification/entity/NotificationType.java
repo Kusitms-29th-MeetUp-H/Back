@@ -1,4 +1,4 @@
-package Backend.socket.domain.chat.domain.notification.entity;
+package Backend.socket.domain.notification.entity;
 
 public enum NotificationType {
     CHAT,
