@@ -17,6 +17,7 @@ public class RoomChatResponseDto {
     private int total;
     private String content;
     private String time;
+    private String ownerSessionId;
 
 
     public static RoomChatResponseDto of(Room room, String content, LocalDateTime time){
@@ -27,6 +28,7 @@ public class RoomChatResponseDto {
                 .total(room.getChatUserList().size())
                 .content(content)
                 .time(calculateTimeDifference(time))
+                .ownerSessionId(room.getOwnerSession())
                 .build();
 
 

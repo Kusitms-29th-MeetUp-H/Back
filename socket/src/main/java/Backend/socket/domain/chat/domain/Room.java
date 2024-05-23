@@ -18,26 +18,33 @@ public class Room {
     private String roomSession;
     private String syncName;
     private String image;
+    private String ownerSession;
 
     @Builder.Default
     private List<ChatUser> chatUserList = new ArrayList<>();
     @Builder.Default
     private List<ChatContent> chatContentList = new ArrayList<>();
 
-    public static Room createRoom(List<ChatUser> users,String roomName) {
-        Room room = Room.builder().
-                roomName(roomName).
-                build();
-        for(ChatUser chatUser : users){
-            room.addChatRoom(chatUser);
-        }
-        return room;
-    }
+//    public static Room createRoom(List<ChatUser> users,String roomName) {
+//        Room room = Room.builder().
+//                roomName(roomName).
+//                build();
+//        for(ChatUser chatUser : users){
+//            room.addChatRoom(chatUser);
+//        }
+//        return room;
+//    }
     public static Room createNewRoom(String roomName) {
-        Room room = Room.builder()
-                .roomName(roomName)
-                .build();
-        return room;
+        return new Room(
+                null,
+                roomName,
+                null,
+                null,
+                null,
+                null,
+                new ArrayList<>(),
+                new ArrayList<>()
+        );
     }
     public void addChatContent(ChatContent content) {
         this.chatContentList.add(content);
@@ -46,12 +53,13 @@ public class Room {
     public void addChatRoom(ChatUser chatUser) {
         this.chatUserList.add(chatUser);
     }
-    public Room(String roomId, String roomName, String roomSession, String syncName, String image, List<ChatUser> chatUserList, List<ChatContent> chatContentList) {
+    public Room(String roomId, String roomName, String roomSession, String syncName, String image, String ownerSession, List<ChatUser> chatUserList, List<ChatContent> chatContentList) {
         this.roomId = roomId;
         this.image = image;
         this.roomName = roomName;
         this.roomSession = roomSession;
         this.syncName = syncName;
+        this.ownerSession = ownerSession;
         this.chatUserList = chatUserList != null ? chatUserList : new ArrayList<>();
         this.chatContentList = chatContentList != null ? chatContentList : new ArrayList<>();
     }

@@ -31,13 +31,18 @@ public class RoomService {
     public RoomMessageListResponseDto sendRoomDetailMessage(String roomName) {
         Room room = getChatByRoomName(roomName);
         List<ChatUserResponseDto> chatUserResponseDto = getChatUserResponseDto(room);
-        List<RoomMessageElementResponseDto> chatMessageList = RoomMessageElementResponseDto.listOf(room.getChatContentList(),roomName, formatter::findChatUserByRoomNameAndUserName);
+        List<RoomMessageElementResponseDto> chatMessageList = RoomMessageElementResponseDto.listOf(room.getChatContentList(),roomName, formatter::findChatUserByRoomNameAndUserName,formatter::validate, room.getOwnerSession());
         saveChatRoom(room);
         return RoomMessageListResponseDto.of(chatUserResponseDto, chatMessageList);
     }
     private List<ChatUserResponseDto> getChatUserResponseDto(Room room) {
         List<ChatUser> chatUsers = getChatUserInRoom(room);
-        return chatUsers.stream().map(chatUser -> ChatUserResponseDto.of(chatUser)).toList();
+        return chatUsers.stream().map(chatUser -> ChatUserResponseDto.of(chatUser, validate(room.getOwnerSession(),chatUser.getSessionId()))).toList();
+    }
+    private Boolean validate(String ownerSession, String sessionId){
+        if(ownerSession.equals(sessionId))
+            return true;
+        return false;
     }
     private List<ChatUser> getChatUserInRoom(Room room) {
         //room에 있는 모든 chatuser불러오기
