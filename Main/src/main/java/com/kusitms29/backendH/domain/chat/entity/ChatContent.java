@@ -18,6 +18,8 @@ public class ChatContent {
                 .content(content)
                 .time(LocalDateTime.now())
                 .build();
+        if(room==null)
+            return chatContent;
         room.addChatContent(chatContent);
         return chatContent;
     }

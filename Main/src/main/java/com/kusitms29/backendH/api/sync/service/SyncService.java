@@ -74,12 +74,12 @@ public class SyncService {
                 favoriteSyncManager.existsByUserIdAndSyncId(userId, sync.getId())
         )).toList();
     }
-    public List<SyncInfoResponseDto> friendSync(Long userId, SyncInfoRequestDto syncInfoRequestDto){
+    public List<SyncInfoResponse> friendSync(Long userId, SyncInfoRequestDto syncInfoRequestDto){
         List<Sync> syncList = syncReader.findAllBySyncTypeAndType(FROM_FRIEND, getEnumTypeFromStringType(syncInfoRequestDto.type()));
-        List<SyncInfoResponseDto> syncInfoResponseDtos = syncList.stream()
+        List<SyncInfoResponse> syncInfoResponseDtos = syncList.stream()
                 //음 이거보다 위에서 if문써서 하는게 더 가독성 있는듯
 //                .filter(sync -> type == null || sync.getType().name().equals(type))
-                .map( sync -> SyncInfoResponseDto.of(
+                .map( sync -> SyncInfoResponse.of(
                         sync.getId(),
                         sync.getSyncType(),
                         sync.getType(),
@@ -93,9 +93,9 @@ public class SyncService {
                 )).toList();
         return listUtils.getListByTake(syncInfoResponseDtos, syncInfoRequestDto.take());
     }
-    public List<SyncAssociateInfoResponseDto> associateSync(Long userId, SyncInfoRequestDto syncInfoRequestDto){
+    public List<SyncAssociateInfoResponse> associateSync(Long userId, SyncInfoRequestDto syncInfoRequestDto){
         List<Sync> syncList = syncReader.findAllByAssociateIsExist(getEnumFROMStringSyncType(syncInfoRequestDto.syncType()), getEnumTypeFromStringType(syncInfoRequestDto.type()));
-        List<SyncAssociateInfoResponseDto> syncAssociateInfoResponseDtos = syncList.stream().map( sync -> SyncAssociateInfoResponseDto.of(
+        List<SyncAssociateInfoResponse> syncAssociateInfoResponseDtos = syncList.stream().map( sync -> SyncAssociateInfoResponse.of(
                 sync.getId(),
                 sync.getSyncType(),
                 sync.getType(),
@@ -110,10 +110,10 @@ public class SyncService {
         )).toList();
         return listUtils.getListByTake(syncAssociateInfoResponseDtos, syncInfoRequestDto.take());
     }
-    public List<SyncInfoResponseDto> searchSync(Long userId, SyncInfoRequestDto syncInfoRequestDto){
+    public List<SyncInfoResponse> searchSync(Long userId, SyncInfoRequestDto syncInfoRequestDto){
         List<Sync> syncList = syncReader.findAllBySyncTypeAndType(getEnumFROMStringSyncType(syncInfoRequestDto.syncType()), getEnumTypeFromStringType(syncInfoRequestDto.type()));
 
-        List<SyncInfoResponseDto> syncInfoResponseDtos = syncList.stream().map( sync -> SyncInfoResponseDto.of(
+        List<SyncInfoResponse> syncInfoResponseDtos = syncList.stream().map( sync -> SyncInfoResponse.of(
                 sync.getId(),
                 sync.getSyncType(),
                 sync.getType(),

@@ -39,10 +39,11 @@ public class Room {
         }
         return room;
     }
-    public static Room createNewRoom(String roomName) {
+    public static Room chat(String roomName,ChatContent chatContent) {
         Room room = Room.builder()
                 .roomName(roomName)
                 .build();
+        room.addChatContent(chatContent);
         return room;
     }
     public void addChatContent(ChatContent content) {
