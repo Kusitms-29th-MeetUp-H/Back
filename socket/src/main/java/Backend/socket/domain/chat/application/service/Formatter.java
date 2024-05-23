@@ -26,4 +26,9 @@ public class Formatter {
 
         return ChatUser.builder().build();
     }
+    public Boolean validate(String ownerSession, String sessionId){
+        if(ownerSession.equals(sessionId))
+            return true;
+        return false;
+    }
 }

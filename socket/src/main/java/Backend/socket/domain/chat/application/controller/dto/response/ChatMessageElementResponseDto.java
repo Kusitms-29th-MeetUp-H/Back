@@ -18,6 +18,7 @@ public class ChatMessageElementResponseDto {
     private String sessionId;
     private String profile;
     private String image;
+    private Boolean isOwner;
 
 
 //    public static List<ChatMessageElementResponseDto> listOf(List<ChatContent> chatContentList,String sessionId,String profile) {
@@ -27,7 +28,7 @@ public class ChatMessageElementResponseDto {
 //    }
 
 
-    public static ChatMessageElementResponseDto of(ChatContent chatContent, String sessionId,String profile, String image) {
+    public static ChatMessageElementResponseDto of(ChatContent chatContent, String sessionId,String profile, String image,Boolean isOwner) {
         return ChatMessageElementResponseDto.builder()
                 .userName(chatContent.getUserName())
                 .content(chatContent.getContent())
@@ -35,6 +36,7 @@ public class ChatMessageElementResponseDto {
                 .sessionId(sessionId)
                 .profile(profile)
                 .image(image)
+                .isOwner(isOwner)
                 .build();
     }
 

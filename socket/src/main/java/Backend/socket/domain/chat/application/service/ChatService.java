@@ -64,28 +64,33 @@ public class ChatService {
         User user = userRepository.findBySessionId(chatMessageRoomRequestDto.getChatSession()).orElseThrow();
 //        String images = awsService.uploadImageToS3(modifiedImageString);
         ChatContent chatContent = createChatContent(chatMessageRoomRequestDto.getFromUserName(), chatMessageRoomRequestDto.getContent(), room);
-        ChatMessageElementResponseDto chatMessage = ChatMessageElementResponseDto.of(chatContent, chatMessageRoomRequestDto.getChatSession(), user.getProfile(), chatMessageRoomRequestDto.getImage());
+
+        ChatMessageElementResponseDto chatMessage = ChatMessageElementResponseDto.of(chatContent, chatMessageRoomRequestDto.getChatSession(), user.getProfile(), chatMessageRoomRequestDto.getImage(), validate(room.getOwnerSession(),chatMessageRoomRequestDto.getChatSession()));
         List<String> sessionIdList = getSessionIdListInRoom(roomName, chatMessageRoomRequestDto.getChatSession());
         saveChatRoom(room);
 //        pushNotificationService.sendChatMessageNotification(room, chatMessage, sessionIdList); //채팅 알림
         return ChatMessageRoomResponseDto.of(chatMessageRoomRequestDto.getToRoomName(), sessionIdList, chatMessage);
     }
-
-    public ChatMessageRoomResponseDto createSendImageContentInRoom(String roomName, image chatMessageRoomRequestDto) throws IOException {
-        // 대괄호 제거 및 공백으로 구분
-        String modifiedImageString = chatMessageRoomRequestDto.getImage().replaceAll("[\\[\\]]", "").replaceAll(",", " ");
-        System.out.println("Modified byte array: " + modifiedImageString);
-
-        String imageUrl = awsService.uploadImageToS3(modifiedImageString);
-        String images = awsService.uploadImageToS3(imageUrl);
-        Room room = getChatBySessionsInRoom(roomName, "113828093759900814627_ef4a27");
-        User user = userRepository.findBySessionId("113828093759900814627_ef4a27").orElseThrow();
-        ChatContent chatContent = createChatContent("양규리", images, room);
-        ChatMessageElementResponseDto chatMessage = ChatMessageElementResponseDto.of(chatContent, "113828093759900814627_ef4a27", user.getProfile(), images);
-        List<String> sessionIdList = getSessionIdListInRoom(roomName, "113828093759900814627_ef4a27");
-        saveChatRoom(room);
-        return ChatMessageRoomResponseDto.of("eksxhr", sessionIdList, chatMessage);
+    private Boolean validate(String ownerSession, String sessionId){
+        if(ownerSession.equals(sessionId))
+            return true;
+        return false;
     }
+//    public ChatMessageRoomResponseDto createSendImageContentInRoom(String roomName, image chatMessageRoomRequestDto) throws IOException {
+//        // 대괄호 제거 및 공백으로 구분
+//        String modifiedImageString = chatMessageRoomRequestDto.getImage().replaceAll("[\\[\\]]", "").replaceAll(",", " ");
+//        System.out.println("Modified byte array: " + modifiedImageString);
+//
+//        String imageUrl = awsService.uploadImageToS3(modifiedImageString);
+//        String images = awsService.uploadImageToS3(imageUrl);
+//        Room room = getChatBySessionsInRoom(roomName, "113828093759900814627_ef4a27");
+//        User user = userRepository.findBySessionId("113828093759900814627_ef4a27").orElseThrow();
+//        ChatContent chatContent = createChatContent("양규리", images, room);
+//        ChatMessageElementResponseDto chatMessage = ChatMessageElementResponseDto.of(chatContent, "113828093759900814627_ef4a27", user.getProfile(), images);
+//        List<String> sessionIdList = getSessionIdListInRoom(roomName, "113828093759900814627_ef4a27");
+//        saveChatRoom(room);
+//        return ChatMessageRoomResponseDto.of("eksxhr", sessionIdList, chatMessage);
+//    }
 
 //    public ChatMessageListResponseDto sendChatDetailMessage(String sessionId, ChatMessageListRequestDto chatMessageListRequestDto) {
 //        Chat chat = getChatBySessions(sessionId, chatMessageListRequestDto.getChatSession());
@@ -124,10 +129,10 @@ public class ChatService {
         return sessionList;
     }
 
-    private ChatUserResponseDto getChatUserResponseDto(Chat chat, String name) {
-        ChatUser chatUser = getChatUserReceivedUser(chat, name);
-        return ChatUserResponseDto.of(chatUser);
-    }
+//    private ChatUserResponseDto getChatUserResponseDto(Chat chat, String name) {
+//        ChatUser chatUser = getChatUserReceivedUser(chat, name);
+//        return ChatUserResponseDto.of(chatUser);
+//    }
 
     private List<UserChatResponseDto> createUserChatResponseDto(List<Chat> chatList, String userName) {
         List<Chat> filterChat = getChatEmptyContentFilter(chatList);

@@ -16,19 +16,19 @@ public class RoomMessageElementResponseDto {
     private String content;
     private String time;
 
-    public static List<RoomMessageElementResponseDto> listOf(List<ChatContent> chatContentList,String roomName,TriFunction<String, String, ChatUser> formatter) {
+    public static List<RoomMessageElementResponseDto> listOf(List<ChatContent> chatContentList,String roomName,TriFunction<String, String, ChatUser> formatter, TriFunction<String,String,Boolean> function,String ownerSession) {
         return chatContentList.stream()
-                .map(chatContent -> RoomMessageElementResponseDto.of(chatContent,roomName,formatter))
+                .map(chatContent -> RoomMessageElementResponseDto.of(chatContent,roomName,formatter,function,ownerSession))
                 .collect(Collectors.toList());
     }
 
 
 
-    public static RoomMessageElementResponseDto of(ChatContent chatContent, String roomName, TriFunction<String, String, ChatUser> formatter) {
+    public static RoomMessageElementResponseDto of(ChatContent chatContent, String roomName, TriFunction<String, String, ChatUser> formatter,TriFunction<String,String,Boolean> function,String ownerSession) {
         ChatUser chatUser = formatter.apply(roomName, chatContent.getUserName());
         if (chatUser != null) {
             return RoomMessageElementResponseDto.builder()
-                    .user(ChatUserResponseDto.of(chatUser))
+                    .user(ChatUserResponseDto.of(chatUser,function.apply(ownerSession,chatUser.getSessionId())))
                     .content(chatContent.getContent())
                     .time(chatContent.getTime().toString())
                     .build();
