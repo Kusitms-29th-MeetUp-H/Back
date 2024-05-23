@@ -10,9 +10,10 @@ import java.time.LocalDateTime;
 public class ChatContent {
     private String userName;
     private String content;
+    private String image;
     private LocalDateTime time;
 
-    public static ChatContent createChatContent(String userName, String content, Chat chat) {
+    public static ChatContent createChatContent(String userName, String content,Chat chat) {
         ChatContent chatContent = ChatContent.builder()
                 .userName(userName)
                 .content(content)
@@ -21,7 +22,7 @@ public class ChatContent {
         chat.addChatContent(chatContent);
         return chatContent;
     }
-    public static ChatContent createChatContent(String userName, String content, Room room) {
+    public static ChatContent createChatContent(String userName, String content, Room room,String image) {
         ChatContent chatContent = ChatContent.builder()
                 .userName(userName)
                 .content(content)
