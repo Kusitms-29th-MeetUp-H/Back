@@ -51,7 +51,7 @@ public class SyncReader {
         List<Sync> syncList = syncRepository.findAll(spec, Sort.by(Sort.Direction.DESC, "date"));
         return ListException.throwIfEmpty(syncList, () -> new EntityNotFoundException(ErrorCode.SYNC_NOT_FOUND));
     }
-    public List<Sync> findBySyncTypeWithTypesWithLocation(SyncType syncType, List<Type> types, String location) {
+    public List<Sync> getSyncsBySyncTypeAndTypesAndLocation(SyncType syncType, List<Type> types, String location) {
         List<Sync> syncList = new ArrayList<>();
 
         for (Type type : types) {

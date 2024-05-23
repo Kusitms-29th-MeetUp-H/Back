@@ -58,7 +58,7 @@ public class SyncService {
         User user = userReader.getByUserId(userId);
         List<UserCategory> userCategories = userCategoryReader.getUserCategoriesByUserId(userId);
         List<Type> types = userCategoryManager.getTypesByUserCategories(userCategories);
-        List<Sync> syncList = syncReader.findBySyncTypeWithTypesWithLocation(user.getSyncType(), types, user.getLocation());
+        List<Sync> syncList = syncReader.getSyncsBySyncTypeAndTypesAndLocation(user.getSyncType(), types, user.getLocation());
         return syncList.stream().map( sync -> SyncInfoResponse.of(
                 sync.getId(),
                 sync.getSyncType(),
