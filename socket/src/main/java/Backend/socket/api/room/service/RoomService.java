@@ -1,7 +1,7 @@
 package Backend.socket.api.room.service;
 
 import Backend.socket.api.room.service.response.*;
-import Backend.socket.domain.chat.application.service.Formatter;
+import Backend.socket.domain.chat.service.Formatter;
 import Backend.socket.domain.chat.domain.ChatContent;
 import Backend.socket.domain.chat.domain.ChatUser;
 import Backend.socket.domain.chat.domain.Room;

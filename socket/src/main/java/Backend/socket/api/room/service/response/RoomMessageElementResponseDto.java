@@ -1,6 +1,6 @@
 package Backend.socket.api.room.service.response;
 
-import Backend.socket.domain.chat.application.service.TriFunction;
+import Backend.socket.global.common.TriFunction;
 import Backend.socket.domain.chat.domain.ChatContent;
 import Backend.socket.domain.chat.domain.ChatUser;
 import lombok.Builder;

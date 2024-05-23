@@ -1,5 +1,5 @@
 package Backend.socket.infra.config;
-import Backend.socket.domain.chat.application.service.RedisSubscriber;
+import Backend.socket.domain.chat.service.RedisSubscriber;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -42,7 +42,7 @@ public class RedisConfig {
     }
 }
 //
-//import Backend.socket.domain.chat.application.service.RedisSubscriber;
+//import Backend.socket.domain.chat.service.RedisSubscriber;
 //import org.springframework.beans.factory.annotation.Qualifier;
 //import org.springframework.beans.factory.annotation.Value;
 //import org.springframework.context.annotation.Bean;

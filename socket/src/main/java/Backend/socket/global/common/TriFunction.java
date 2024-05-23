@@ -1,4 +1,4 @@
-package Backend.socket.domain.chat.application.service;
+package Backend.socket.global.common;
 
 @FunctionalInterface
 public interface TriFunction<T, U, R> {

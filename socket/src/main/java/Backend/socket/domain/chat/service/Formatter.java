@@ -1,4 +1,4 @@
-package Backend.socket.domain.chat.application.service;
+package Backend.socket.domain.chat.service;
 
 import Backend.socket.domain.chat.domain.ChatUser;
 import Backend.socket.domain.chat.domain.Room;
