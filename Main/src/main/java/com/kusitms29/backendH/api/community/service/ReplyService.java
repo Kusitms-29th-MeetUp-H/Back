@@ -30,11 +30,11 @@ public class ReplyService {
         Comment comment = commentReader.findById(commentId);
 
         Reply newReply = replyModifier.save(
-                Reply.builder()
-                        .user(user)
-                        .comment(comment)
-                        .content(content)
-                        .build()
+                Reply.createReply(
+                        user,
+                        comment,
+                        content
+                )
         );
 
         return ReplyCreateResponseDto.of(newReply.getId(), newReply.getUser().getProfile(),

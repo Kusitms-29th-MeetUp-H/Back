@@ -23,4 +23,11 @@ public class ReplyLike {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reply_id")
     private Reply reply;
+
+    public static ReplyLike createReplyLike(User user, Reply reply) {
+        return ReplyLike.builder()
+                .user(user)
+                .reply(reply)
+                .build();
+    }
 }

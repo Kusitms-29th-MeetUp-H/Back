@@ -100,12 +100,7 @@ public class CommentService {
             throw new NotAllowedException(TOO_LONG_COMMENT_NOT_ALLOWED);
         }
 
-        Comment newComment = commentModifier.save
-                (Comment.builder()
-                        .post(post)
-                        .user(writer)
-                        .content(content)
-                        .build());
+        Comment newComment = commentModifier.save(Comment.createComment(writer, post, content));
 
         pushNotificationService.sendCommentNotification(postId, newComment);
 

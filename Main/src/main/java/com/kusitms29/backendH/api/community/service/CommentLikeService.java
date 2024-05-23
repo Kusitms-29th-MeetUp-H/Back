@@ -33,11 +33,7 @@ public class CommentLikeService {
             throw new ConflictException(DUPLICATE_COMMENT_LIKE);
         }
 
-        commentLikeModifier.save
-                (CommentLike.builder()
-                        .user(user)
-                        .comment(comment)
-                        .build());
+        commentLikeModifier.save(CommentLike.of(user, comment));
     }
 
     public void deleteCommentLike(Long userId, Long commentId) {
