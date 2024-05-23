@@ -76,7 +76,7 @@ public class MyPageService {
         return listUtils.getListByTake(syncInfoResponseDtos, take);
     }
     public UserInfoResponseDto getMyInfo(Long userId){
-        List<String> detailTypes = userCategoryReader.findAllByUserId(userId).stream().map(userCategory -> userCategory.getCategory().getName()).toList();
+        List<String> detailTypes = userCategoryReader.getUserCategoriesByUserId(userId).stream().map(userCategory -> userCategory.getCategory().getName()).toList();
         return UserInfoResponseDto.of(userReader.getByUserId(userId),detailTypes);
     }
     public CreateReviewResponse createReview(Long userId, CreateReviewRequest createReviewRequest){
