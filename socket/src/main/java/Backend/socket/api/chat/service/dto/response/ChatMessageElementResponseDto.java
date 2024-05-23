@@ -1,13 +1,8 @@
-package Backend.socket.domain.chat.application.controller.dto.response;
+package Backend.socket.api.chat.service.dto.response;
 
-import Backend.socket.domain.chat.application.service.TriFunction;
 import Backend.socket.domain.chat.domain.ChatContent;
-import Backend.socket.domain.chat.domain.ChatUser;
 import lombok.Builder;
 import lombok.Getter;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Builder
 @Getter

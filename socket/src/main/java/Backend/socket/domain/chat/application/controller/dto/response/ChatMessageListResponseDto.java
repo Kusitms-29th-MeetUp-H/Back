@@ -1,5 +1,6 @@
 package Backend.socket.domain.chat.application.controller.dto.response;
 
+import Backend.socket.api.chat.service.dto.response.ChatMessageElementResponseDto;
 import lombok.Builder;
 import lombok.Getter;
 

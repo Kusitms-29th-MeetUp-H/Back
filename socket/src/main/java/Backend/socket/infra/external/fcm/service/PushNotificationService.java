@@ -1,6 +1,6 @@
 //package Backend.socket.infra.external.fcm.service;
 //
-//import Backend.socket.domain.chat.application.controller.dto.response.ChatMessageElementResponseDto;
+//import Backend.socket.api.chat.service.dto.response.ChatMessageElementResponseDto;
 //import Backend.socket.domain.chat.domain.Room;
 //import Backend.socket.domain.chat.domain.User;
 //import Backend.socket.domain.chat.domain.notification.entity.NotificationHistory;

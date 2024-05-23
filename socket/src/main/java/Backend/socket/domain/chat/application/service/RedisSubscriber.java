@@ -1,6 +1,6 @@
 package Backend.socket.domain.chat.application.service;
 
-import Backend.socket.domain.chat.application.controller.dto.response.ChatMessageElementResponseDto;
+import Backend.socket.api.chat.service.dto.response.ChatMessageElementResponseDto;
 import Backend.socket.domain.chat.application.controller.dto.response.ChatMessageResponseDto;
 import Backend.socket.api.chat.service.dto.response.ChatMessageRoomResponseDto;
 import Backend.socket.domain.chat.application.controller.dto.response.SendMessageResponseDto;
