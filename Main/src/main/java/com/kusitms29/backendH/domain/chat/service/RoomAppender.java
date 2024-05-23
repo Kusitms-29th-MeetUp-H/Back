@@ -23,7 +23,7 @@ public class RoomAppender {
     private final PushNotificationService pushNotificationService;
     private final SyncReader syncReader;
     @Transactional
-    public void createRoom(List<User> userList, Boolean isPossible, Long syncId) {
+    public void createRoom(List<User> userList, Boolean isPossible, Long syncId, User owner) {
         Room room = null;
 
         if (isPossible) {
@@ -39,7 +39,8 @@ public class RoomAppender {
                                     .toList(),
                             contents,
                             generateRandomUuid(syncId),
-                            sync
+                            sync,
+                            owner
                     )
             );
             for (User user : userList) {

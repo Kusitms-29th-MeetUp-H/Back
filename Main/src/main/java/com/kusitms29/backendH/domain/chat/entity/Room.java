@@ -1,6 +1,7 @@
 package com.kusitms29.backendH.domain.chat.entity;
 
 import com.kusitms29.backendH.domain.sync.entity.Sync;
+import com.kusitms29.backendH.domain.user.entity.User;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
@@ -19,17 +20,19 @@ public class Room {
     private String roomSession;
     private String syncName;
     private String image;
+    private String ownerSession;
 
     @Builder.Default
     private List<ChatUser> chatUserList = new ArrayList<>();
     @Builder.Default
     private List<ChatContent> chatContentList = new ArrayList<>();
 
-    public static Room createRoom(List<ChatUser> users, List<ChatContent> contents, String roomName, Sync sync) {
+    public static Room createRoom(List<ChatUser> users, List<ChatContent> contents, String roomName, Sync sync, User user) {
         Room room = Room.builder().
                 syncName(sync.getSyncName()).
                 image(sync.getImage()).
                 roomName(roomName).
+                ownerSession(user.getSessionId()).
                 build();
         for(ChatUser chatUser : users){
             room.addChatRoom(chatUser);
@@ -53,12 +56,13 @@ public class Room {
     public void addChatRoom(ChatUser chatUser) {
         this.chatUserList.add(chatUser);
     }
-    public Room(String roomId, String roomName, String roomSession, String syncName, String image, List<ChatUser> chatUserList, List<ChatContent> chatContentList) {
+    public Room(String roomId, String roomName, String roomSession, String syncName, String image, String ownerSession, List<ChatUser> chatUserList, List<ChatContent> chatContentList) {
         this.roomId = roomId;
         this.image = image;
         this.roomName = roomName;
         this.roomSession = roomSession;
         this.syncName = syncName;
+        this.ownerSession = ownerSession;
         this.chatUserList = chatUserList != null ? chatUserList : new ArrayList<>();
         this.chatContentList = chatContentList != null ? chatContentList : new ArrayList<>();
     }
