@@ -1,4 +1,4 @@
-package Backend.socket.domain.chat.domain;
+package Backend.socket.domain.user.entity;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

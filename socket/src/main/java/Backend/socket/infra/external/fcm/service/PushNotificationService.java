@@ -2,7 +2,7 @@
 //
 //import Backend.socket.api.chat.service.dto.response.ChatMessageElementResponseDto;
 //import Backend.socket.domain.chat.domain.Room;
-//import Backend.socket.domain.chat.domain.User;
+//import Backend.socket.domain.user.entity.User;
 //import Backend.socket.domain.chat.domain.notification.entity.NotificationHistory;
 //import Backend.socket.domain.chat.domain.notification.entity.NotificationType;
 //import Backend.socket.domain.chat.domain.notification.entity.TopCategory;

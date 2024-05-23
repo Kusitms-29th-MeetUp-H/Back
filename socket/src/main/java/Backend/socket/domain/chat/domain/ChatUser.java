@@ -1,5 +1,6 @@
 package Backend.socket.domain.chat.domain;
 
+import Backend.socket.domain.user.entity.User;
 import lombok.Builder;
 import lombok.Getter;
 

@@ -1,6 +1,6 @@
 package Backend.socket.domain.chat.domain.notification.entity;
 
-import Backend.socket.domain.chat.domain.User;
+import Backend.socket.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 

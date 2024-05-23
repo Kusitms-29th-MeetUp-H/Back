@@ -1,4 +1,4 @@
-package Backend.socket.domain.chat.domain;
+package Backend.socket.domain.user.entity;
 
 
 import Backend.socket.global.common.BaseEntity;
