@@ -2,12 +2,11 @@ package Backend.socket.domain.chat.application.service;
 
 import Backend.socket.domain.chat.application.controller.dto.response.ChatMessageElementResponseDto;
 import Backend.socket.domain.chat.application.controller.dto.response.ChatMessageResponseDto;
-import Backend.socket.domain.chat.application.controller.dto.response.ChatMessageRoomResponseDto;
+import Backend.socket.api.chat.service.dto.response.ChatMessageRoomResponseDto;
 import Backend.socket.domain.chat.application.controller.dto.response.SendMessageResponseDto;
 import Backend.socket.global.common.MessageSuccessCode;
 import Backend.socket.global.common.MessageSuccessResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.connection.Message;

@@ -1,4 +1,4 @@
-package Backend.socket.domain.chat.application.controller.dto.request;
+package Backend.socket.api.chat.service.dto.request;
 
 import lombok.AccessLevel;
 import lombok.Getter;

@@ -1,14 +1,10 @@
 package Backend.socket.domain.chat.application.service;
 
-import Backend.socket.domain.chat.application.controller.dto.request.ChatMessageListRequestDto;
 import Backend.socket.domain.chat.application.controller.dto.response.*;
-import Backend.socket.domain.chat.domain.Chat;
 import Backend.socket.domain.chat.domain.ChatContent;
 import Backend.socket.domain.chat.domain.ChatUser;
 import Backend.socket.domain.chat.domain.Room;
-import Backend.socket.domain.chat.repository.ChatRepository;
 import Backend.socket.domain.chat.repository.RoomRepository;
-import Backend.socket.domain.chat.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.MongoTemplate;

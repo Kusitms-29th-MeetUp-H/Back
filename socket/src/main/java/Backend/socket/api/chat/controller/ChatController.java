@@ -1,28 +1,16 @@
-package Backend.socket.domain.chat.application.controller;
+package Backend.socket.api.chat.controller;
 
 
-import Backend.socket.domain.chat.application.controller.dto.request.ChatListRequestDto;
-import Backend.socket.domain.chat.application.controller.dto.request.ChatMessageListRequestDto;
-import Backend.socket.domain.chat.application.controller.dto.request.ChatMessageRequestDto;
-import Backend.socket.domain.chat.application.controller.dto.request.ChatMessageRoomRequestDto;
-import Backend.socket.domain.chat.application.controller.dto.response.ChatListResponseDto;
-import Backend.socket.domain.chat.application.controller.dto.response.ChatMessageListResponseDto;
-import Backend.socket.domain.chat.application.controller.dto.response.ChatMessageResponseDto;
-import Backend.socket.domain.chat.application.controller.dto.response.ChatMessageRoomResponseDto;
-import Backend.socket.domain.chat.application.service.ChatService;
+import Backend.socket.api.chat.service.dto.request.ChatMessageRoomRequestDto;
+import Backend.socket.api.chat.service.ChatService;
 import Backend.socket.global.common.MessageSuccessCode;
 import Backend.socket.global.common.MessageSuccessResponse;
-import Backend.socket.global.common.image;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
-import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 

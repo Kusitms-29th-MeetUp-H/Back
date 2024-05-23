@@ -1,16 +1,12 @@
-package Backend.socket.domain.chat.application.service;
+package Backend.socket.api.chat.service;
 
-import Backend.socket.domain.chat.application.controller.dto.request.ChatListRequestDto;
-import Backend.socket.domain.chat.application.controller.dto.request.ChatMessageListRequestDto;
-import Backend.socket.domain.chat.application.controller.dto.request.ChatMessageRequestDto;
-
-import Backend.socket.domain.chat.application.controller.dto.request.ChatMessageRoomRequestDto;
+import Backend.socket.api.chat.service.dto.request.ChatMessageRoomRequestDto;
+import Backend.socket.api.chat.service.dto.response.ChatMessageRoomResponseDto;
 import Backend.socket.domain.chat.application.controller.dto.response.*;
 import Backend.socket.domain.chat.domain.*;
 import Backend.socket.domain.chat.repository.ChatRepository;
 import Backend.socket.domain.chat.repository.RoomRepository;
 import Backend.socket.domain.chat.repository.UserRepository;
-import Backend.socket.global.common.image;
 import Backend.socket.global.error.socketException.EntityNotFoundException;
 import Backend.socket.infra.external.AwsService;
 //import Backend.socket.infra.external.fcm.service.PushNotificationService;
@@ -23,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
