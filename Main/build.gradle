@@ -57,6 +57,12 @@ dependencies {
 	implementation 'com.github.in-seo:univcert:master-SNAPSHOT'
 	//mongoDB
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+
+	// Test
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'io.rest-assured:rest-assured:5.3.0'
+	testImplementation 'org.junit.jupiter:junit-jupiter'
+	testImplementation platform('org.junit:junit-bom:5.9.1')
 }
 
 tasks.named('test') {
