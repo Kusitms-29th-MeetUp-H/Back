@@ -45,7 +45,7 @@ public class RoomAppender {
             );
             for (User user : userList) {
                 if (sync.getUser().getId().equals(user.getId())) {
-                    ChatContent chatContent = ChatContent.createChatContent(user.getUserName(), "모두 반가워요~", room,"https://sync-content-bucket-01.s3.ap-northeast-2.amazonaws.com/a2d3a182-9054-42b9-b439-616bcbba9e87.png");
+                    ChatContent chatContent = ChatContent.createChatContent(user.getUserName(), "모두 반가워요~", room,"https://sync-content-bucket-01.s3.ap-northeast-2.amazonaws.com/be965e97-e87d-45e9-9720-4d360323bebc.png");
                     contents.add(chatContent);
                 }
             }
