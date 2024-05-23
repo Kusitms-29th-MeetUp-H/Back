@@ -6,13 +6,30 @@ import com.kusitms29.backendH.infra.external.clova.papago.translation.TextTransl
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Properties;
 
 @Service
-@RequiredArgsConstructor
 public class TranslateUtil {
-    private final PapagoService papagoService;
+    private PapagoService papagoService;
+    private Properties promptMap = new Properties();
+
+    public TranslateUtil(PapagoService papagoService) {
+        this.papagoService = papagoService;
+        loadPromptMap(); // 프롬프트 파일 로드
+    }
+
+    private void loadPromptMap() {
+        try (InputStream inputStream = getClass().getResourceAsStream("/prompt.properties")) {
+            promptMap.load(inputStream);
+            System.out.println("Prompt Map: " + promptMap);
+        } catch (IOException e) {
+            // log.error("Error loading prompt map", e);
+        }
+    }
 
     public <T> T translateObject(T object) {
         if (object == null) {
@@ -34,12 +51,19 @@ public class TranslateUtil {
                 try {
                     String value = (String) field.get(object);
                     if (value != null && !value.isEmpty()) {
-                        TextTranslationRequest requestDto = new TextTranslationRequest();
-                        requestDto.setSource("ko");
-                        requestDto.setTarget("en");
-                        requestDto.setText(value.trim());
-                        TextTranslationResponse translationResponse = papagoService.translateText(requestDto);
-                        field.set(translatedObject, translationResponse.getMessage().getResult().getTranslatedText());
+                        String translationPrompt = promptMap.getProperty(value);
+                        if (translationPrompt != null) {
+                            // 프롬프트 매핑이 있는 경우, 프롬프트를 그대로 반환
+                            field.set(translatedObject, translationPrompt);
+                        } else {
+                            // 프롬프트 매핑이 없는 경우, 번역 서비스 사용
+                            TextTranslationRequest requestDto = new TextTranslationRequest();
+                            requestDto.setSource("ko");
+                            requestDto.setTarget("en");
+                            requestDto.setText(value.trim());
+                            TextTranslationResponse translationResponse = papagoService.translateText(requestDto);
+                            field.set(translatedObject, translationResponse.getMessage().getResult().getTranslatedText());
+                        }
                     } else {
                         field.set(translatedObject, value);
                     }
