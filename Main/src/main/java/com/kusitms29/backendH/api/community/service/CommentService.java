@@ -43,7 +43,7 @@ public class CommentService {
     private final PushNotificationService pushNotificationService;
 
     public List<CommentResponseDto> getCommentsInPost(Long userId, Long postId) {
-        List<Comment> comments = commentReader.findByPostId(postId);
+        List<Comment> comments = commentReader.getCommentsByPostId(postId);
         return comments.stream()
                 .map(comment -> mapToCommentResponseDto(comment, userId))
                 .collect(Collectors.toList());

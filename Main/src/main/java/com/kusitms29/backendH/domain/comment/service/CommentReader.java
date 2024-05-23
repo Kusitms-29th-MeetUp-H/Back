@@ -18,7 +18,7 @@ import static com.kusitms29.backendH.global.error.ErrorCode.COMMENT_NOT_FOUND;
 @Service
 public class CommentReader {
     private final CommentRepository commentRepository;
-    public List<Comment> findByPostId(Long postId)  {
+    public List<Comment> getCommentsByPostId(Long postId)  {
         return commentRepository.findByPostId(postId);
     }
 

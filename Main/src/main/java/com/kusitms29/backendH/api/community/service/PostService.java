@@ -104,7 +104,7 @@ public class PostService {
         boolean isLikedByUser = postLikeManager.existsByPostIdAndUserId(post.getId(), userId);
 
         int totalCommentCount = commentManager.countByPostId(post.getId());
-        int replyCount = commentReader.findByPostId(post.getId()).stream()
+        int replyCount = commentReader.getCommentsByPostId(post.getId()).stream()
                 .mapToInt(comment -> replyManager.countByCommentId(comment.getId()))
                 .sum();
         totalCommentCount += replyCount;
