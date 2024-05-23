@@ -80,16 +80,8 @@ public class SyncService {
     public List<SyncAssociateInfoResponse> associateSync(Long userId, SyncInfoRequestDto syncInfoRequestDto){
         List<Sync> syncList = syncReader.findAllByAssociateIsExist(getEnumFROMStringSyncType(syncInfoRequestDto.syncType()), getEnumTypeFromStringType(syncInfoRequestDto.type()));
         List<SyncAssociateInfoResponse> syncAssociateInfoResponseDtos = syncList.stream().map( sync -> SyncAssociateInfoResponse.of(
-                sync.getId(),
-                sync.getSyncType(),
-                sync.getType(),
-                sync.getImage(),
+                sync,
                 participationManager.countParticipationBySyncId(sync.getId()),
-                sync.getMember_max(),
-                sync.getSyncName(),
-                sync.getLocation(),
-                sync.getDate(),
-                sync.getAssociate(),
                 favoriteSyncManager.existsByUserIdAndSyncId(userId, sync.getId())
         )).toList();
         return listUtils.getListByTake(syncAssociateInfoResponseDtos, syncInfoRequestDto.take());
