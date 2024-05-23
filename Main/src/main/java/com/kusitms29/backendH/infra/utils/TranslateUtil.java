@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 
 @Service
 @RequiredArgsConstructor
@@ -14,7 +15,17 @@ public class TranslateUtil {
     private final PapagoService papagoService;
 
     public <T> T translateObject(T object) {
+        if (object == null) {
+            return null;
+        }
         T translatedObject = createNewInstance(object);
+        if (translatedObject != null) {
+            translateFields(object, translatedObject);
+        }
+        return translatedObject;
+    }
+
+    private <T> void translateFields(T object, T translatedObject) {
         Field[] fields = object.getClass().getDeclaredFields();
         for (Field field : fields) {
             Class<?> fieldType = field.getType();
@@ -22,15 +33,15 @@ public class TranslateUtil {
                 field.setAccessible(true);
                 try {
                     String value = (String) field.get(object);
-                    if (value != null) {
+                    if (value != null && !value.isEmpty()) {
                         TextTranslationRequest requestDto = new TextTranslationRequest();
                         requestDto.setSource("ko");
                         requestDto.setTarget("en");
-                        requestDto.setText(value);
+                        requestDto.setText(value.trim());
                         TextTranslationResponse translationResponse = papagoService.translateText(requestDto);
                         field.set(translatedObject, translationResponse.getMessage().getResult().getTranslatedText());
                     } else {
-                        field.set(translatedObject, null);
+                        field.set(translatedObject, value);
                     }
                 } catch (IllegalAccessException e) {
                     // log.error("Error while translating object", e);
@@ -45,7 +56,6 @@ public class TranslateUtil {
                 }
             }
         }
-        return translatedObject;
     }
 
     @SuppressWarnings("unchecked")
@@ -53,9 +63,12 @@ public class TranslateUtil {
         try {
             Class<T> clazz = (Class<T>) object.getClass();
             return clazz.getDeclaredConstructor().newInstance();
-        } catch (Exception e) {
-            // log.error("Error while creating new instance", e);
-            throw new RuntimeException("Failed to create new instance", e);
+        } catch (NoSuchMethodException e) {
+            // 기본 생성자가 없는 경우 처리
+            return null;
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            // 객체 생성 실패 시 처리
+            throw new RuntimeException("Failed to create new instance of " + object.getClass().getName(), e);
         }
     }
 }
