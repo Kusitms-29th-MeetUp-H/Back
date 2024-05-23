@@ -1,7 +1,8 @@
 package Backend.socket.api.room.controller;
 
 import Backend.socket.api.chat.service.dto.request.ChatMessageRoomRequestDto;
-import Backend.socket.domain.chat.application.controller.dto.response.*;
+import Backend.socket.api.room.service.response.RoomListResponseDto;
+import Backend.socket.api.room.service.response.RoomMessageListResponseDto;
 import Backend.socket.api.chat.service.ChatService;
 import Backend.socket.domain.chat.application.service.RoomService;
 import Backend.socket.global.common.MessageSuccessCode;

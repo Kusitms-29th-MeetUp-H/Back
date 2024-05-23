@@ -1,4 +1,4 @@
-package Backend.socket.domain.chat.application.controller.dto.response;
+package Backend.socket.api.room.service.response;
 
 import lombok.Builder;
 import lombok.Getter;

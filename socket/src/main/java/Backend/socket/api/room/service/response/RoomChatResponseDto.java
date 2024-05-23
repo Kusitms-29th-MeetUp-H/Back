@@ -1,4 +1,4 @@
-package Backend.socket.domain.chat.application.controller.dto.response;
+package Backend.socket.api.room.service.response;
 
 import Backend.socket.domain.chat.domain.Room;
 import lombok.Builder;
@@ -6,7 +6,6 @@ import lombok.Getter;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Builder
 @Getter
