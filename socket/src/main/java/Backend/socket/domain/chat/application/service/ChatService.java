@@ -63,7 +63,7 @@ public class ChatService {
         Room room = getChatBySessionsInRoom(roomName, chatMessageRoomRequestDto.getChatSession());
         User user = userRepository.findBySessionId(chatMessageRoomRequestDto.getChatSession()).orElseThrow();
 //        String images = awsService.uploadImageToS3(modifiedImageString);
-        ChatContent chatContent = createChatContent(chatMessageRoomRequestDto.getFromUserName(), chatMessageRoomRequestDto.getContent(), room);
+        ChatContent chatContent = createChatContent(chatMessageRoomRequestDto.getFromUserName(), chatMessageRoomRequestDto.getContent(), room, chatMessageRoomRequestDto.getImage());
 
         ChatMessageElementResponseDto chatMessage = ChatMessageElementResponseDto.of(chatContent, chatMessageRoomRequestDto.getChatSession(), user.getProfile(), chatMessageRoomRequestDto.getImage(), validate(room.getOwnerSession(),chatMessageRoomRequestDto.getChatSession()));
         List<String> sessionIdList = getSessionIdListInRoom(roomName, chatMessageRoomRequestDto.getChatSession());

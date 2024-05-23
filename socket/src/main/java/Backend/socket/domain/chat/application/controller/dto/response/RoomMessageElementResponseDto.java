@@ -15,6 +15,7 @@ public class RoomMessageElementResponseDto {
     private ChatUserResponseDto user;
     private String content;
     private String time;
+    private String image;
 
     public static List<RoomMessageElementResponseDto> listOf(List<ChatContent> chatContentList,String roomName,TriFunction<String, String, ChatUser> formatter, TriFunction<String,String,Boolean> function,String ownerSession) {
         return chatContentList.stream()
@@ -31,12 +32,14 @@ public class RoomMessageElementResponseDto {
                     .user(ChatUserResponseDto.of(chatUser,function.apply(ownerSession,chatUser.getSessionId())))
                     .content(chatContent.getContent())
                     .time(chatContent.getTime().toString())
+                    .image(chatContent.getImage())
                     .build();
         } else {
             return RoomMessageElementResponseDto.builder()
                     .user(ChatUserResponseDto.builder().build())
                     .content(chatContent.getContent())
                     .time(chatContent.getTime().toString())
+                    .image(chatContent.getImage())
                     .build();
         }
     }
