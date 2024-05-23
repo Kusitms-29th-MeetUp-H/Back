@@ -27,7 +27,7 @@ public class CommentLikeService {
 
     public void createCommentLike(Long userId, Long commentId) {
         User user = userReader.getByUserId(userId);
-        Comment comment = commentReader.findById(commentId);
+        Comment comment = commentReader.getByCommentId(commentId);
 
         if(commentLikeReader.existsByCommentIdAndUserId(commentId, userId)) {
             throw new ConflictException(DUPLICATE_COMMENT_LIKE);
@@ -38,7 +38,7 @@ public class CommentLikeService {
 
     public void deleteCommentLike(Long userId, Long commentId) {
         User user = userReader.getByUserId(userId);
-        Comment comment = commentReader.findById(commentId);
+        Comment comment = commentReader.getByCommentId(commentId);
         CommentLike commentLike = commentLikeReader.findByCommentIdAndUserId(commentId, userId);
         commentLikeModifier.delete(commentLike);
     }

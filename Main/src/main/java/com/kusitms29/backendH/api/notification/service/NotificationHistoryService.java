@@ -45,7 +45,7 @@ public class NotificationHistoryService {
                 break;
             case "COMMENT":
                 Long infoId2 = ((notificationHistory.getInfoId2() != null)&&(!notificationHistory.getInfoId2().isEmpty()) ? Long.parseLong(notificationHistory.getInfoId2()) : null);
-                detailContent = commentReader.findById(infoId2).getContent();
+                detailContent = commentReader.getByCommentId(infoId2).getContent();
                 break;
             case "SYNC_REMINDER":
                 detailContent = "즐거운 싱크되세요!";

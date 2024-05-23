@@ -113,7 +113,7 @@ public class CommentService {
     }
 
     public int reportComment(Long userId, Long commentId) {
-        Comment comment = commentReader.findById(commentId);
+        Comment comment = commentReader.getByCommentId(commentId);
         User user = userReader.getByUserId(userId);
 
         if(comment.getReported() >= 2) {

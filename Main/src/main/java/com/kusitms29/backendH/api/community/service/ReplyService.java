@@ -27,7 +27,7 @@ public class ReplyService {
 
     public ReplyCreateResponseDto createReply(Long userId, Long commentId, String content) {
         User user = userReader.getByUserId(userId);
-        Comment comment = commentReader.findById(commentId);
+        Comment comment = commentReader.getByCommentId(commentId);
 
         Reply newReply = replyModifier.save(
                 Reply.createReply(

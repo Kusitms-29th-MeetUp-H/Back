@@ -22,7 +22,7 @@ public class CommentReader {
         return commentRepository.findByPostId(postId);
     }
 
-    public Comment findById(Long commentId) {
+    public Comment getByCommentId(Long commentId) {
         return commentRepository.findById(commentId)
                 .orElseThrow(() -> new EntityNotFoundException(COMMENT_NOT_FOUND));
     }
