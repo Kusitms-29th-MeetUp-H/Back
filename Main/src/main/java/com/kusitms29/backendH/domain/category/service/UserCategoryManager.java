@@ -10,7 +10,9 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class UserCategoryManager {
-    public List<Type> getTypeByUserCategories(List<UserCategory> userCategories){
-        return userCategories.stream().map(userCategory -> userCategory.getCategory().getType()).toList();
+    public List<Type> getTypesByUserCategories(List<UserCategory> userCategories){
+        return userCategories.stream()
+                .map(userCategory -> userCategory.getCategory().getType())
+                .toList();
     }
 }

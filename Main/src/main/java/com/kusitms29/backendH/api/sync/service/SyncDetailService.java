@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.kusitms29.backendH.domain.chat.entity.Room.createRoom;
 import static com.kusitms29.backendH.domain.sync.entity.FavoriteSync.createFavoriteSync;
 import static com.kusitms29.backendH.global.error.ErrorCode.INVALID_SYNC_TYPE;
 
@@ -42,7 +41,7 @@ public class SyncDetailService {
     private final FavoriteSyncManager favoriteSyncManager;
     public SyncDetailResponseDto getSyncDetail(Long userId, Long syncId){
         Sync sync = syncReader.findById(syncId);
-        User user = userReader.findByUserId(sync.getUser().getId());
+        User user = userReader.getByUserId(sync.getUser().getId());
         int count = participationManager.countParticipationBySyncId(syncId);
         Boolean isFull = syncManager.validateJoinRoom(sync,count);
         List<Sync> mySync = syncReader.findAllByUserId(userId);
@@ -132,12 +131,12 @@ public class SyncDetailService {
     }
     public void joinSync(Long userId, Long syncId){
         Sync sync = syncReader.findById(syncId);
-        User owner = userReader.findByUserId(sync.getUser().getId());
+        User owner = userReader.getByUserId(sync.getUser().getId());
         Participation newParticipation =Participation.createParticipation(User.from(userId), Sync.from(syncId));
         participationAppender.saveParticipation(newParticipation);
         int count = participationManager.countParticipationBySyncId(syncId);
         Boolean isPossible = syncManager.validateCreateRoom(sync,count);
-        List<User> userList = participationReader.findAllBySyncId(syncId).stream().map(participation -> userReader.findByUserId(participation.getUser().getId())).toList();
+        List<User> userList = participationReader.findAllBySyncId(syncId).stream().map(participation -> userReader.getByUserId(participation.getUser().getId())).toList();
         roomAppender.createRoom(userList,isPossible,syncId,owner);
     }
     public Boolean bookmark(Long userId, SyncBookmarkRequestDto syncBookmarkRequestDto){

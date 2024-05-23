@@ -16,7 +16,7 @@ public class UserService {
     private final UserReader userReader;
 
     public BannerImageResponseDto getLoginUserImage(Long userId) {
-        User user = userReader.findByUserId(userId);
+        User user = userReader.getByUserId(userId);
         String image = user.getProfile();
         return BannerImageResponseDto.of(image);
     }

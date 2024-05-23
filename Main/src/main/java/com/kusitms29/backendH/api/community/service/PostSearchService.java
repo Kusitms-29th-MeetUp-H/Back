@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -30,7 +29,7 @@ public class PostSearchService {
     private final PostService postService;
 
     public List<PostSearchResponseDto> searchPosts(Long userId, String keyword) {
-        User user = userReader.findByUserId(userId);
+        User user = userReader.getByUserId(userId);
 
         if(keyword == null || keyword.isEmpty()) {
             return new ArrayList<>();

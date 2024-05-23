@@ -104,7 +104,7 @@ public class PostService {
         boolean isLikedByUser = postLikeManager.existsByPostIdAndUserId(post.getId(), userId);
 
         int totalCommentCount = commentManager.countByPostId(post.getId());
-        int replyCount = commentReader.findByPostId(post.getId()).stream()
+        int replyCount = commentReader.getCommentsByPostId(post.getId()).stream()
                 .mapToInt(comment -> replyManager.countByCommentId(comment.getId()))
                 .sum();
         totalCommentCount += replyCount;
@@ -114,7 +114,7 @@ public class PostService {
     }
 
     public PostCreateResponseDto createPost(Long userId, List<MultipartFile> images, PostCreateRequestDto requestDto) {
-        User writer = userReader.findByUserId(userId);
+        User writer = userReader.getByUserId(userId);
         PostType postType = PostType.getEnumPostTypeFromStringPostType(requestDto.getPostType());
 
         String title = requestDto.getTitle();

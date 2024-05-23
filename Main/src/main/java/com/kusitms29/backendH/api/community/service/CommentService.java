@@ -15,11 +15,9 @@ import com.kusitms29.backendH.global.error.exception.NotAllowedException;
 import com.kusitms29.backendH.infra.external.fcm.service.PushNotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,14 +43,14 @@ public class CommentService {
     private final PushNotificationService pushNotificationService;
 
     public List<CommentResponseDto> getCommentsInPost(Long userId, Long postId) {
-        List<Comment> comments = commentReader.findByPostId(postId);
+        List<Comment> comments = commentReader.getCommentsByPostId(postId);
         return comments.stream()
                 .map(comment -> mapToCommentResponseDto(comment, userId))
                 .collect(Collectors.toList());
     }
 
     private CommentResponseDto mapToCommentResponseDto(Comment comment, Long userId) {
-        User user = userReader.findByUserId(userId);
+        User user = userReader.getByUserId(userId);
         int commentLikeCnt = commentLikeManager.countByCommentId(comment.getId());
 
         boolean isLikedByUser = commentLikeReader.findByCommentId(comment.getId())
@@ -94,7 +92,7 @@ public class CommentService {
 
     public CommentCreateResponseDto createComment(Long userId, Long postId, String content) {
         Post post = postReader.findById(postId);
-        User writer = userReader.findByUserId(userId);
+        User writer = userReader.getByUserId(userId);
 
         if(content.length() > 30) {
             throw new NotAllowedException(TOO_LONG_COMMENT_NOT_ALLOWED);
@@ -115,8 +113,8 @@ public class CommentService {
     }
 
     public int reportComment(Long userId, Long commentId) {
-        Comment comment = commentReader.findById(commentId);
-        User user = userReader.findByUserId(userId);
+        Comment comment = commentReader.getByCommentId(commentId);
+        User user = userReader.getByUserId(userId);
 
         if(comment.getReported() >= 2) {
             List<Reply> replyList = replyReader.findByCommentId(commentId);

@@ -11,7 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserCategoryReader {
     private final UserCategoryRepository userCategoryRepository;
-    public List<UserCategory> findAllByUserId(Long userId){
+    public List<UserCategory> getUserCategoriesByUserId(Long userId){
         return userCategoryRepository.findAllByUserId(userId);
     }
 }

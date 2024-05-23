@@ -26,7 +26,7 @@ public class PostLikeService {
     private final PostLikeModifier postLikeModifier;
 
     public void createPostLike(Long userId, Long postId) {
-        User user = userReader.findByUserId(userId);
+        User user = userReader.getByUserId(userId);
         Post post = postReader.findById(postId);
 
         if(postLikeManager.existsByPostIdAndUserId(postId, userId)) {
@@ -42,7 +42,7 @@ public class PostLikeService {
     }
 
     public void deletePostLike(Long userId, Long postId) {
-        User user = userReader.findByUserId(userId);
+        User user = userReader.getByUserId(userId);
         Post post = postReader.findById(postId);
         PostLike postLike = postLikeReader.findByPostIdAndUserId(postId, userId);
 

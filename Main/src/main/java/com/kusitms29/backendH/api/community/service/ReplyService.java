@@ -26,8 +26,8 @@ public class ReplyService {
     private final ReplyLikeModifier replyLikeModifier;
 
     public ReplyCreateResponseDto createReply(Long userId, Long commentId, String content) {
-        User user = userReader.findByUserId(userId);
-        Comment comment = commentReader.findById(commentId);
+        User user = userReader.getByUserId(userId);
+        Comment comment = commentReader.getByCommentId(commentId);
 
         Reply newReply = replyModifier.save(
                 Reply.createReply(
@@ -45,7 +45,7 @@ public class ReplyService {
 
     public int reportReply(Long userId, Long replyId) {
         Reply reply = replyReader.findById(replyId);
-        User user = userReader.findByUserId(userId);
+        User user = userReader.getByUserId(userId);
 
         if(reply.getReported() >= 2) {
             replyLikeModifier.deleteAllByReplyId(replyId);

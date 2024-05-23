@@ -31,7 +31,7 @@ public class SyncManager {
         return false;
     }
     public SyncGraphResponseDto createGraphElementList(List<Participation> participationList, String graph){
-        List<User> users = participationList.stream().map( participation -> userReader.findByUserId(participation.getUser().getId())).toList();
+        List<User> users = participationList.stream().map( participation -> userReader.getByUserId(participation.getUser().getId())).toList();
         if(graph.equals("participate"))
             return participateGraph(users);
         else if(graph.equals("gender"))

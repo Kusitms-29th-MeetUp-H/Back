@@ -18,11 +18,11 @@ import static com.kusitms29.backendH.global.error.ErrorCode.COMMENT_NOT_FOUND;
 @Service
 public class CommentReader {
     private final CommentRepository commentRepository;
-    public List<Comment> findByPostId(Long postId)  {
+    public List<Comment> getCommentsByPostId(Long postId)  {
         return commentRepository.findByPostId(postId);
     }
 
-    public Comment findById(Long commentId) {
+    public Comment getByCommentId(Long commentId) {
         return commentRepository.findById(commentId)
                 .orElseThrow(() -> new EntityNotFoundException(COMMENT_NOT_FOUND));
     }
