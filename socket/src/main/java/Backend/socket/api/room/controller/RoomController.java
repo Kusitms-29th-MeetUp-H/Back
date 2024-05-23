@@ -4,7 +4,7 @@ import Backend.socket.api.chat.service.dto.request.ChatMessageRoomRequestDto;
 import Backend.socket.api.room.service.response.RoomListResponseDto;
 import Backend.socket.api.room.service.response.RoomMessageListResponseDto;
 import Backend.socket.api.chat.service.ChatService;
-import Backend.socket.domain.chat.application.service.RoomService;
+import Backend.socket.api.room.service.RoomService;
 import Backend.socket.global.common.MessageSuccessCode;
 import Backend.socket.global.common.MessageSuccessResponse;
 import org.springframework.beans.factory.annotation.Qualifier;
