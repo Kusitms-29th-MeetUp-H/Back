@@ -1,7 +1,9 @@
 package com.kusitms29.backendH.api.sync.service.dto.response;
 
 import com.kusitms29.backendH.domain.category.entity.Type;
+import com.kusitms29.backendH.domain.sync.entity.Sync;
 import com.kusitms29.backendH.domain.sync.entity.SyncType;
+import com.kusitms29.backendH.domain.user.entity.User;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -28,51 +30,29 @@ public record SyncDetailResponseDto(
         Boolean isOwner
 ) {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("M월 d일 (EEE) a h:mm");
-    public static SyncDetailResponseDto oneTimeOf(String syncName,
-                                           String syncImage,
-                                           SyncType syncType,
-                                           Type type,
-                                           String syncIntro,
-                                           LocalDateTime date,
-                                           String location,
-                                           int userCnt,
-                                           int totalCnt,
-                                           String userImage,
-                                           String userName,
-                                           String university,
-                                           String userIntro,
+    public static SyncDetailResponseDto oneTimeOf(Sync sync,
+                                                  User user,
+                                                  int userCnt,
                                                   Boolean isFull,
                                                   Boolean isJoin,
                                                   Boolean isMarked,
                                                   Boolean isOwner){
-        String formattedDate = date.format(DATE_TIME_FORMATTER);
-        return new SyncDetailResponseDto(syncName, syncImage, syncType.getStringSyncType(), type.getStringType(), syncIntro, null, formattedDate, location, userCnt, totalCnt, userImage, userName, university, userIntro, isFull, isJoin,isMarked,isOwner);
+        String formattedDate = sync.getDate().format(DATE_TIME_FORMATTER);
+        return new SyncDetailResponseDto(sync.getSyncName(), sync.getImage(), sync.getSyncType().getStringSyncType(), sync.getType().getStringType(), sync.getSyncIntro(), null, formattedDate, sync.getLocation(), userCnt, sync.getMember_max(), user.getProfile(), user.getUserName(), user.getUniversity(), sync.getUserIntro(), isFull, isJoin,isMarked,isOwner);
     }
-    public static SyncDetailResponseDto longTimeOf(String syncName,
-                                                  String syncImage,
-                                                  SyncType syncType,
-                                                  Type type,
-                                                  String syncIntro,
-                                                  String regularDay,
-                                                  LocalTime regularTime,
-                                                  LocalDateTime date,
-                                                  String location,
-                                                  int userCnt,
-                                                  int totalCnt,
-                                                  String userImage,
-                                                  String userName,
-                                                  String university,
-                                                  String userIntro,
+    public static SyncDetailResponseDto longTimeOf(Sync sync,
+                                                   User user,
+                                                   int userCnt,
                                                    Boolean isFull,
                                                    Boolean isJoin,
                                                    Boolean isMarked,
                                                    Boolean isOwner){
         String formattedDate = null;
-        if(date != null) {
-            formattedDate = date.format(DATE_TIME_FORMATTER);
+        if(sync.getDate() != null) {
+            formattedDate = sync.getDate().format(DATE_TIME_FORMATTER);
         }
-        String formattedRegularTime = regularTime.format(DateTimeFormatter.ofPattern("a h:mm"));
-        String regularDate = "매주 " + regularDay + " " + formattedRegularTime;
-        return new SyncDetailResponseDto(syncName, syncImage, syncType.getStringSyncType(), type.getStringType(), syncIntro, regularDate, formattedDate, location, userCnt, totalCnt, userImage, userName, university, userIntro, isFull, isJoin, isMarked, isOwner);
+        String formattedRegularTime = sync.getRegularTime().format(DateTimeFormatter.ofPattern("a h:mm"));
+        String regularDate = "매주 " + sync.getRegularDay() + " " + formattedRegularTime;
+        return new SyncDetailResponseDto(sync.getSyncName(), sync.getImage(), sync.getSyncType().getStringSyncType(), sync.getType().getStringType(), sync.getSyncIntro(), regularDate, formattedDate, sync.getLocation(), userCnt, sync.getMember_max(), user.getProfile(), user.getUserName(), user.getUniversity(), sync.getUserIntro(), isFull, isJoin, isMarked, isOwner);
     }
 }

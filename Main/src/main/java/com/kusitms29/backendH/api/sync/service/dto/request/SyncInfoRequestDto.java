@@ -14,4 +14,10 @@ public record SyncInfoRequestDto(
             language = "한국어";
         }
     }
+    public static SyncInfoRequestDto of(int take,
+                                        String syncType,
+                                        String type,
+                                        String language){
+        return new SyncInfoRequestDto(take,syncType,type,language);
+    }
 }

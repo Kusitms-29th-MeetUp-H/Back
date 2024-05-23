@@ -1,6 +1,7 @@
 package com.kusitms29.backendH.api.sync.service.dto.response;
 
 import com.kusitms29.backendH.domain.category.entity.Type;
+import com.kusitms29.backendH.domain.sync.entity.Sync;
 import com.kusitms29.backendH.domain.sync.entity.SyncType;
 import lombok.Builder;
 import lombok.Getter;
@@ -55,26 +56,19 @@ public class SyncInfoResponse {
     }
 
     public static SyncInfoResponse of(
-            Long syncId,
-            SyncType syncType,
-            Type type,
-            String image,
+            Sync sync,
             int userCnt,
-            int totalCnt,
-            String syncName,
-            String location,
-            LocalDateTime date,
             Boolean isMarked) {
-        String dateString = date != null ? date.format(DATE_TIME_FORMATTER) : null;
+        String dateString = sync.getDate() != null ? sync.getDate().format(DATE_TIME_FORMATTER) : null;
         return new SyncInfoResponse(
-                syncId,
-                syncType.getStringSyncType(),
-                type.getStringType(),
-                image,
+                sync.getId(),
+                sync.getSyncType().getStringSyncType(),
+                sync.getType().getStringType(),
+                sync.getImage(),
                 userCnt,
-                totalCnt,
-                syncName,
-                location,
+                sync.getMember_max(),
+                sync.getSyncName(),
+                sync.getLocation(),
                 dateString,
                 isMarked
         );
