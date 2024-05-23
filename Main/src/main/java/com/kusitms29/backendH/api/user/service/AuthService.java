@@ -78,7 +78,7 @@ public class AuthService {
     }
 
     private User getUserFromUserId(Long userId) {
-        return userReader.findByUserId(userId);
+        return userReader.getByUserId(userId);
     }
 
     private User getUserByPlatformUserInfo(PlatformUserInfo platformUserInfo, Platform platform) {

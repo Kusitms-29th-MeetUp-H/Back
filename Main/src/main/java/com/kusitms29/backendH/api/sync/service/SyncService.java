@@ -16,7 +16,6 @@ import com.kusitms29.backendH.domain.sync.entity.Sync;
 import com.kusitms29.backendH.domain.user.entity.User;
 import com.kusitms29.backendH.domain.category.entity.UserCategory;
 import com.kusitms29.backendH.domain.user.service.UserReader;
-import com.kusitms29.backendH.global.error.exception.InvalidValueException;
 import com.kusitms29.backendH.global.error.exception.NotAllowedException;
 import com.kusitms29.backendH.infra.config.AwsS3Service;
 import com.kusitms29.backendH.infra.external.SeoulAddressClient;
@@ -32,7 +31,6 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.kusitms29.backendH.domain.category.entity.Type.getEnumTypeFromStringType;
 import static com.kusitms29.backendH.domain.sync.entity.SyncType.FROM_FRIEND;
@@ -57,7 +55,7 @@ public class SyncService {
     private final ParticipationAppender participationAppender;
 
     public List<SyncInfoResponse> recommendSync(Long userId, String clientIp){
-        User user = userReader.findByUserId(userId);
+        User user = userReader.getByUserId(userId);
         List<UserCategory> userCategories = userCategoryReader.findAllByUserId(userId);
         List<Type> types = userCategoryManager.getTypeByUserCategories(userCategories);
         List<Sync> syncList = syncReader.findBySyncTypeWithTypesWithLocation(user.getSyncType(), types, user.getLocation());
@@ -129,7 +127,7 @@ public class SyncService {
     }
     @Transactional
     public SyncSaveResponseDto createSync(Long userId, MultipartFile file, SyncCreateRequestDto requestDto) {
-        User user = userReader.findByUserId(userId);
+        User user = userReader.getByUserId(userId);
 
         if(requestDto.getUserIntro().length() > 50) {
             throw new NotAllowedException(USER_INTRO_NOT_ALLOWED);

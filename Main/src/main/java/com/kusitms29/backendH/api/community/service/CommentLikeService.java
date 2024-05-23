@@ -26,7 +26,7 @@ public class CommentLikeService {
     private final CommentLikeModifier commentLikeModifier;
 
     public void createCommentLike(Long userId, Long commentId) {
-        User user = userReader.findByUserId(userId);
+        User user = userReader.getByUserId(userId);
         Comment comment = commentReader.findById(commentId);
 
         if(commentLikeReader.existsByCommentIdAndUserId(commentId, userId)) {
@@ -37,7 +37,7 @@ public class CommentLikeService {
     }
 
     public void deleteCommentLike(Long userId, Long commentId) {
-        User user = userReader.findByUserId(userId);
+        User user = userReader.getByUserId(userId);
         Comment comment = commentReader.findById(commentId);
         CommentLike commentLike = commentLikeReader.findByCommentIdAndUserId(commentId, userId);
         commentLikeModifier.delete(commentLike);

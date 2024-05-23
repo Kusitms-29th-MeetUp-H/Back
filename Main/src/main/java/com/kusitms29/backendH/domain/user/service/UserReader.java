@@ -14,7 +14,7 @@ import java.util.Optional;
 public class UserReader {
     private final UserRepository userRepository;
 
-    public User findByUserId(Long userId){
+    public User getByUserId(Long userId){
         return userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(ErrorCode.USER_NOT_FOUND));
     }
 

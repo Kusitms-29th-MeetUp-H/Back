@@ -14,7 +14,6 @@ import com.kusitms29.backendH.domain.category.service.UserCategoryReader;
 import com.kusitms29.backendH.domain.sync.entity.*;
 import com.kusitms29.backendH.domain.sync.service.*;
 import com.kusitms29.backendH.domain.user.entity.User;
-import com.kusitms29.backendH.domain.user.service.UserModifier;
 import com.kusitms29.backendH.domain.user.service.UserReader;
 import com.kusitms29.backendH.infra.config.AwsS3Service;
 import com.kusitms29.backendH.infra.utils.ListUtils;
@@ -78,7 +77,7 @@ public class MyPageService {
     }
     public UserInfoResponseDto getMyInfo(Long userId){
         List<String> detailTypes = userCategoryReader.findAllByUserId(userId).stream().map(userCategory -> userCategory.getCategory().getName()).toList();
-        return UserInfoResponseDto.of(userReader.findByUserId(userId),detailTypes);
+        return UserInfoResponseDto.of(userReader.getByUserId(userId),detailTypes);
     }
     public CreateReviewResponse createReview(Long userId, CreateReviewRequest createReviewRequest){
         SyncReview syncReview = SyncReview.createReview(User.from(userId),Sync.from(createReviewRequest.syncId()), createReviewRequest.content() );
@@ -106,7 +105,7 @@ public class MyPageService {
     @Transactional
     public void editProfile(Long userId, MultipartFile profileImage, EditProfileRequest editProfileRequest){
 
-        User user = userReader.findByUserId(userId);
+        User user = userReader.getByUserId(userId);
         String image = awsS3Service.uploadImage(profileImage);
         user.updateProfile(image,editProfileRequest.userName(), Gender.getEnumFROMStringGender(editProfileRequest.gender()), SyncType.getEnumFROMStringSyncType(editProfileRequest.syncType()));
         userCategoryModifier.deleteAllByUserId(user.getId());
@@ -118,7 +117,7 @@ public class MyPageService {
     @Transactional
     public void editProfiles(Long userId, EditProfileReq editProfileReq){
 
-        User user = userReader.findByUserId(userId);
+        User user = userReader.getByUserId(userId);
         user.updateProfile(editProfileReq.image(),editProfileReq.name(), Gender.getEnumFROMStringGender(editProfileReq.gender()), SyncType.getEnumFROMStringSyncType(editProfileReq.syncType()));
         userCategoryModifier.deleteAllByUserId(user.getId());
         List<Category> categories = editProfileReq.detailTypes().stream().map(

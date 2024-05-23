@@ -76,7 +76,7 @@ public class PushNotificationService {
             }
 
             //알림 기록
-            User alarmedUser = userReader.findByUserId(Long.parseLong(dto.getId()));
+            User alarmedUser = userReader.getByUserId(Long.parseLong(dto.getId()));
             NotificationHistory history = NotificationHistory.createHistory(
                     alarmedUser,
                     dto.getTemplate().getTitle(),
@@ -113,7 +113,7 @@ public class PushNotificationService {
 
         //알림 기록
         LocalDateTime now = LocalDateTime.now();
-        User alarmedUser = userReader.findByUserId(Long.parseLong(dto.getId()));
+        User alarmedUser = userReader.getByUserId(Long.parseLong(dto.getId()));
         NotificationHistory history = NotificationHistory.createHistory(
                 alarmedUser,
                 dto.getTemplate().getTitle(),
@@ -145,7 +145,7 @@ public class PushNotificationService {
 
             //알림 기록
             LocalDateTime now = LocalDateTime.now();
-            User alarmedUser = userReader.findByUserId(Long.parseLong(dto.getId()));
+            User alarmedUser = userReader.getByUserId(Long.parseLong(dto.getId()));
             NotificationHistory history = NotificationHistory.createHistory(
                     alarmedUser,
                     dto.getTemplate().getTitle(),

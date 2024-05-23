@@ -9,7 +9,6 @@ import com.kusitms29.backendH.infra.config.TranslateConfig;
 import com.kusitms29.backendH.infra.config.auth.UserId;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -20,8 +19,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 @RestController
@@ -156,7 +153,7 @@ public class HealthCheckApiController {
     }
     @PostMapping("/chat")
     public void chat(@UserId Long userId, @RequestBody ChatReq chatReq){
-        User user = userReader.findByUserId(userId);
+        User user = userReader.getByUserId(userId);
         Query query = new Query();
         query.addCriteria(Criteria.where("roomName").is(chatReq.roomName()));
         Room room =  mongoTemplate.findOne(query, Room.class);

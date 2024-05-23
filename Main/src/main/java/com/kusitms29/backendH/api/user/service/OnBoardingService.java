@@ -1,7 +1,6 @@
 package com.kusitms29.backendH.api.user.service;
 
 import com.kusitms29.backendH.api.user.service.dto.request.OnBoardingRequestDto;
-import com.kusitms29.backendH.api.user.service.dto.response.OnBoardingResponseDto;
 import com.kusitms29.backendH.domain.category.entity.Category;
 import com.kusitms29.backendH.domain.category.service.CategoryReader;
 import com.kusitms29.backendH.domain.category.service.UserCategoryModifier;
@@ -9,7 +8,6 @@ import com.kusitms29.backendH.domain.sync.entity.Gender;
 import com.kusitms29.backendH.domain.sync.entity.Language;
 import com.kusitms29.backendH.domain.sync.entity.SyncType;
 import com.kusitms29.backendH.domain.user.entity.User;
-import com.kusitms29.backendH.domain.category.entity.UserCategory;
 import com.kusitms29.backendH.domain.user.service.UserReader;
 import com.kusitms29.backendH.infra.config.AwsS3Service;
 import com.kusitms29.backendH.infra.external.UniversityClient;
@@ -19,9 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static com.kusitms29.backendH.domain.category.entity.UserCategory.createUserCategory;
 
@@ -39,7 +35,7 @@ public class OnBoardingService {
 
     @Transactional
     public void onBoardingUser(Long userId, MultipartFile profileImage, OnBoardingRequestDto requestDto) {
-        User user = userReader.findByUserId(userId);
+        User user = userReader.getByUserId(userId);
 
         Language lan = Language.getEnumLanguageFromStringLanguage(requestDto.getLanguage());
         String imageUrl = awsS3Service.uploadImage(profileImage);

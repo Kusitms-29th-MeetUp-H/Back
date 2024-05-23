@@ -27,7 +27,7 @@ public class ReplyLikeService {
     private final ReplyLikeModifier replyLikeModifier;
 
     public void createReplyLike(Long userId, Long replyId) {
-        User user = userReader.findByUserId(userId);
+        User user = userReader.getByUserId(userId);
         Reply reply = replyReader.findById(replyId);
         if(replyLikeReader.existsByReplyIdAndUserId(replyId, userId)) {
             throw new ConflictException(DUPLICATE_REPLY_LIKE);
@@ -41,7 +41,7 @@ public class ReplyLikeService {
     }
 
     public void deleteReplyLike(Long userId, Long replyId) {
-        User user = userReader.findByUserId(userId);
+        User user = userReader.getByUserId(userId);
         Reply reply = replyReader.findById(replyId);
 
         ReplyLike replyLike = replyLikeReader.findByReplyIdAndUserId(replyId, userId);

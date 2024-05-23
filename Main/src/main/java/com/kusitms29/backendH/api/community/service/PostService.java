@@ -114,7 +114,7 @@ public class PostService {
     }
 
     public PostCreateResponseDto createPost(Long userId, List<MultipartFile> images, PostCreateRequestDto requestDto) {
-        User writer = userReader.findByUserId(userId);
+        User writer = userReader.getByUserId(userId);
         PostType postType = PostType.getEnumPostTypeFromStringPostType(requestDto.getPostType());
 
         String title = requestDto.getTitle();
