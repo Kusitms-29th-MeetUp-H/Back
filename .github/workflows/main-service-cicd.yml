@@ -29,7 +29,7 @@ jobs:
         run: |
           cd ./Main
           cd ./src/main
-          mkdir resources
+          # mkdir resources
           cd ./resources
           touch ./application.yml
           echo "$APPLICATION_MAIN" > ./application.yml
