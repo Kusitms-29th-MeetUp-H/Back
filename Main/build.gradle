@@ -58,6 +58,9 @@ dependencies {
 	//mongoDB
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 
+	//webclient
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
 	// Test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.rest-assured:rest-assured:5.3.0'
